@@ -1,0 +1,315 @@
+<html>
+<head>
+<title>CRaris: a CR checker for LCTRSs in ARI style</title>
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+<script language="javascript">
+  function toggleVisible(divId) {
+    var div = document.getElementById(divId);
+    if (div) {
+      if (div.style.display != 'block') {
+        div.style.display = 'block';
+      } else {
+        div.style.display = 'none';
+      }
+    }
+  }
+</script>
+</head>
+<body>
+  <p>
+  Last Update:
+  <SCRIPT>
+    var modified = new Date(document.lastModified);
+    var year = modified.getFullYear();
+    var month= modified.getMonth() + 1;
+    var date = modified.getDate();
+    document.write(year + "/" + month + "/" + date);
+  </SCRIPT>
+  </p>
+
+
+<hr>
+<h1>CRaris : a CR checker for LCTRSs in ARI style</h1>
+<h2><a href="https://project-coco.uibk.ac.at/2025/">CoCo 2025</a> version</h2>
+
+<p>
+<b>CRaris</b> is a tool to prove confluence of <i>logically
+  constrained term rewrite systems</i> (LCTRSs)
+  [<a href="#KN13">KN13</a>] written in
+  the <a href="https://project-coco.uibk.ac.at/ARI/lctrs.php"><b>ARI
+    format</b></a>.
+The tool
+is based on <b>Crisys2</b>, <u>Constrained Rewriting Induction SYStem
+  (version 2)</u>, which is a proof system based on <i>Constrained Rewriting
+  Induction</i> [<a href="#KN14">KN14</a>,<a href="#FKN17">FKN17</a>].
+To prove confluence of LCTRSs, the tool uses the following:
+<ul>
+  <li>weak orthogonality [<a href="#KN13">KN13</a>]</li>
+  <li>termination and joinability of critical pairs [<a href="#SM23">SM23</a>]</li>
+</ul>
+</p>
+
+<hr>
+<h4>News</h4>
+
+<dl>
+
+  <dt>February 10th, 2026</dt>
+  <dd>
+    Added the link to <a href="https://ari-web.uibk.ac.at">ARIWeb</a>
+    and the latest version is available.
+  </dd>
+
+  <dt>July 2nd, 2024</dt>
+  <dd>
+   Open this page.
+  </dd>
+
+</dl>
+
+<hr>
+
+<h4>Contents</h4>
+<ul>
+ <li><a href="#ariweb">ARIWeb</a></li>
+ <li><a href="#downloads">Downloads</a></li>
+ <li><a href="#how2use">How to Use</a></li>
+ <li><a href="#input">Input Files</a></li>
+ <li><a href="#examples">Examples</a></li>
+ <li><a href="#references">References</a></li>
+ <li><a href="#contributers">Contributers</a></li>
+ <li><a href="#contact">Contact</a></li>
+</ul>
+
+<hr>
+<a name="ariweb"><h2>ARIWeb</h2></a>
+
+<p>CRaris performs on <a href="https://ari-web.uibk.ac.at">ARIWeb</a>.</p>
+
+<hr>
+<a name="downloads"><h2>Downloads</h2></a>
+
+<ul>
+  <li><a href="downloads/craris">craris</a> (OCaml bytecode)</li>
+</ul>
+
+<h3>Requirement</h3>
+
+<ul>
+	<li>The tool is implemented by <a href="https://ocaml.org">OCaml</a> (ver. 4.14.1), and to run the downloaded bytecode, <code>ocaml </code> (or later version) is necessary.</li>
+	<li>The tool needs an SMT solver that follows <a href="https://smtlib.cs.uiowa.edu">SMT-LIB 2 format</a>. Please put the following file <a href="downloads/crisys2.config"><code>crisys2.config</code></a> into the same directory as the tool:
+	<blockquote>
+<table border="1">
+<tr>
+<td>
+<pre>
+(SMTSOLVER STDIN "xxxx")
+(VERBOSE on)
+</pre>
+</td>
+</tr>
+</table>
+	</blockquote>
+Please replace <code>xxxx</code> by a command for the SMT solver you use. For example, please write <code>(SMTSOLVER STDIN "z3 -in")</code> for <a href="https://github.com/Z3Prover/z3">Z3</a>.
+
+</li>
+</ul>
+
+<hr>
+<a name="how2use"><h2>How to Use</h2></a>
+
+<p>Run <code>crisys2cdcc</code> from Command Line as follows:
+<blockquote>
+<pre>
+> ./crisys2cdcc example_2-25_sf.ari
+</pre>
+or
+<pre>
+> ocamlrun ./crisys2cdcc example_2-25_sf.ari
+</pre>
+</blockquote>
+</p>
+
+<p>
+The tool tries to prove a APR problem for starvation freedom, which is written the input file, constructing a proof tree.
+</p>
+
+<hr>
+<a name="input"><h2>Input Files</h2></a>
+
+
+<p>
+The tool takes an LCTRS written in
+the <a href="https://project-coco.uibk.ac.at/ARI/lctrs.php"><b>ARI format</b></a>
+and supports the following <a href="https://smt-lib.org/theories.shtml">SMT-LIB 2.6 theories</a>:
+<ul>
+  <li><code>Core</code></li>
+  <li><code>Ints</code></li>
+  <li><code>FixedSizeBitVectors</code></li>
+</ul>
+</p>
+
+<p>
+By adding <code>:fairness</code>, APR problems for starvation freedom are proved under process fairness.
+</p>
+
+<hr>
+<a name="examples"><h2>Examples</h2></a>
+
+<p>Benchmarks can be seen in
+  the <a href="https://ari-cops.uibk.ac.at/ARI/?q=lctrs&m=problems"><b>ARI-COPS database</b></a>.
+
+<h4><a href="https://ari-cops.uibk.ac.at/ARI/1531.ari"><code>1531.ari</code></a></h4>
+
+<table border="1">
+<tr>
+<td>
+<pre>
+; @author Naoki Nishida 
+(format LCTRS :smtlib 2.6)
+
+(theory Ints)
+
+(sort Loc)
+(sort State)
+
+(fun state (-> Loc Loc Bool Bool Int State))
+(fun noncrit0 Loc)
+(fun wait0 Loc)
+(fun crit0 Loc)
+(fun noncrit1 Loc)
+(fun wait1 Loc)
+(fun crit1 Loc)
+(fun success State)
+(fun error State)
+
+(rule (state noncrit0 p1 b0 b1 x) (state wait0 p1 b01 b1 x1)
+        :guard (and b01 (= x1 1)) :var ((x1 Int)))
+(rule (state wait0 p1 b0 b1 x) (state crit0 p1 b0 b1 x)
+        :guard (or (= x 0) (not b1)) :var ((x Int)))
+(rule (state crit0 p1 b0 b1 x) (state noncrit0 p1 b01 b1 x)
+        :guard (not b01))
+(rule (state p0 noncrit1 b0 b1 x) (state p0 wait1 b0 b11 x1)
+        :guard (and b11 (= x1 0)) :var ((x1 Int)))
+(rule (state p0 wait1 b0 b1 x) (state p0 crit1 b0 b1 x)
+        :guard (or (= x 1) (not b0)) :var ((x Int)))
+(rule (state p0 crit1 b0 b1 x) (state p0 noncrit1 b0 b11 x)
+        :guard (not b11))
+(rule (state p0 p1 b0 b1 x) success)
+(rule (state crit0 crit1 b0 b1 x) error)
+</pre>
+</td>
+</tr>
+</table>
+
+<h4><a href="https://ari-cops.uibk.ac.at/ARI/1530.ari"><code>1530.ari</code></a></h4>
+
+<table border="1">
+<tr>
+<td>
+<pre>
+; @author Naoki Nishida 
+(format LCTRS :smtlib 2.6)
+
+(theory FixedSizeBitVectors)
+
+(sort Loc)
+(sort State)
+
+(fun state (-> Loc Loc Bool Bool (_ BitVec 1) State))
+(fun noncrit0 Loc)
+(fun wait0 Loc)
+(fun crit0 Loc)
+(fun noncrit1 Loc)
+(fun wait1 Loc)
+(fun crit1 Loc)
+(fun success State)
+(fun error State)
+
+(rule (state noncrit0 p1 b0 b1 x) (state wait0 p1 b01 b1 x1)
+        :guard (and b01 (= x1 #b1)) :var ((x1 (_ BitVec 1))))
+(rule (state wait0 p1 b0 b1 x) (state crit0 p1 b0 b1 x)
+        :guard (or (= x #b0) (not b1)) :var ((x (_ BitVec 1))))
+(rule (state crit0 p1 b0 b1 x) (state noncrit0 p1 b01 b1 x)
+        :guard (not b01))
+(rule (state p0 noncrit1 b0 b1 x) (state p0 wait1 b0 b11 x1)
+        :guard (and b11 (= x1 #b0)) :var ((x1 (_ BitVec 1))))
+(rule (state p0 wait1 b0 b1 x) (state p0 crit1 b0 b1 x)
+        :guard (or (= x #b1) (not b0)) :var ((x (_ BitVec 1))))
+(rule (state p0 crit1 b0 b1 x) (state p0 noncrit1 b0 b11 x)
+        :guard (not b11))
+(rule (state p0 p1 b0 b1 x) success)
+(rule (state crit0 crit1 b0 b1 x) error)
+</pre>
+</td>
+</tr>
+</table>
+
+<hr>
+<a name="references"><h2>References</h2></a>
+
+<dl compact>
+
+ <dt>[<a name="SM23">SM23</a>]</dt>
+ <dd>Jonas Sch&ouml;pf and Aart Middeldorp,<br>
+      <b>Confluence Criteria for Logically Constrained Rewrite Systems</b>,<br>
+      In <i>Proceedings of the 29th International Conference on
+      Automated Deduction</i> (CADE 2023),<br>
+      <i>Lecture Notes in Artificial Intelligence</i>, vol. 14132,
+      pp. 474–490, 2023.<br>
+      Available from <a href="https://doi.org/10.1007/978-3-031-38499-8_27">Springer</a>.
+      </dd><br>
+
+ <dt>[<a name="KNF15">FKN17</a>]</dt>
+ <dd>Carsten Fuhs, Cynthia Kop, and Naoki Nishida,<br>
+      <b>Verifying Procedural Programs via Constrained Rewriting Induction</b>,<br>
+      <i>ACM Transactions on Computational Logic</i>,
+      vol. 18, no. 2, pp. 14:1-14:50, 2017.<br>
+      Available from <a href="https://doi.org/10.1145/3060143">ACM</a>.
+      </dd><br>
+
+ <dt>[<a name="KN14">KN14</a>]</dt>
+ <dd>Cynthia Kop and Naoki Nishida,<br>
+      <b>Automatic Constrained Rewriting Induction towards Verifying
+      Procedural Programs</b>,<br>
+      In <i>Proceedings of the 12th Asian Symposium on Programming
+      Languages and Systems</i> (APLAS 2014),<br>
+      <i>Lecture Notes in Computer Science</i>, vol. 8858,
+      pp. 334-353, 2014.<br>
+      Available from <a href="https://doi.org/10.1007/978-3-319-12736-1_18">Springer</a>.
+      </dd><br>
+
+ <dt>[<a name="KN13">KN13</a>]</dt>
+ <dd>Cynthia Kop and Naoki Nishida,<br>
+      <b>Term Rewriting with Logical Constraints</b>,<br>
+      In <i>Proceedings of the 9th International Symposium on Frontiers
+      of Combining Systems</i> (FroCoS 2013),<br>
+      <i>Lecture Notes in Computer Science</i>, vol. 8152,
+      pp. 343-358, 2013.<br>
+      Available from <a href="https://doi.org/10.1007/978-3-642-40885-4_24">Springer</a>.
+      </dd><br>
+
+</dl>
+
+<hr>
+
+<a name="contributers"><h2>Contributers</h2></a>
+
+<ul>
+  <li><a href="https://www.trs.css.i.nagoya-u.ac.jp/~nishida/">Naoki Nishida</a> (Nagoya University)</li>
+  <li><a href="https://www.trs.css.i.nagoya-u.ac.jp/~nishida/">Misaki Kojima</a> (Nagoya University)</li>
+</ul>
+
+<hr>
+
+<a name="contact"><h2>Contact</h2></a>
+
+<dl>
+ <dt><a href="https://www.trs.css.i.nagoya-u.ac.jp/~nishida/">Naoki Nishida</a> (Nagoya University)</dt>
+      <dd><code>nishida [at] i.nagoya-u.ac.jp</code></dd>
+</dl>
+
+<hr>
+
+</body>
+</html>
