@@ -1,0 +1,31 @@
+checking termination...
+checking sufficient completeness...
+checking ground confluence...
+checking local soundness...
+current step: 1
+derivations: 2
+current step: 2
+derivations: 2
+current step: 3
+derivations: 4
+current step: 4
+derivations: 8
+current step: 5
+derivations: 8
+current step: 6
+Parsing error: line 1 6 (y)
+Parsing error: line 1 6 (y)
+Parsing error: line 1 6 (y)
+Parsing error: line 1 6 (y)
+Parsing error: line 1 6 (y)
+Parsing error: line 1 6 (y)
+Parsing error: line 1 6 (y)
+Parsing error: line 1 6 (y)
+Parsing error: line 1 6 (y)
+Parsing error: line 1 6 (y)
+derivations: 22
+current step: 7
+derivations: 44
+current step: 8
+derivations: 44
+Result: Proved

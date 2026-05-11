@@ -1,0 +1,34 @@
+sorts Loc, State;
+
+signature
+  state   : Loc Loc Loc -> State,
+  far     : -> Loc,
+  near    : -> Loc,
+  in      : -> Loc,
+  ctrl0   : -> Loc,
+  ctrl1   : -> Loc,
+  ctrl2   : -> Loc,
+  ctrl3   : -> Loc,
+  up      : -> Loc,
+  down    : -> Loc,
+  success : -> State,
+  error   : -> State;
+
+variables
+  G : Loc, Ct : Loc, T : Loc;
+ 
+rewrite-system main
+  (state far  ctrl0 G   ) => (state near ctrl1 G   ),
+  (state near Ct    G   ) => (state in   Ct    G   ),
+  (state in   ctrl2 G   ) => (state far  ctrl3 G   ),
+  (state T    ctrl1 up  ) => (state T    ctrl2 down),
+  (state T    ctrl3 down) => (state T    ctrl0 up  ),
+
+  (state T Ct G) => success,
+
+  (state in Ct up) => error;
+
+rewrite-system apr
+  (state far ctrl0 up) => success;
+
+prove [10,10] in main : apr;

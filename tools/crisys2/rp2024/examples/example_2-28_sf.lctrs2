@@ -1,0 +1,28 @@
+(SET-LOGIC QF_LIA)
+
+(FUN state          : Loc * Loc * Loc * Int -> State)
+(FUN noncrit1 crit1 : Loc)
+(FUN noncrit2 crit2 : Loc)
+(FUN unlock lock    : Loc)
+(FUN success error  : State)
+(VAR c c1 : Int)
+
+(RULES
+  state(noncrit1, p2, unlock, c) -> state(crit1,    p2, lock  , c1) WHEN (and (= c1 0) (<= c 2))
+  state(crit1,    p2, lock  , c) -> state(noncrit1, p2, unlock, c1) WHEN (and (= c1 1) (<= c 2))
+
+  state(p1, noncrit2, unlock, c) -> state(p1, crit2,    lock  , c1) WHEN (and (= c1 (ite (> c 0) (+ c 1) c)) (<= c 2))
+  state(p1, crit2,    lock  , c) -> state(p1, noncrit2, unlock, c1) WHEN (and (= c1 (ite (> c 0) (+ c 1) c)) (<= c 2))
+
+  state(p1, p2, p3, c) -> success
+
+  state(noncrit1, p2,       p3,     c) -> error WHEN (> c 2)
+  state(noncrit1, noncrit2, lock,   c) -> error WHEN (> c 0)
+  state(crit1,    crit2,    unlock, c) -> error WHEN (> c 0)
+)
+
+(EQUATIONS
+   state(noncrit1, noncrit2, unlock, 1) == success
+)
+
+(QUERY starvation-freedom)

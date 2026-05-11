@@ -1,0 +1,74 @@
+sorts Thread, Config, State;
+
+signature
+    config : Thread Thread Thread Thread Thread Thread Thread Int Int  -> Config,
+    thread : State  -> Thread,
+    none :  -> Thread,
+    main :  -> State,
+    main0 :  -> State,
+    main1 :  -> State,
+    main2 :  -> State,
+    main3 :  -> State,
+    main8 :  -> State,
+    main9 :  -> State,
+    main10 :  -> State,
+    main11 :  -> State,
+    main12 :  -> State,
+    main13 :  -> State,
+    main18 :  -> State,
+    main19 :  -> State,
+    return0 :  -> State,
+    setThread :  -> State,
+    setThread1 :  -> State,
+    setThread2 :  -> State,
+    checkThread :  -> State,
+    success :  -> Config,
+    error :  -> Config,
+    assert0 :  -> Config;
+
+variables
+    Thrd1 : Thread, Thrd2 : Thread, Thrd3 : Thread, Thrd4 : Thread, Thrd9 : Thread, A : Int, B : Int, S : State, Thrd0 : Thread, Thrd : Thread, A1 : Int, B1 : Int;
+
+constrained-rewrite-system main
+    (config (thread main) none Thrd1 Thrd2 Thrd3 Thrd4 Thrd9 A B) => (config (thread main0) (thread setThread) Thrd1 Thrd2 Thrd3 Thrd4 Thrd9 A B),
+    (config (thread main) (thread S) Thrd1 Thrd2 Thrd3 Thrd4 Thrd9 A B) => error,
+    (config (thread main0) Thrd0 none Thrd2 Thrd3 Thrd4 Thrd9 A B) => (config (thread main1) Thrd0 (thread setThread) Thrd2 Thrd3 Thrd4 Thrd9 A B),
+    (config (thread main0) Thrd0 (thread S) Thrd2 Thrd3 Thrd4 Thrd9 A B) => error,
+    (config (thread main1) Thrd0 Thrd1 none Thrd3 Thrd4 Thrd9 A B) => (config (thread main2) Thrd0 Thrd1 (thread setThread) Thrd3 Thrd4 Thrd9 A B),
+    (config (thread main1) Thrd0 Thrd1 (thread S) Thrd3 Thrd4 Thrd9 A B) => error,
+    (config (thread main2) Thrd0 Thrd1 Thrd2 none Thrd4 Thrd9 A B) => (config (thread main3) Thrd0 Thrd1 Thrd2 (thread setThread) Thrd4 Thrd9 A B),
+    (config (thread main2) Thrd0 Thrd1 Thrd2 (thread S) Thrd4 Thrd9 A B) => error,
+    (config (thread main3) Thrd0 Thrd1 Thrd2 Thrd3 none Thrd9 A B) => (config (thread main8) Thrd0 Thrd1 Thrd2 Thrd3 (thread setThread) Thrd9 A B),
+    (config (thread main3) Thrd0 Thrd1 Thrd2 Thrd3 (thread S) Thrd9 A B) => error,
+    (config (thread main8) Thrd0 Thrd1 Thrd2 Thrd3 Thrd4 none A B) => (config (thread main9) Thrd0 Thrd1 Thrd2 Thrd3 Thrd4 (thread checkThread) A B),
+    (config (thread main8) Thrd0 Thrd1 Thrd2 Thrd3 Thrd4 (thread S) A B) => error,
+    (config (thread main9) (thread return0) Thrd1 Thrd2 Thrd3 Thrd4 Thrd9 A B) => (config (thread main10) none Thrd1 Thrd2 Thrd3 Thrd4 Thrd9 A B),
+    (config (thread main10) Thrd0 (thread return0) Thrd2 Thrd3 Thrd4 Thrd9 A B) => (config (thread main11) Thrd0 none Thrd2 Thrd3 Thrd4 Thrd9 A B),
+    (config (thread main11) Thrd0 Thrd1 (thread return0) Thrd3 Thrd4 Thrd9 A B) => (config (thread main12) Thrd0 Thrd1 none Thrd3 Thrd4 Thrd9 A B),
+    (config (thread main12) Thrd0 Thrd1 Thrd2 (thread return0) Thrd4 Thrd9 A B) => (config (thread main13) Thrd0 Thrd1 Thrd2 none Thrd4 Thrd9 A B),
+    (config (thread main13) Thrd0 Thrd1 Thrd2 Thrd3 (thread return0) Thrd9 A B) => (config (thread main18) Thrd0 Thrd1 Thrd2 Thrd3 none Thrd9 A B),
+    (config (thread main18) Thrd0 Thrd1 Thrd2 Thrd3 Thrd4 (thread return0) A B) => (config (thread main19) Thrd0 Thrd1 Thrd2 Thrd3 Thrd4 none A B),
+    (config (thread main19) Thrd0 Thrd1 Thrd2 Thrd3 Thrd4 Thrd9 A B) => (config (thread return0) Thrd0 Thrd1 Thrd2 Thrd3 Thrd4 Thrd9 A B),
+    (config Thrd (thread setThread) Thrd1 Thrd2 Thrd3 Thrd4 Thrd9 A B) /\ (mequals A1 1) => (config Thrd (thread setThread1) Thrd1 Thrd2 Thrd3 Thrd4 Thrd9 A1 B),
+    (config Thrd (thread setThread1) Thrd1 Thrd2 Thrd3 Thrd4 Thrd9 A B) /\ (mequals B1 -1) => (config Thrd (thread setThread2) Thrd1 Thrd2 Thrd3 Thrd4 Thrd9 A B1),
+    (config Thrd (thread setThread2) Thrd1 Thrd2 Thrd3 Thrd4 Thrd9 A B) => (config Thrd (thread return0) Thrd1 Thrd2 Thrd3 Thrd4 Thrd9 A B),
+    (config Thrd Thrd0 (thread setThread) Thrd2 Thrd3 Thrd4 Thrd9 A B) /\ (mequals A1 1) => (config Thrd Thrd0 (thread setThread1) Thrd2 Thrd3 Thrd4 Thrd9 A1 B),
+    (config Thrd Thrd0 (thread setThread1) Thrd2 Thrd3 Thrd4 Thrd9 A B) /\ (mequals B1 -1) => (config Thrd Thrd0 (thread setThread2) Thrd2 Thrd3 Thrd4 Thrd9 A B1),
+    (config Thrd Thrd0 (thread setThread2) Thrd2 Thrd3 Thrd4 Thrd9 A B) => (config Thrd Thrd0 (thread return0) Thrd2 Thrd3 Thrd4 Thrd9 A B),
+    (config Thrd Thrd0 Thrd1 (thread setThread) Thrd3 Thrd4 Thrd9 A B) /\ (mequals A1 1) => (config Thrd Thrd0 Thrd1 (thread setThread1) Thrd3 Thrd4 Thrd9 A1 B),
+    (config Thrd Thrd0 Thrd1 (thread setThread1) Thrd3 Thrd4 Thrd9 A B) /\ (mequals B1 -1) => (config Thrd Thrd0 Thrd1 (thread setThread2) Thrd3 Thrd4 Thrd9 A B1),
+    (config Thrd Thrd0 Thrd1 (thread setThread2) Thrd3 Thrd4 Thrd9 A B) => (config Thrd Thrd0 Thrd1 (thread return0) Thrd3 Thrd4 Thrd9 A B),
+    (config Thrd Thrd0 Thrd1 Thrd2 (thread setThread) Thrd4 Thrd9 A B) /\ (mequals A1 1) => (config Thrd Thrd0 Thrd1 Thrd2 (thread setThread1) Thrd4 Thrd9 A1 B),
+    (config Thrd Thrd0 Thrd1 Thrd2 (thread setThread1) Thrd4 Thrd9 A B) /\ (mequals B1 -1) => (config Thrd Thrd0 Thrd1 Thrd2 (thread setThread2) Thrd4 Thrd9 A B1),
+    (config Thrd Thrd0 Thrd1 Thrd2 (thread setThread2) Thrd4 Thrd9 A B) => (config Thrd Thrd0 Thrd1 Thrd2 (thread return0) Thrd4 Thrd9 A B),
+    (config Thrd Thrd0 Thrd1 Thrd2 Thrd3 (thread setThread) Thrd9 A B) /\ (mequals A1 1) => (config Thrd Thrd0 Thrd1 Thrd2 Thrd3 (thread setThread1) Thrd9 A1 B),
+    (config Thrd Thrd0 Thrd1 Thrd2 Thrd3 (thread setThread1) Thrd9 A B) /\ (mequals B1 -1) => (config Thrd Thrd0 Thrd1 Thrd2 Thrd3 (thread setThread2) Thrd9 A B1),
+    (config Thrd Thrd0 Thrd1 Thrd2 Thrd3 (thread setThread2) Thrd9 A B) => (config Thrd Thrd0 Thrd1 Thrd2 Thrd3 (thread return0) Thrd9 A B),
+    (config Thrd Thrd0 Thrd1 Thrd2 Thrd3 Thrd4 (thread checkThread) A B) /\ (bnot (bor (band (mequals A 0) (mequals B 0)) (band (mequals A 1) (mequals B -1)))) => assert0,
+    (config Thrd Thrd0 Thrd1 Thrd2 Thrd3 Thrd4 (thread checkThread) A B) /\ (bor (band (mequals A 0) (mequals B 0)) (band (mequals A 1) (mequals B -1))) => (config Thrd Thrd0 Thrd1 Thrd2 Thrd3 Thrd4 (thread return0) A B),
+    (config Thrd Thrd0 Thrd1 Thrd2 Thrd3 Thrd4 Thrd9 A B) => success;
+
+rewrite-system apr
+    (config (thread main) none none none none none none 0 0) => success;
+
+prove [10,10] in main : apr;

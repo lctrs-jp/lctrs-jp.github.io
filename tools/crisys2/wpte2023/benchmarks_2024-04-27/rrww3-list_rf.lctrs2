@@ -1,0 +1,88 @@
+(SET-LOGIC QF_LIA)
+(FUN cnfg   : Process * Process * Process * Process * Semaphore * Int * Int -> Cnfg)
+(FUN p      : Fcall * Int -> Process)
+(FUN sem    : Int * List -> Semaphore)
+(FUN rdr7   : Fcall)
+(FUN rdr9   : Int -> Fcall)
+(FUN rdr10  : Int -> Fcall)
+(FUN rdr11  : Int -> Fcall)
+(FUN wrtr18 : Fcall)
+(FUN wrtr19 : Fcall)
+(FUN wrtr20 : Fcall)
+(FUN success: Cnfg)
+(FUN error  : Cnfg)
+(FUN snoc   : List * Int -> List)
+(FUN cons   : Int * List -> List)
+(FUN nil    : List)
+
+(VAR s1 x1 y1 : Int)
+
+(RULES
+  cnfg(p(rdr7,0),p2,p3,p4,sem(s,w),x,0) -> cnfg(p(rdr9(0),0),p2,p3,p4,sem(s,w),x,0)
+  cnfg(p(rdr9(y),0),p2,p3,p4,sem(s,w),x,0) -> cnfg(p(rdr10(y),0),p2,p3,p4,sem(s1,w),x,0) WHEN (and (not (= s 0)) (= s1 (- s 1)))
+  cnfg(p(rdr9(y),0),p2,p3,p4,sem(s,w),x,0) -> cnfg(p(rdr9(y),1),p2,p3,p4,sem(s,snoc(w,1)),x,2) WHEN (= s 0)
+  cnfg(p(rdr9(y),n),p2,p3,p4,sem(s,cons(k,w)),x,1) -> cnfg(p(rdr10(y),0),p2,p3,p4,sem(s,w),x,0) WHEN (and (= n k) (not (= n 0)))
+  cnfg(p(rdr9(y),n),p2,p3,p4,sem(s,nil),x,1) -> error
+  cnfg(p(rdr10(y),0),p2,p3,p4,sem(s,w),x,0) -> cnfg(p(rdr11(x1),0),p2,p3,p4,sem(s,w),x,0)
+  cnfg(p(rdr11(y),0),p2,p3,p4,sem(s,cons(k,w)),x,0) -> cnfg(p(rdr7,0),p2,p3,p4,sem(s,cons(k,w)),x,1)
+  cnfg(p(rdr11(y),0),p2,p3,p4,sem(s,nil),x,0) -> cnfg(p(rdr7,0),p2,p3,p4,sem(s1,nil),x,0) WHEN (= s1 (+ s 1))
+
+  cnfg(p1,p(rdr7,0),p3,p4,sem(s,w),x,0) -> cnfg(p1,p(rdr9(0),0),p3,p4,sem(s,w),x,0)
+  cnfg(p1,p(rdr9(y),0),p3,p4,sem(s,w),x,0) -> cnfg(p1,p(rdr10(y),0),p3,p4,sem(s1,w),x,0) WHEN (and (not (= s 0)) (= s1 (- s 1)))
+  cnfg(p1,p(rdr9(y),0),p3,p4,sem(s,w),x,0) -> cnfg(p1,p(rdr9(y),2),p3,p4,sem(s,snoc(w,2)),x,2) WHEN (= s 0)
+  cnfg(p1,p(rdr9(y),n),p3,p4,sem(s,cons(k,w)),x,1) -> cnfg(p1,p(rdr10(y),0),p3,p4,sem(s,w),x,0) WHEN (and (= n k) (not (= n 0)))
+  cnfg(p1,p(rdr9(y),n),p3,p4,sem(s,nil),x,1) -> error
+  cnfg(p1,p(rdr10(y),0),p3,p4,sem(s,w),x,0) -> cnfg(p1,p(rdr11(x1),0),p3,p4,sem(s,w),x,0)
+  cnfg(p1,p(rdr11(y),0),p3,p4,sem(s,cons(k,w)),x,0) -> cnfg(p1,p(rdr7,0),p3,p4,sem(s,cons(k,w)),x,1)
+  cnfg(p1,p(rdr11(y),0),p3,p4,sem(s,nil),x,0) -> cnfg(p1,p(rdr7,0),p3,p4,sem(s1,nil),x,0) WHEN (= s1 (+ s 1))
+
+  cnfg(p1,p2,p(wrtr18,0),p4,sem(s,w),x,0) -> cnfg(p1,p2,p(wrtr19,0),p4,sem(s1,w),x,0) WHEN (and (not (= s 0)) (= s1 (- s 1)))
+  cnfg(p1,p2,p(wrtr18,0),p4,sem(s,w),x,0) -> cnfg(p1,p2,p(wrtr18,3),p4,sem(s,snoc(w,3)),x,2) WHEN (= s 0)
+  cnfg(p1,p2,p(wrtr18,n),p4,sem(s,cons(k,w)),x,1) -> cnfg(p1,p2,p(wrtr19,0),p4,sem(s,w),x,0) WHEN (and (= n k) (not (= n 0)))
+  cnfg(p1,p2,p(wrtr18,n),p4,sem(s,nil),x,1) -> error
+  cnfg(p1,p2,p(wrtr19,0),p4,sem(s,w),x,0) -> cnfg(p1,p2,p(wrtr20,0),p4,sem(s,w),x1,0) WHEN (= x1 (+ x 1))
+  cnfg(p1,p2,p(wrtr20,0),p4,sem(s,cons(k,w)),x,0) -> cnfg(p1,p2,p(wrtr18,0),p4,sem(s,cons(k,w)),x,1)
+  cnfg(p1,p2,p(wrtr20,0),p4,sem(s,nil),x,0) -> cnfg(p1,p2,p(wrtr18,0),p4,sem(s1,nil),x,0) WHEN (= s1 (+ s 1))
+
+  cnfg(p1,p2,p3,p(wrtr18,0),sem(s,w),x,0) -> cnfg(p1,p2,p3,p(wrtr19,0),sem(s1,w),x,0) WHEN (and (not (= s 0)) (= s1 (- s 1)))
+  cnfg(p1,p2,p3,p(wrtr18,0),sem(s,w),x,0) -> cnfg(p1,p2,p3,p(wrtr18,4),sem(s,snoc(w,4)),x,2) WHEN (= s 0)
+  cnfg(p1,p2,p3,p(wrtr18,n),sem(s,cons(k,w)),x,1) -> cnfg(p1,p2,p3,p(wrtr19,0),sem(s,w),x,0) WHEN (and (= n k) (not (= n 0)))
+  cnfg(p1,p2,p3,p(wrtr18,n),sem(s,nil),x,1) -> error
+  cnfg(p1,p2,p3,p(wrtr19,0),sem(s,w),x,0) -> cnfg(p1,p2,p3,p(wrtr20,0),sem(s,w),x1,0) WHEN (= x1 (+ x 1))
+  cnfg(p1,p2,p3,p(wrtr20,0),sem(s,cons(k,w)),x,0) -> cnfg(p1,p2,p3,p(wrtr18,0),sem(s,cons(k,w)),x,1)
+  cnfg(p1,p2,p3,p(wrtr20,0),sem(s,nil),x,0) -> cnfg(p1,p2,p3,p(wrtr18,0),sem(s1,nil),x,0) WHEN (= s1 (+ s 1))
+
+  cnfg(p1,p2,p3,p4,sem(s,w),x,a) -> success
+
+  cnfg(p(rdr10(y),n1),p(rdr10(y),n2),p(wrtr19,n3),p(wrtr19,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr11(y),n1),p(rdr10(y),n2),p(wrtr19,n3),p(wrtr19,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr10(y),n1),p(rdr11(y),n2),p(wrtr19,n3),p(wrtr19,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr11(y),n1),p(rdr11(y),n2),p(wrtr19,n3),p(wrtr19,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr10(y),n1),p(rdr10(y),n2),p(wrtr20,n3),p(wrtr19,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr11(y),n1),p(rdr10(y),n2),p(wrtr20,n3),p(wrtr19,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr10(y),n1),p(rdr11(y),n2),p(wrtr20,n3),p(wrtr19,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr11(y),n1),p(rdr11(y),n2),p(wrtr20,n3),p(wrtr19,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr10(y),n1),p(rdr10(y),n2),p(wrtr19,n3),p(wrtr20,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr11(y),n1),p(rdr10(y),n2),p(wrtr19,n3),p(wrtr20,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr10(y),n1),p(rdr11(y),n2),p(wrtr19,n3),p(wrtr20,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr11(y),n1),p(rdr11(y),n2),p(wrtr19,n3),p(wrtr20,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr10(y),n1),p(rdr10(y),n2),p(wrtr20,n3),p(wrtr20,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr11(y),n1),p(rdr10(y),n2),p(wrtr20,n3),p(wrtr20,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr10(y),n1),p(rdr11(y),n2),p(wrtr20,n3),p(wrtr20,n4),sem(s,w),x,a) -> error
+  cnfg(p(rdr11(y),n1),p(rdr11(y),n2),p(wrtr20,n3),p(wrtr20,n4),sem(s,w),x,a) -> error
+
+  cnfg(p1,p2,p3,p4,sem(s,snoc(nil,n)),x,2) -> cnfg(p1,p2,p3,p4,sem(s,cons(n,nil)),x,0)
+  cnfg(p1,p2,p3,p4,sem(s,snoc(cons(m,w),n)),x,2) -> cnfg(p1,p2,p3,p4,sem(s,cons(m,snoc(w,n))),x,2)
+
+)
+
+(VAR w : List)
+(VAR s x : Int)
+(VAR x1 x2 : Int)
+(VAR p1 p2 p3 p4 : Process)
+
+(EQUATIONS
+   cnfg(p(rdr7,0),p(rdr7,0),p(wrtr18,0),p(wrtr18,0),sem(3,w),x,0) == success
+)
+
+(QUERY all-path-reachability)

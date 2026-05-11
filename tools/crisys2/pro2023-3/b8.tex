@@ -1,0 +1,207 @@
+\documentclass[a4paper]{article}
+\usepackage{lscape}
+%\usepackage{latexsym}
+%\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\newcommand{\ttsym}[1]{\mbox{\tt #1}}
+\def\ttsharp{\ttsym{\symbol{35}}}
+\newcommand{\Sort}[1]{\mathit{#1}}
+\newcommand{\symb}[1]{\mathsf{#1}}
+\newcommand{\var}[1]{\mathit{#1}}
+\newcommand{\Constraint}[1]{[\, #1 \,]}
+\newcommand{\bv}[2][b]{{\ttsharp\symb{#1}{#2}}}
+\newcommand{\Sigmainttheory}{\Sigma^{\mathit{int}}_{\mathit{theory}}}
+\newcommand{\Sigmabvtheory}{\Sigma^{\mathit{bv}}_{\mathit{theory}}}
+
+\begin{document}
+%\scriptsize
+
+\begin{landscape}
+
+\section*{Original LCTRSs}
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{state} & : & \Sort{Loc} \times \Sort{Loc} \times \Sort{int} \times \Sort{int} \Rightarrow \Sort{State}\\
+\symb{noncrit1} & : & \Sort{Loc}\\
+\symb{wait1} & : & \Sort{Loc}\\
+\symb{crit1} & : & \Sort{Loc}\\
+\symb{noncrit2} & : & \Sort{Loc}\\
+\symb{wait2} & : & \Sort{Loc}\\
+\symb{crit2} & : & \Sort{Loc}\\
+\symb{success} & : & \Sort{State}\\
+\symb{error} & : & \Sort{State}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{state}(\symb{noncrit1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\symb{wait1},\var{p2},\var{y11},\var{y2})
+ & \Constraint{\var{y11} = (\var{y2} + \symb{1})}\\
+
+\mathrm{2} : 
+ & \symb{state}(\symb{wait1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\symb{crit1},\var{p2},\var{y1},\var{y2})
+ & \Constraint{\var{y2} = \symb{0} \lor (\var{y1} < \var{y2})}\\
+
+\mathrm{3} : 
+ & \symb{state}(\symb{crit1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\symb{noncrit1},\var{p2},\var{y11},\var{y2})
+ & \Constraint{\var{y11} = \symb{0}}\\
+
+\mathrm{4} : 
+ & \symb{state}(\var{p1},\symb{noncrit2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{p1},\symb{wait2},\var{y1},\var{y21})
+ & \Constraint{\var{y21} = (\var{y1} + \symb{1})}\\
+
+\mathrm{5} : 
+ & \symb{state}(\var{p1},\symb{wait2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{p1},\symb{crit2},\var{y1},\var{y2})
+ & \Constraint{\var{y1} = \symb{0} \lor (\var{y2} < \var{y1})}\\
+
+\mathrm{6} : 
+ & \symb{state}(\var{p1},\symb{crit2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{p1},\symb{noncrit2},\var{y1},\var{y21})
+ & \Constraint{\var{y21} = \symb{0}}\\
+
+\mathrm{7} : 
+ & \symb{state}(\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{success}\\
+
+\mathrm{8} : 
+ & \symb{state}(\symb{crit1},\symb{crit2},\var{y1},\var{y2})
+ & \to 
+ & \symb{error}\\
+
+\end{array}
+\right\}
+\]
+
+
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+
+\mathrm{9} : 
+ & \symb{state}(\symb{noncrit1},\symb{noncrit2},\symb{0},\symb{0})
+ & \Rightarrow 
+ & \symb{success}\\
+
+\end{array}
+\right\}
+\]
+
+
+\newpage
+\section*{BV-LCTRS Version}
+
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{state} & : & \Sort{Loc} \times \Sort{Loc} \times \Sort{bitvec}_{4} \times \Sort{bitvec}_{4} \Rightarrow \Sort{State}\\
+\symb{noncrit1} & : & \Sort{Loc}\\
+\symb{wait1} & : & \Sort{Loc}\\
+\symb{crit1} & : & \Sort{Loc}\\
+\symb{noncrit2} & : & \Sort{Loc}\\
+\symb{wait2} & : & \Sort{Loc}\\
+\symb{crit2} & : & \Sort{Loc}\\
+\symb{success} & : & \Sort{State}\\
+\symb{error} & : & \Sort{State}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{state}(\symb{noncrit1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\symb{wait1},\var{p2},\var{y11},\var{y2})
+ & \Constraint{\var{y11} = \symb{ite}(\var{y2} = \bv[x]{0},(\var{y2} \symb{bvadd} \bv[x]{1}),(\var{y2} \symb{bvadd} \bv[x]{2}))}\\
+
+\mathrm{2} : 
+ & \symb{state}(\symb{wait1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\symb{crit1},\var{p2},\var{y1},\var{y2})
+ & \Constraint{\var{y2} = \bv[x]{0} \lor \var{y2} = \var{y1} \symb{bvadd} \bv[x]{2}}\\
+
+\mathrm{3} : 
+ & \symb{state}(\symb{crit1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\symb{noncrit1},\var{p2},\var{y11},\var{y2})
+ & \Constraint{\var{y11} = \bv[x]{0}}\\
+
+\mathrm{4} : 
+ & \symb{state}(\var{p1},\symb{noncrit2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{p1},\symb{wait2},\var{y1},\var{y21})
+ & \Constraint{\var{y21} = \symb{ite}(\var{y1} = \bv[x]{0},(\var{y1} \symb{bvadd} \bv[x]{1}),(\var{y1} \symb{bvadd} \bv[x]{2}))}\\
+
+\mathrm{5} : 
+ & \symb{state}(\var{p1},\symb{wait2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{p1},\symb{crit2},\var{y1},\var{y2})
+ & \Constraint{\var{y1} = \bv[x]{0} \lor \var{y1} = \var{y2} \symb{bvadd} \bv[x]{2}}\\
+
+\mathrm{6} : 
+ & \symb{state}(\var{p1},\symb{crit2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{p1},\symb{noncrit2},\var{y1},\var{y21})
+ & \Constraint{\var{y21} = \bv[x]{0}}\\
+
+\mathrm{7} : 
+ & \symb{state}(\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{success}\\
+
+\mathrm{8} : 
+ & \symb{state}(\symb{crit1},\symb{crit2},\var{y1},\var{y2})
+ & \to 
+ & \symb{error}\\
+
+\end{array}
+\right\}
+\]
+
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{9} : 
+ & \symb{state}(\symb{noncrit1},\symb{noncrit2},\bv[x]{0},\bv[x]{0})
+ & \Rightarrow 
+ & \symb{success}\\
+
+\end{array}
+\right\}
+\]
+
+\end{landscape}
+
+\end{document}
+
+

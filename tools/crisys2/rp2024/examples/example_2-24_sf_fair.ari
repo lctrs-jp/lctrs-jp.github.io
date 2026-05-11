@@ -1,0 +1,30 @@
+(format LCTRS :smtlib 2.6)
+(theory Ints)
+
+(sort Loc)
+(sort State)
+
+(fun state (-> Loc Loc Int Int State))
+(fun noncrit1 Loc)
+(fun wait1 Loc)
+(fun crit1 Loc)
+(fun noncrit2 Loc)
+(fun wait2 Loc)
+(fun crit2 Loc)
+(fun success State)
+(fun error State)
+
+(rule (state noncrit1 p2 y c) (state wait1 p2 y c1)  :guard (and (= c1 1) (<= c 3))                        :var ((c1 Int)))
+(rule (state wait1 p2 y c) (state crit1 p2 y1 c1)    :guard (and (> y 0) (= y1 (- y 1)) (= c1 0) (<= c 3)) :var ((y1 Int) (c1 Int)))
+(rule (state crit1 p2 y c) (state noncrit1 p2 y1 c)  :guard (and (= y1 (+ y 1)) (<= c 3))                  :var ((y1 Int)))
+(rule (state p1 noncrit2 y c) (state p1 wait2 y c1)  :guard (and (= c1 (ite (>= c 1) (+ c 1) c)) (<= c 3)) :var ((c1 Int)))
+
+(rule (state p1 wait2 y c) (state p1 crit2 y1 c1)    :guard (and (> y 0) (= y1 (- y 1)) (= c1 (ite (>= c 1) (+ c 1) c)) (<= c 3)) :var ((y1 Int) (c1 Int)))
+(rule (state p1 crit2 y c) (state p1 noncrit2 y1 c1) :guard (and (= y1 (+ y 1)) (= c1 (ite (>= c 1) (+ c 1) c)) (<= c 3)) :var ((y1 Int) (c1 Int)))
+
+(rule (state p1 p2 y c) success )
+
+(rule (state wait1 p2 y c) error    :guard (> c 3) )
+(rule (state wait1 wait2 y c) error :guard (and (<= y 0) (> c 0)) )
+
+(starvation-freedom :fairness (state noncrit1 noncrit2 y c) success :guard (and (= y 1) (= c 0)) :var ((y Int) (c Int)))

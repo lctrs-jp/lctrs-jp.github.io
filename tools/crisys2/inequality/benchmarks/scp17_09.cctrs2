@@ -1,0 +1,59 @@
+
+SORTS:
+  int, list;
+
+FUNCTIONS:
+  0 : int;
+  s : int -> int;
+  p : int -> int;
+
+  nil : list;
+  ::  : int * list -> list  (infix);
+
+  max : int * int -> int;
+  max_list : list -> int;
+  nth : list * int -> int;
+
+PREDICATES:
+  =, /=, <, <=, >, >= : int * int (infix);
+
+SMT_SOLVER: 
+  z3 -smt -in;
+
+SMT_SORTS:
+  int : Int;
+
+INTERPRETATIONS:
+  0 : 0;
+  s : (+ $1 1);  
+  p : (- $1 1);  
+
+  =  : (=  $1 $2);
+  /= : (distinct $1 $2);
+  <  : (<  $1 $2);
+  <= : (<= $1 $2);
+  >  : (>  $1 $2);
+  >= : (>= $1 $2);
+
+RULES:
+   1 : s(p(x)) -> x;
+   2 : p(s(x)) -> x;
+
+  max(x, y) -> x [x >= y];
+  max(x, y) -> y [x < y];
+
+  max_list(nil) -> 0;
+  max_list(x::xs) -> max(x, max_list(xs));
+
+  nth(nil, n) -> 0;
+  nth(x::xs, n) -> x [n <= 0];
+  nth(x::xs, n) -> nth(xs, p(n)) [n > 0];
+
+CONJECTURES:
+  max_list(xs) >= nth(xs, n);
+
+  // lemmas
+  max(x, y) >= x;
+  max(x, y) >= y;
+
+

@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>Benchmarks</title>
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+<script language="javascript">
+  function toggleVisible(divId) {
+    var div = document.getElementById(divId);
+    if (div) {
+      if (div.style.display != 'block') {
+        div.style.display = 'block';
+      } else {
+        div.style.display = 'none';
+      }
+    }
+  }
+</script>
+</head>
+<body>
+Updated: 
+<?php 
+  date_default_timezone_set('Asia/Tokyo');
+  $filename = basename($_SERVER['SCRIPT_NAME']);
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+
+<hr>
+<h2>Benchmarks</h2>
+
+<ul>
+  <li><a href="b1/b1.html">Benchmark 1</a> (<a href="b1.pdf">PDF</a>)</li>
+  <li><a href="b2/b2.html">Benchmark 2</a> (<a href="b2.pdf">PDF</a>)</li>
+  <li><a href="b3/b3.html">Benchmark 3</a> (<a href="b3.pdf">PDF</a>)</li>
+  <li><a href="b4/b4.html">Benchmark 4</a> (<a href="b4.pdf">PDF</a>)</li>
+  <li><a href="b5/b5.html">Benchmark 5</a> (<a href="b5.pdf">PDF</a>)</li>
+  <li><a href="b6/b6.html">Benchmark 6</a> (<a href="b6.pdf">PDF</a>)</li>
+  <li><a href="b7/b7.html">Benchmark 7</a> (<a href="b7.pdf">PDF</a>)</li>
+  <li><a href="b8/b8.html">Benchmark 8</a> (<a href="b8.pdf">PDF</a>)</li>
+  <li><a href="b9/b9.html">Benchmark 9</a> (<a href="b9.pdf">PDF</a>)</li>
+  <li><a href="b10/b10.html">Benchmark 10</a> (<a href="b10.pdf">PDF</a>)</li>
+  <li><a href="b11/b11.html">Benchmark 11</a> (<a href="b11.pdf">PDF</a>)</li>
+  <li><a href="b12/b12.html">Benchmark 12</a> (<a href="b12.pdf">PDF</a>)</li>
+</ul>
+
+
+<a name="contact"><h2>Contact</h2></a>
+
+<dl>
+ <dt><a href="https://www.trs.css.i.nagoya-u.ac.jp/~nishida/index-en.html">Naoki Nishida</a> (Nagoya University)</dt>
+      <dd><code>nishida [at] i.nagoya-u.ac.jp</code></dd>
+ <dt><a href="https://www.trs.css.i.nagoya-u.ac.jp/~k-misaki/index.html">Misaki Kojima</a> (Nagoya University)</dt>
+      <dd><code>k-misaki [at] trs.css.i.nagoya-u.ac.jp</code></dd>
+</dl>
+
+<hr>
+
+</body>
+</html>

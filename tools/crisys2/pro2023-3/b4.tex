@@ -1,0 +1,93 @@
+\documentclass[a4paper]{article}
+%\usepackage{latexsym}
+%\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\newcommand{\ttsym}[1]{\mbox{\tt #1}}
+\def\ttsharp{\ttsym{\symbol{35}}}
+\newcommand{\Sort}[1]{\mathit{#1}}
+\newcommand{\symb}[1]{\mathsf{#1}}
+\newcommand{\var}[1]{\mathit{#1}}
+\newcommand{\Constraint}[1]{[\, #1 \,]}
+\newcommand{\bv}[2][b]{{\ttsharp\symb{#1}{#2}}}
+\newcommand{\Sigmainttheory}{\Sigma^{\mathit{int}}_{\mathit{theory}}}
+\newcommand{\Sigmabvtheory}{\Sigma^{\mathit{bv}}_{\mathit{theory}}}
+
+\begin{document}
+%\scriptsize
+
+\section*{Original LCTRSs}
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{state} & : & \Sort{Loc} \times \Sort{Loc} \times \Sort{Loc} \Rightarrow \Sort{State}\\
+\symb{noncrit1} & : & \Sort{Loc}\\
+\symb{crit1} & : & \Sort{Loc}\\
+\symb{noncrit2} & : & \Sort{Loc}\\
+\symb{crit2} & : & \Sort{Loc}\\
+\symb{unlock} & : & \Sort{Loc}\\
+\symb{lock} & : & \Sort{Loc}\\
+\symb{success} & : & \Sort{State}\\
+\symb{error} & : & \Sort{State}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{state}(\symb{noncrit1},\var{p2},\symb{unlock})
+ & \to 
+ & \symb{state}(\symb{crit1},\var{p2},\symb{lock})\\
+
+\mathrm{2} : 
+ & \symb{state}(\symb{crit1},\var{p2},\symb{lock})
+ & \to 
+ & \symb{state}(\symb{noncrit1},\var{p2},\symb{unlock})\\
+
+\mathrm{3} : 
+ & \symb{state}(\var{p1},\symb{noncrit2},\symb{unlock})
+ & \to 
+ & \symb{state}(\var{p1},\symb{crit2},\symb{lock})\\
+
+\mathrm{4} : 
+ & \symb{state}(\var{p1},\symb{crit2},\symb{lock})
+ & \to 
+ & \symb{state}(\var{p1},\symb{noncrit2},\symb{unlock})\\
+
+\mathrm{5} : 
+ & \symb{state}(\var{p1},\var{p2},\var{p3})
+ & \to 
+ & \symb{success}\\
+
+\mathrm{6} : 
+ & \symb{state}(\symb{crit1},\symb{crit2},\var{p3})
+ & \to 
+ & \symb{error}\\
+
+\end{array}
+\right\}
+\]
+
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{7} : 
+ & \symb{state}(\symb{noncrit1},\symb{noncrit2},\symb{unlock})
+ & \Rightarrow 
+ & \symb{success}\\
+
+\end{array}
+\right\}
+\]
+
+
+\end{document}
+
+

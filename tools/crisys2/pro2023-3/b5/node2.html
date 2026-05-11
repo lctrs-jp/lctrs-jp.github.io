@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021 (Released January 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>LCTRS</TITLE>
+<META NAME="description" CONTENT="LCTRS">
+<META NAME="keywords" CONTENT="b5">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021">
+
+<LINK REL="STYLESHEET" HREF="b5.css">
+
+<LINK REL="next" HREF="node3.html">
+<LINK REL="previous" HREF="node1.html">
+<LINK REL="next" HREF="node3.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="node3.html">APR Problem</A>
+<B> Up:</B> <A
+ HREF="node1.html">Original LCTRSs</A>
+<B> Previous:</B> <A
+ HREF="node1.html">Original LCTRSs</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H4><A ID="SECTION00010010000000000000">
+LCTRS</A>
+</H4>
+
+<P>
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\Sigma =
+\Sigma^{\mathit{int}}_{\mathit{theory}}\cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\mathsf{state} & : & \mathit{Loc} \times \mathit{Loc} \times \mathit{Loc} \Rightarrow \mathit{State}\\
+\mathsf{far} & : & \mathit{Loc}\\
+\mathsf{near} & : & \mathit{Loc}\\
+\mathsf{in} & : & \mathit{Loc}\\
+\mathsf{ctrl0} & : & \mathit{Loc}\\
+\mathsf{ctrl1} & : & \mathit{Loc}\\
+\mathsf{ctrl2} & : & \mathit{Loc}\\
+\mathsf{ctrl3} & : & \mathit{Loc}\\
+\mathsf{up} & : & \mathit{Loc}\\
+\mathsf{down} & : & \mathit{Loc}\\
+\mathsf{success} & : & \mathit{State}\\
+\mathsf{error} & : & \mathit{State}\\
+\end{array}
+\right\}
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE=""
+ SRC="img1.svg"
+ ALT="$\displaystyle \Sigma =
+\Sigma^{\mathit{int}}_{\mathit{theory}}\cup\left\{
+\beg...
+...&amp; \mathit{State}\\
+\mathsf{error} &amp; : &amp; \mathit{State}\\
+\end{array}\right\}
+$">
+</DIV>
+
+<P>
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} :
+ & \mathsf{state}(\mathsf{far},\mathsf{ctrl0},\mathit{g})
+ & \to 
+ & \mathsf{state}(\mathsf{near},\mathsf{ctrl1},\mathit{g})\\
+\par
+\mathrm{2} : 
+ & \mathsf{state}(\mathsf{near},\mathit{ct},\mathit{g})
+ & \to 
+ & \mathsf{state}(\mathsf{in},\mathit{ct},\mathit{g})\\
+\par
+\mathrm{3} : 
+ & \mathsf{state}(\mathsf{in},\mathsf{ctrl2},\mathit{g})
+ & \to 
+ & \mathsf{state}(\mathsf{far},\mathsf{ctrl3},\mathit{g})\\
+\par
+\mathrm{4} : 
+ & \mathsf{state}(\mathit{t},\mathsf{ctrl1},\mathsf{up})
+ & \to 
+ & \mathsf{state}(\mathit{t},\mathsf{ctrl2},\mathsf{down})\\
+\par
+\mathrm{5} : 
+ & \mathsf{state}(\mathit{t},\mathsf{ctrl3},\mathsf{down})
+ & \to 
+ & \mathsf{state}(\mathit{t},\mathsf{ctrl0},\mathsf{up})\\
+\par
+\mathrm{6} : 
+ & \mathsf{state}(\mathit{t},\mathit{ct},\mathit{g})
+ & \to 
+ & \mathsf{success}\\
+\par
+\mathrm{7} : 
+ & \mathsf{state}(\mathsf{in},\mathit{ct},\mathsf{up})
+ & \to 
+ & \mathsf{error}\\
+\par
+\end{array}
+\right\}
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE=""
+ SRC="img2.svg"
+ ALT="$\displaystyle \left\{
+\begin{array}{rr@{\&gt;}c@{\&gt;}ll}
+\mathrm{1} :
+&amp; \mathsf{s...
+...\mathit{ct},\mathsf{up})
+&amp; \to
+&amp; \mathsf{error}\\
+\par
+\end{array}\right\}
+$">
+</DIV>
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

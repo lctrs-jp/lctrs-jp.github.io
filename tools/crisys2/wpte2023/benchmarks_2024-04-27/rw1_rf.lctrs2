@@ -1,0 +1,50 @@
+(SET-LOGIC QF_LIA)
+(FUN cnfg   : Process * Process * Semaphore * Int * Int -> Cnfg)
+(FUN p      : Fcall * Int -> Process)
+(FUN sem    : Int * Int * Int -> Semaphore)
+(FUN rdr7   : Fcall)
+(FUN rdr9   : Int -> Fcall)
+(FUN rdr10  : Int -> Fcall)
+(FUN rdr11  : Int -> Fcall)
+(FUN wrtr18 : Fcall)
+(FUN wrtr19 : Fcall)
+(FUN wrtr20 : Fcall)
+(FUN success: Cnfg)
+(FUN error  : Cnfg)
+
+(VAR s1 d2 t2 x1 y1 : Int)
+
+(RULES
+  cnfg(p(rdr7,0),p2,sem(s,d,t),x,0) -> cnfg(p(rdr9(0),0),p2,sem(s,d,t),x,0)
+  cnfg(p(rdr9(y),0),p2,sem(s,d,t),x,0) -> cnfg(p(rdr10(y),0),p2,sem(s1,d,t),x,0) WHEN (and (not (= s 0)) (= s1 (- s 1)))
+  cnfg(p(rdr9(y),0),p2,sem(s,d,t),x,0) -> cnfg(p(rdr9(y),t),p2,sem(s,d,t2),x,0) WHEN (and (= s 0)  (= t2 (+ t 2)))
+  cnfg(p(rdr9(y),n),p2,sem(s,d,t),x,1) -> cnfg(p(rdr10(y),0),p2,sem(s,d,t),x,0) WHEN (and (= n d) (not (= n 0)))
+  cnfg(p(rdr10(y),0),p2,sem(s,d,t),x,0) -> cnfg(p(rdr11(x1),0),p2,sem(s,d,t),x,0)
+  cnfg(p(rdr11(y),0),p2,sem(s,d,t),x,0) -> cnfg(p(rdr7,0),p2,sem(s,d2,t),x,1) WHEN (and (not (= t (+ d 2))) (= d2 (+ d 2)))
+  cnfg(p(rdr11(y),0),p2,sem(s,d,t),x,0) -> cnfg(p(rdr7,0),p2,sem(s1,d,t),x,0) WHEN (and (= t (+ d 2)) (= s1 (+ s 1)))
+
+  cnfg(p1,p(wrtr18,0),sem(s,d,t),x,0) -> cnfg(p1,p(wrtr19,0),sem(s1,d,t),x,0) WHEN (and (not (= s 0)) (= s1 (- s 1)))
+  cnfg(p1,p(wrtr18,0),sem(s,d,t),x,0) -> cnfg(p1,p(wrtr18,t),sem(s,d,t2),x,0) WHEN (and (= s 0) (= t2 (+ t 2)))
+  cnfg(p1,p(wrtr18,n),sem(s,d,t),x,1) -> cnfg(p1,p(wrtr19,0),sem(s,d,t),x,0) WHEN (and (= n d) (not (= n 0)))
+  cnfg(p1,p(wrtr19,0),sem(s,d,t),x,0) -> cnfg(p1,p(wrtr20,0),sem(s,d,t),x1,0) WHEN (= x1 (+ x 1))
+  cnfg(p1,p(wrtr20,0),sem(s,d,t),x,0) -> cnfg(p1,p(wrtr18,0),sem(s,d2,t),x,1) WHEN (and (not (= t (+ d 2))) (= d2 (+ d 2)))
+  cnfg(p1,p(wrtr20,0),sem(s,d,t),x,0) -> cnfg(p1,p(wrtr18,0),sem(s1,d,t),x,0) WHEN (and (= t (+ d 2)) (= s1 (+ s 1)))
+
+  cnfg(p1,p2,sem(s,d,t),x,a) -> success
+
+  cnfg(p(rdr10(y),n1),p(wrtr19,n2),sem(s,d,t),x,a) -> error
+  cnfg(p(rdr11(y),n1),p(wrtr19,n2),sem(s,d,t),x,a) -> error
+  cnfg(p(rdr10(y),n1),p(wrtr20,n2),sem(s,d,t),x,a) -> error
+  cnfg(p(rdr11(y),n1),p(wrtr20,n2),sem(s,d,t),x,a) -> error
+)
+
+(VAR s d t x : Int)
+(VAR x1 : Int)
+(VAR p1 p2 : Process)
+
+
+(EQUATIONS
+   cnfg(p(rdr7,0),p(wrtr18,0),sem(1,d,t),x,0) == success WHEN (and (> d 0) (= t (+ d 2)))
+)
+
+(QUERY all-path-reachability)

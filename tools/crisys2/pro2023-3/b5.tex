@@ -1,0 +1,102 @@
+\documentclass[a4paper]{article}
+%\usepackage{latexsym}
+%\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\newcommand{\ttsym}[1]{\mbox{\tt #1}}
+\def\ttsharp{\ttsym{\symbol{35}}}
+\newcommand{\Sort}[1]{\mathit{#1}}
+\newcommand{\symb}[1]{\mathsf{#1}}
+\newcommand{\var}[1]{\mathit{#1}}
+\newcommand{\Constraint}[1]{[\, #1 \,]}
+\newcommand{\bv}[2][b]{{\ttsharp\symb{#1}{#2}}}
+\newcommand{\Sigmainttheory}{\Sigma^{\mathit{int}}_{\mathit{theory}}}
+\newcommand{\Sigmabvtheory}{\Sigma^{\mathit{bv}}_{\mathit{theory}}}
+
+\begin{document}
+%\scriptsize
+
+\section*{Original LCTRSs}
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{state} & : & \Sort{Loc} \times \Sort{Loc} \times \Sort{Loc} \Rightarrow \Sort{State}\\
+\symb{far} & : & \Sort{Loc}\\
+\symb{near} & : & \Sort{Loc}\\
+\symb{in} & : & \Sort{Loc}\\
+\symb{ctrl0} & : & \Sort{Loc}\\
+\symb{ctrl1} & : & \Sort{Loc}\\
+\symb{ctrl2} & : & \Sort{Loc}\\
+\symb{ctrl3} & : & \Sort{Loc}\\
+\symb{up} & : & \Sort{Loc}\\
+\symb{down} & : & \Sort{Loc}\\
+\symb{success} & : & \Sort{State}\\
+\symb{error} & : & \Sort{State}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{state}(\symb{far},\symb{ctrl0},\var{g})
+ & \to 
+ & \symb{state}(\symb{near},\symb{ctrl1},\var{g})\\
+
+\mathrm{2} : 
+ & \symb{state}(\symb{near},\var{ct},\var{g})
+ & \to 
+ & \symb{state}(\symb{in},\var{ct},\var{g})\\
+
+\mathrm{3} : 
+ & \symb{state}(\symb{in},\symb{ctrl2},\var{g})
+ & \to 
+ & \symb{state}(\symb{far},\symb{ctrl3},\var{g})\\
+
+\mathrm{4} : 
+ & \symb{state}(\var{t},\symb{ctrl1},\symb{up})
+ & \to 
+ & \symb{state}(\var{t},\symb{ctrl2},\symb{down})\\
+
+\mathrm{5} : 
+ & \symb{state}(\var{t},\symb{ctrl3},\symb{down})
+ & \to 
+ & \symb{state}(\var{t},\symb{ctrl0},\symb{up})\\
+
+\mathrm{6} : 
+ & \symb{state}(\var{t},\var{ct},\var{g})
+ & \to 
+ & \symb{success}\\
+
+\mathrm{7} : 
+ & \symb{state}(\symb{in},\var{ct},\symb{up})
+ & \to 
+ & \symb{error}\\
+
+\end{array}
+\right\}
+\]
+
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{8} : 
+ & \symb{state}(\symb{far},\symb{ctrl0},\symb{up})
+ & \Rightarrow 
+ & \symb{success}\\
+
+\end{array}
+\right\}
+\]
+
+
+
+\end{document}
+
+

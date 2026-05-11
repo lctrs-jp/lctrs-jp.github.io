@@ -1,0 +1,45 @@
+(SET-LOGIC QF_LIA)
+
+(FUN state                      : Loc * Loc * Loc * Int * Int * Int * Int * Int * Int -> State)
+(FUN noncrit level1 level2 crit : Loc)
+(FUN success error              : State)
+
+(VAR p01 p11 p21 y11 y21 c1 : Int)
+
+(RULES
+  state(noncrit, proc1, proc2, p0, p1, p2, y1, y2, c) -> state(level1,  proc1, proc2, p01, p1, p2, y11, y2 , c1) WHEN (and (= p01 1) (= y11 0) (= c1 1) (<= c 10))
+  state(level1,  proc1, proc2, p0, p1, p2, y1, y2, c) -> state(level2,  proc1, proc2, p01, p1, p2, y1,  y21, c ) WHEN (and (or (distinct y1 0) (and (< p1 1) (< p2 1))) (= p01 2) (= y21 0) (<= c 10))
+  state(level2,  proc1, proc2, p0, p1, p2, y1, y2, c) -> state(crit,    proc1, proc2, p0,  p1, p2, y1,  y2 , c1) WHEN (and (or (distinct y2 0) (and (< p1 2) (< p2 2))) (= c1 0) (<= c 10))
+  state(crit,    proc1, proc2, p0, p1, p2, y1, y2, c) -> state(noncrit, proc1, proc2, p01, p1, p2, y1,  y2 , c ) WHEN (and (= p01 0) (<= c 10))
+
+  state(proc0, noncrit, proc2, p0, p1, p2, y1, y2, c) -> state(proc0, level1,  proc2, p0, p11, p2, y11, y2 , c1) WHEN (and (= p11 1) (= y11 1) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10))
+  state(proc0, level1,  proc2, p0, p1, p2, y1, y2, c) -> state(proc0, level2,  proc2, p0, p11, p2, y1,  y21, c1) WHEN (and (or (distinct y1 1) (and (< p0 1) (< p2 1))) (= p11 2) (= y21 1) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10))
+  state(proc0, level2,  proc2, p0, p1, p2, y1, y2, c) -> state(proc0, crit,    proc2, p0, p1,  p2, y1,  y2 , c1) WHEN (and (or (distinct y2 1) (and (< p0 2) (< p2 2))) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10))
+  state(proc0, crit,    proc2, p0, p1, p2, y1, y2, c) -> state(proc0, noncrit, proc2, p0, p11, p2, y1,  y2 , c1) WHEN (and (= p11 0) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10))
+
+  state(proc0, proc1, noncrit, p0, p1, p2, y1, y2, c) -> state(proc0, proc1, level1,  p0, p1, p21, y11, y2 , c1) WHEN (and (= p21 1) (= y11 2) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10))
+  state(proc0, proc1, level1,  p0, p1, p2, y1, y2, c) -> state(proc0, proc1, level2,  p0, p1, p21, y1,  y21, c1) WHEN (and (or (distinct y1 2) (and (< p0 1) (< p1 1))) (= p21 2) (= y21 2) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10))
+  state(proc0, proc1, level2,  p0, p1, p2, y1, y2, c) -> state(proc0, proc1, crit,    p0, p1, p2,  y1,  y2 , c1) WHEN (and (or (distinct y2 2) (and (< p0 2) (< p1 2))) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10))
+  state(proc0, proc1, crit,    p0, p1, p2, y1, y2, c) -> state(proc0, proc1, noncrit, p0, p1, p21, y1,  y2 , c1) WHEN (and (= p21 0) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10))
+
+  state(proc0, proc1, proc2, p0, p1, p2, y1, y2, c) -> success
+
+  state(level1, proc1,  proc2,  p0, p1, p2, y1, y2, c) -> error WHEN (> c 10)
+  state(level2, proc1,  proc2,  p0, p1, p2, y1, y2, c) -> error WHEN (> c 10)
+  state(level1, level1, level1, p0, p1, p2, y1, y2, c) -> error WHEN (and (not (or (distinct y1 0) (and (< p1 1) (< p2 1)))) (not (or (distinct y1 1) (and (< p0 1) (< p2 1)))) (not (or (distinct y1 2) (and (< p0 1) (< p1 1)))) (> c 0))
+  state(level1, level1, level2, p0, p1, p2, y1, y2, c) -> error WHEN (and (not (or (distinct y1 0) (and (< p1 1) (< p2 1)))) (not (or (distinct y1 1) (and (< p0 1) (< p2 1)))) (not (or (distinct y2 2) (and (< p0 2) (< p1 2)))) (> c 0))
+  state(level1, level2, level1, p0, p1, p2, y1, y2, c) -> error WHEN (and (not (or (distinct y1 0) (and (< p1 1) (< p2 1)))) (not (or (distinct y2 1) (and (< p0 2) (< p2 2)))) (not (or (distinct y1 2) (and (< p0 1) (< p1 1)))) (> c 0))
+  state(level1, level2, level2, p0, p1, p2, y1, y2, c) -> error WHEN (and (not (or (distinct y1 0) (and (< p1 1) (< p2 1)))) (not (or (distinct y2 1) (and (< p0 2) (< p2 2)))) (not (or (distinct y2 2) (and (< p0 2) (< p1 2)))) (> c 0))
+  state(level2, level1, level1, p0, p1, p2, y1, y2, c) -> error WHEN (and (not (or (distinct y2 0) (and (< p1 2) (< p2 2)))) (not (or (distinct y1 1) (and (< p0 1) (< p2 1)))) (not (or (distinct y1 2) (and (< p0 1) (< p1 1)))) (> c 0))
+  state(level2, level1, level2, p0, p1, p2, y1, y2, c) -> error WHEN (and (not (or (distinct y2 0) (and (< p1 2) (< p2 2)))) (not (or (distinct y1 1) (and (< p0 1) (< p2 1)))) (not (or (distinct y2 2) (and (< p0 2) (< p1 2)))) (> c 0))
+  state(level2, level2, level1, p0, p1, p2, y1, y2, c) -> error WHEN (and (not (or (distinct y2 0) (and (< p1 2) (< p2 2)))) (not (or (distinct y2 1) (and (< p0 2) (< p2 2)))) (not (or (distinct y1 2) (and (< p0 1) (< p1 1)))) (> c 0))
+  state(level2, level2, level2, p0, p1, p2, y1, y2, c) -> error WHEN (and (not (or (distinct y2 0) (and (< p1 2) (< p2 2)))) (not (or (distinct y2 1) (and (< p0 2) (< p2 2)))) (not (or (distinct y2 2) (and (< p0 2) (< p1 2)))) (> c 0))
+)
+
+(VAR y1 y2 : Int)
+
+(EQUATIONS
+   state(noncrit, noncrit, noncrit, 0, 0, 0, y1, y2, 0) == success
+)
+
+(QUERY all-path-reachability)

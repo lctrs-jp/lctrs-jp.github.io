@@ -1,0 +1,510 @@
+\batchmode
+\documentclass[a4paper]{article}
+\RequirePackage{ifthen}
+
+%
+\providecommand{\ttsym}[1]{\mbox{\tt #1}}%
+\providecommand{\Sort}[1]{\mathit{#1}}%
+\providecommand{\symb}[1]{\mathsf{#1}}%
+\providecommand{\var}[1]{\mathit{#1}}%
+\providecommand{\Constraint}[1]{[\, #1 \,]}%
+\providecommand{\bv}[2][b]{{\mbox{\tt \symbol{35}}\mathsf{#1}{#2}}}%
+\providecommand{\Sigmainttheory}{\Sigma^{\mathit{int}}_{\mathit{theory}}}%
+\providecommand{\Sigmabvtheory}{\Sigma^{\mathit{bv}}_{\mathit{theory}}} 
+
+
+
+
+\usepackage{xcolor}
+
+
+
+\makeatletter
+
+\makeatletter
+\count@=\the\catcode`\_ \catcode`\_=8 
+\newenvironment{tex2html_wrap}{}{}%
+\catcode`\<=12\catcode`\_=\count@
+\newcommand{\providedcommand}[1]{\expandafter\providecommand\csname #1\endcsname}%
+\newcommand{\renewedcommand}[1]{\expandafter\providecommand\csname #1\endcsname{}%
+  \expandafter\renewcommand\csname #1\endcsname}%
+\newcommand{\newedenvironment}[1]{\newenvironment{#1}{}{}\renewenvironment{#1}}%
+\let\newedcommand\renewedcommand
+\let\renewedenvironment\newedenvironment
+\makeatother
+\let\mathon=$
+\let\mathoff=$
+\ifx\AtBeginDocument\undefined \newcommand{\AtBeginDocument}[1]{}\fi
+\newbox\sizebox
+\setlength{\hoffset}{0pt}\setlength{\voffset}{0pt}
+\addtolength{\textheight}{\footskip}\setlength{\footskip}{0pt}
+\addtolength{\textheight}{\topmargin}\setlength{\topmargin}{0pt}
+\addtolength{\textheight}{\headheight}\setlength{\headheight}{0pt}
+\addtolength{\textheight}{\headsep}\setlength{\headsep}{0pt}
+\setlength{\textwidth}{349pt}
+\newwrite\lthtmlwrite
+\makeatletter
+\let\realnormalsize=\normalsize
+\global\topskip=2sp
+\def\preveqno{}\let\real@float=\@float \let\realend@float=\end@float
+\def\@float{\let\@savefreelist\@freelist\real@float}
+\def\liih@math{\ifmmode$\else\bad@math\fi}
+\def\end@float{\realend@float\global\let\@freelist\@savefreelist}
+\let\real@dbflt=\@dbflt \let\end@dblfloat=\end@float
+\let\@largefloatcheck=\relax
+\let\if@boxedmulticols=\iftrue
+\def\@dbflt{\let\@savefreelist\@freelist\real@dbflt}
+\def\adjustnormalsize{\def\normalsize{\mathsurround=0pt \realnormalsize
+ \parindent=0pt\abovedisplayskip=0pt\belowdisplayskip=0pt}%
+ \def\phantompar{\csname par\endcsname}\normalsize}%
+\def\lthtmltypeout#1{{\let\protect\string \immediate\write\lthtmlwrite{#1}}}%
+\usepackage[tightpage,active]{preview}
+\newbox\lthtmlPageBox
+\newdimen\lthtmlCropMarkHeight
+\newdimen\lthtmlCropMarkDepth
+\long\def\lthtmlTightVBoxA#1{\def\lthtmllabel{#1}
+    \setbox\lthtmlPageBox\vbox\bgroup\catcode`\_=8 }%
+\long\def\lthtmlTightVBoxZ{\egroup
+    \lthtmlCropMarkHeight=\ht\lthtmlPageBox \advance \lthtmlCropMarkHeight 6pt
+    \lthtmlCropMarkDepth=\dp\lthtmlPageBox
+    \lthtmltypeout{^^J:\lthtmllabel:lthtmlCropMarkHeight:=\the\lthtmlCropMarkHeight}%
+    \lthtmltypeout{^^J:\lthtmllabel:lthtmlCropMarkDepth:=\the\lthtmlCropMarkDepth:1ex:=\the \dimexpr 1ex}%
+    \begin{preview}\copy\lthtmlPageBox\end{preview}}%
+\long\def\lthtmlTightFBoxA#1{\def\lthtmllabel{#1}%
+    \adjustnormalsize\setbox\lthtmlPageBox=\vbox\bgroup %
+    \let\ifinner=\iffalse \let\)\liih@math %
+    \bgroup\catcode`\_=8 }%
+\long\def\lthtmlTightFBoxZ{\egroup
+    \@next\next\@currlist{}{\def\next{\voidb@x}}%
+    \expandafter\box\next\egroup %
+    \lthtmlCropMarkHeight=\ht\lthtmlPageBox \advance \lthtmlCropMarkHeight 6pt
+    \lthtmlCropMarkDepth=\dp\lthtmlPageBox
+    \lthtmltypeout{^^J:\lthtmllabel:lthtmlCropMarkHeight:=\the\lthtmlCropMarkHeight}%
+    \lthtmltypeout{^^J:\lthtmllabel:lthtmlCropMarkDepth:=\the\lthtmlCropMarkDepth:1ex:=\the \dimexpr 1ex}%
+    \begin{preview}\copy\lthtmlPageBox\end{preview}}%
+    \long\def\lthtmlinlinemathA#1#2\lthtmlindisplaymathZ{\lthtmlTightVBoxA{#1}{\hbox\bgroup#2\egroup}\lthtmlTightVBoxZ}
+    \def\lthtmlinlineA#1#2\lthtmlinlineZ{\lthtmlTightVBoxA{#1}{\hbox\bgroup#2\egroup}\lthtmlTightVBoxZ}
+    \long\def\lthtmldisplayA#1#2\lthtmldisplayZ{\lthtmlTightVBoxA{#1}{#2}\lthtmlTightVBoxZ}
+    \long\def\lthtmldisplayB#1#2\lthtmldisplayZ{\\edef\preveqno{(\theequation)}%
+        \lthtmlTightVBoxA{#1}{\let\@eqnnum\relax#2}\lthtmlTightVBoxZ}
+    \long\def\lthtmlfigureA#1{\let\@savefreelist\@freelist
+        \lthtmlTightFBoxA{#1}}
+    \long\def\lthtmlfigureZ{
+        \lthtmlTightFBoxZ\global\let\@freelist\@savefreelist}
+    \long\def\lthtmlpictureA#1{\let\@savefreelist\@freelist
+        \lthtmlTightVBoxA{#1}}
+    \long\def\lthtmlpictureZ{
+        \lthtmlTightVBoxZ\global\let\@freelist\@savefreelist}
+\def\lthtmlcheckvsize{\ifdim\ht\sizebox<\vsize 
+  \ifdim\wd\sizebox<\hsize\expandafter\hfill\fi \expandafter\vfill
+  \else\expandafter\vss\fi}%
+\providecommand{\selectlanguage}[1]{}%
+\makeatletter \tracingstats = 1 
+
+
+\begin{document}
+\pagestyle{empty}\thispagestyle{empty}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength hsize=\the\hsize}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength vsize=\the\vsize}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength hoffset=\the\hoffset}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength voffset=\the\voffset}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength topmargin=\the\topmargin}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength topskip=\the\topskip}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength headheight=\the\headheight}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength headsep=\the\headsep}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength parskip=\the\parskip}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength oddsidemargin=\the\oddsidemargin}\lthtmltypeout{}%
+\makeatletter
+\if@twoside\lthtmltypeout{latex2htmlLength evensidemargin=\the\evensidemargin}%
+\else\lthtmltypeout{latex2htmlLength evensidemargin=\the\oddsidemargin}\fi%
+\lthtmltypeout{}%
+\makeatother
+\setcounter{page}{1}
+\onecolumn
+
+% !!! IMAGES START HERE !!!
+
+\stepcounter{paragraph}
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_indisplay2475}%
+$\displaystyle \Sigma = 
+\Sigma^{\mathit{int}}_{\mathit{theory}}\cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\mathsf{config} & : & \mathit{Thread} \times \mathit{Thread} \times \mathit{Thread} \times \mathit{Thread} \times \mathit{Thread} \times \mathit{int} \times \mathit{int} \Rightarrow \mathit{Config}\\
+\mathsf{thread} & : & \mathit{State} \Rightarrow \mathit{Thread}\\
+\mathsf{none} & : & \mathit{Thread}\\
+\mathsf{main} & : & \mathit{State}\\
+\mathsf{main0} & : & \mathit{State}\\
+\mathsf{main1} & : & \mathit{State}\\
+\mathsf{main2} & : & \mathit{State}\\
+\mathsf{main3} & : & \mathit{State}\\
+\mathsf{main4} & : & \mathit{State}\\
+\mathsf{main5} & : & \mathit{State}\\
+\mathsf{main6} & : & \mathit{State}\\
+\mathsf{main7} & : & \mathit{State}\\
+\mathsf{return0} & : & \mathit{State}\\
+\mathsf{setThread} & : & \mathit{State}\\
+\mathsf{setThread1} & : & \mathit{State}\\
+\mathsf{setThread2} & : & \mathit{State}\\
+\mathsf{checkThread} & : & \mathit{State}\\
+\mathsf{success} & : & \mathit{Config}\\
+\mathsf{error} & : & \mathit{Config}\\
+\mathsf{assert0} & : & \mathit{Config}\\
+\end{array}
+\right\}
+$%
+\lthtmlindisplaymathZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_indisplay2477}%
+$\displaystyle \left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main}),\mathsf{none},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main0}),\mathsf{thread}(\mathsf{setThread}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{2} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main}),\mathsf{thread}(\mathit{s}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{3} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main0}),\mathit{thrd0},\mathsf{none},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main1}),\mathit{thrd0},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{4} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main0}),\mathit{thrd0},\mathsf{thread}(\mathit{s}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{5} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main1}),\mathit{thrd0},\mathit{thrd1},\mathsf{none},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main2}),\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{6} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main1}),\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathit{s}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{7} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main2}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{none},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main3}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{checkThread}),\mathit{a},\mathit{b})\\
+\par
+\mathrm{8} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main2}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathit{s}),\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{9} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main3}),\mathsf{thread}(\mathsf{return0}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main4}),\mathsf{none},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{10} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main4}),\mathit{thrd0},\mathsf{thread}(\mathsf{return0}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main5}),\mathit{thrd0},\mathsf{none},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{11} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main5}),\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{return0}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main6}),\mathit{thrd0},\mathit{thrd1},\mathsf{none},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{12} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main6}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{return0}),\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main7}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{none},\mathit{a},\mathit{b})\\
+\par
+\mathrm{13} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main7}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{return0}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{14} : 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a1},\mathit{b})
+ & [\, \mathit{a1} = \mathsf{1} \,]\\
+\par
+\mathrm{15} : 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b1})
+ & [\, \mathit{b1} = \mathsf{-1} \,]\\
+\par
+\mathrm{16} : 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{return0}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{17} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd2},\mathit{thrd3},\mathit{a1},\mathit{b})
+ & [\, \mathit{a1} = \mathsf{1} \,]\\
+\par
+\mathrm{18} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b1})
+ & [\, \mathit{b1} = \mathsf{-1} \,]\\
+\par
+\mathrm{19} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{return0}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{20} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd3},\mathit{a1},\mathit{b})
+ & [\, \mathit{a1} = \mathsf{1} \,]\\
+\par
+\mathrm{21} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd3},\mathit{a},\mathit{b1})
+ & [\, \mathit{b1} = \mathsf{-1} \,]\\
+\par
+\mathrm{22} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{return0}),\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{23} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{checkThread}),\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{assert0}
+ & [\, \neg(((\mathit{a} = \mathsf{0} \land \mathit{b} = \mathsf{0}) \lor (\mathit{a} = \mathsf{1} \land \mathit{b} = \mathsf{-1}))) \,]\\
+\par
+\mathrm{24} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{checkThread}),\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{return0}),\mathit{a},\mathit{b})
+ & [\, (\mathit{a} = \mathsf{0} \land \mathit{b} = \mathsf{0}) \lor (\mathit{a} = \mathsf{1} \land \mathit{b} = \mathsf{-1}) \,]\\
+\par
+\mathrm{25} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{success}\\
+\par
+\end{array}
+\right\}
+$%
+\lthtmlindisplaymathZ
+\lthtmlcheckvsize\clearpage}
+
+\stepcounter{paragraph}
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_indisplay2480}%
+$\displaystyle \left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{26} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main}),\mathsf{none},\mathsf{none},\mathsf{none},\mathsf{none},\mathsf{0},\mathsf{0})
+ & \Rightarrow 
+ & \mathsf{success}\\
+\par
+\end{array}
+\right\}
+$%
+\lthtmlindisplaymathZ
+\lthtmlcheckvsize\clearpage}
+
+\stepcounter{paragraph}
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_indisplay2484}%
+$\displaystyle \Sigma = 
+\Sigma^{\mathit{int}}_{\mathit{theory}}\cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\mathsf{config} & : & \mathit{Thread} \times \mathit{Thread} \times \mathit{Thread} \times \mathit{Thread} \times \mathit{Thread} \times \mathit{bitvec}_{32} \times \mathit{bitvec}_{32} \Rightarrow \mathit{Config}\\
+\mathsf{thread} & : & \mathit{State} \Rightarrow \mathit{Thread}\\
+\mathsf{none} & : & \mathit{Thread}\\
+\mathsf{main} & : & \mathit{State}\\
+\mathsf{main0} & : & \mathit{State}\\
+\mathsf{main1} & : & \mathit{State}\\
+\mathsf{main2} & : & \mathit{State}\\
+\mathsf{main3} & : & \mathit{State}\\
+\mathsf{main4} & : & \mathit{State}\\
+\mathsf{main5} & : & \mathit{State}\\
+\mathsf{main6} & : & \mathit{State}\\
+\mathsf{main7} & : & \mathit{State}\\
+\mathsf{return0} & : & \mathit{State}\\
+\mathsf{setThread} & : & \mathit{State}\\
+\mathsf{setThread1} & : & \mathit{State}\\
+\mathsf{setThread2} & : & \mathit{State}\\
+\mathsf{checkThread} & : & \mathit{State}\\
+\mathsf{success} & : & \mathit{Config}\\
+\mathsf{error} & : & \mathit{Config}\\
+\mathsf{assert0} & : & \mathit{Config}\\
+\end{array}
+\right\}
+$%
+\lthtmlindisplaymathZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_indisplay2486}%
+$\displaystyle \left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main}),\mathsf{none},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main0}),\mathsf{thread}(\mathsf{setThread}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{2} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main}),\mathsf{thread}(\mathit{s}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{3} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main0}),\mathit{thrd0},\mathsf{none},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main1}),\mathit{thrd0},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{4} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main0}),\mathit{thrd0},\mathsf{thread}(\mathit{s}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{5} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main1}),\mathit{thrd0},\mathit{thrd1},\mathsf{none},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main2}),\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{6} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main1}),\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathit{s}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{7} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main2}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{none},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main3}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{checkThread}),\mathit{a},\mathit{b})\\
+\par
+\mathrm{8} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main2}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathit{s}),\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{9} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main3}),\mathsf{thread}(\mathsf{return0}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main4}),\mathsf{none},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{10} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main4}),\mathit{thrd0},\mathsf{thread}(\mathsf{return0}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main5}),\mathit{thrd0},\mathsf{none},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{11} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main5}),\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{return0}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main6}),\mathit{thrd0},\mathit{thrd1},\mathsf{none},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{12} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main6}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{return0}),\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main7}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{none},\mathit{a},\mathit{b})\\
+\par
+\mathrm{13} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main7}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{return0}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{14} : 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a1},\mathit{b})
+ & [\, \mathit{a1} = {\mbox{\tt\symbol{35}}\mathsf{x}{00000001}} \,]\\
+\par
+\mathrm{15} : 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b1})
+ & [\, \mathit{b1} = {\mbox{\tt\symbol{35}}\mathsf{x}{11111111}} \,]\\
+\par
+\mathrm{16} : 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{return0}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{17} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd2},\mathit{thrd3},\mathit{a1},\mathit{b})
+ & [\, \mathit{a1} = {\mbox{\tt\symbol{35}}\mathsf{x}{00000001}} \,]\\
+\par
+\mathrm{18} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b1})
+ & [\, \mathit{b1} = {\mbox{\tt\symbol{35}}\mathsf{x}{11111111}} \,]\\
+\par
+\mathrm{19} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{return0}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{20} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd3},\mathit{a1},\mathit{b})
+ & [\, \mathit{a1} = {\mbox{\tt\symbol{35}}\mathsf{x}{00000001}} \,]\\
+\par
+\mathrm{21} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd3},\mathit{a},\mathit{b1})
+ & [\, \mathit{b1} = {\mbox{\tt\symbol{35}}\mathsf{x}{11111111}} \,]\\
+\par
+\mathrm{22} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{return0}),\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{23} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{checkThread}),\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{assert0}
+ & [\, \neg(((\mathit{a} = {\mbox{\tt\symbol{35}}\mathsf{x}{00000000}} \land \mathit{b} = {\mbox{\tt\symbol{35}}\mathsf{x}{00000000}}) \lor (\mathit{a} = {\mbox{\tt\symbol{35}}\mathsf{x}{00000001}} \land \mathit{b} = {\mbox{\tt\symbol{35}}\mathsf{x}{11111111}}))) \,]\\
+\par
+\mathrm{24} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{checkThread}),\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{return0}),\mathit{a},\mathit{b})
+ & [\, (\mathit{a} = {\mbox{\tt\symbol{35}}\mathsf{x}{00000000}} \land \mathit{b} = {\mbox{\tt\symbol{35}}\mathsf{x}{00000000}}) \lor (\mathit{a} = {\mbox{\tt\symbol{35}}\mathsf{x}{00000001}} \land \mathit{b} = {\mbox{\tt\symbol{35}}\mathsf{x}{11111111}}) \,]\\
+\par
+\mathrm{25} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{success}\\
+\par
+\end{array}
+\right\}
+$%
+\lthtmlindisplaymathZ
+\lthtmlcheckvsize\clearpage}
+
+\stepcounter{paragraph}
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_indisplay2489}%
+$\displaystyle \left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{26} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main}),\mathsf{none},\mathsf{none},\mathsf{none},\mathsf{none},{\mbox{\tt\symbol{35}}\mathsf{x}{00000000}},{\mbox{\tt\symbol{35}}\mathsf{x}{00000000}})
+ & \Rightarrow 
+ & \mathsf{success}\\
+\par
+\end{array}
+\right\}
+$%
+\lthtmlindisplaymathZ
+\lthtmlcheckvsize\clearpage}
+
+
+\end{document}

@@ -1,0 +1,348 @@
+<html>
+<head>
+<title>Crisys2cdcc RP 2024 submission version</title>
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+<script language="javascript">
+  function toggleVisible(divId) {
+    var div = document.getElementById(divId);
+    if (div) {
+      if (div.style.display != 'block') {
+        div.style.display = 'block';
+      } else {
+        div.style.display = 'none';
+      }
+    }
+  }
+</script>
+</head>
+<body>
+Updated: 
+<?php 
+  date_default_timezone_set('Asia/Tokyo');
+  $filename = basename($_SERVER['SCRIPT_NAME']);
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+
+<hr>
+<h1>Crisys2cdcc : a proof system c-DCC for all-path reachability problems in Crisys2</h1>
+<h2><a href="#KN24rp">RP 2024 submission</a> version</h2>
+
+<p>This page provides a tool <b>Crisys2cdcc</b>, a proof system <b>c-DCC</b> for all-path reachability problems in <b>Crisys2</b>.
+<b>Crisys2</b>, <u>Constrained Rewriting Induction SYStem (version 2)</u>, is a proof system based on <i>Constrained Rewriting Induction</i> [<a href="#KN14">KN14</a>,<a href="#FKN17">FKN17</a>] for <i>logically constrained term rewrite systems</i> (LCTRSs) [<a href="#KN13">KN13</a>], the current version of which works interactively.
+<b>c-DCC-</b> [<a href="#KN23jlamp">KN23jlamp</a>] is a weakend but easily-implementable variant of <b>DCC</b> [<a href="CL18">CL18</a>], a proof system for <i>all-path reachability</i> (APR) problems of LCTRSs.
+</p>
+
+<hr>
+<h4>News</h4>
+
+<dl>
+
+  <dt>June 28th, 2024</dt>
+  <dd>
+   Open this page.
+  </dd>
+
+</dl>
+
+<hr>
+
+<h4>Contents</h4>
+<ul>
+ <li><a href="#downloads">Downloads</a></li>
+ <li><a href="#how2use">How to Use</a></li>
+ <li><a href="#input">Input Files</a></li>
+ <li><a href="#examples">Examples</a></li>
+ <li><a href="#references">References</a></li>
+ <li><a href="#contributers">Contributers</a></li>
+ <li><a href="#contact">Contact</a></li>
+</ul>
+
+<hr>
+<a name="downloads"><h2>Downloads</h2></a>
+
+<ul>
+  <li><a href="downloads/crisys2cdcc">crisys2cdcc</a> (OCaml bytecode)</li>
+</ul>
+
+<h3>Requirement</h3>
+
+<ul>
+	<li>The tool is implemented by <a href="https://ocaml.org">OCaml</a> (ver. 4.14.1), and to run the downloaded bytecode, <code>ocaml </code> (or later version) is necessary.</li>
+	<li>The tool needs an SMT solver that follows <a href="https://smtlib.cs.uiowa.edu">SMT-LIB 2 format</a>. Please put the following file <a href="downloads/crisys2.config"><code>crisys2.config</code></a> into the same directory as the tool:
+	<blockquote>
+<table border="1">
+<tr>
+<td>
+<pre>
+(SMTSOLVER STDIN "xxxx")
+(VERBOSE on)
+</pre>
+</td>
+</tr>
+</table>
+	</blockquote>
+Please replace <code>xxxx</code> by a command for the SMT solver you use. For example, please write <code>(SMTSOLVER STDIN "z3 -in")</code> for <a href="https://github.com/Z3Prover/z3">Z3</a>.
+
+</li>
+</ul>
+
+<hr>
+<a name="how2use"><h2>How to Use</h2></a>
+
+<!--
+<h3>For Solving APR problems</h3>
+-->
+
+<p>Run <code>crisys2cdcc</code> from Command Line as follows:
+<blockquote>
+<pre>
+> ./crisys2cdcc example_2-25_sf.ari
+</pre>
+or
+<pre>
+> ocamlrun ./crisys2cdcc example_2-25_sf.ari
+</pre>
+</blockquote>
+</p>
+
+<p>
+The tool tries to prove a APR problem for starvation freedom, which is written the input file, constructing a proof tree.
+</p>
+
+<!--
+<p>
+Unfortunately, the current version is a simply automated one of an interactive mode, and the tool tries to prove even after finding an unsolved subgoal.
+</p>
+-->
+
+<hr>
+<a name="input"><h2>Input Files</h2></a>
+
+
+<!--
+<p>
+The tool takes an LCTRS written in a simplified varaint of <b>RMT</b> format.
+<a href="https://github.com/ciobaca/rmt"><b>RMT</b></a>, <u>Rewriting Modulo Theories Tool</u>, is a proof system for APR of LCTRSs (see also <a href="https://isr2019.minesparis.psl.eu/lecturers/stefan-ciobaca/">ISR 2019 Lecture by Stefan Ciobaca</a>).
+We restrict the format to <i>asynchronous integer transition systems with shared variables</i> [<a href="#KN23padl">KN23padl</a>] which are written as LCTRSs.
+</p>
+-->
+
+<p>
+The tool takes an LCTRS written in the <a href="https://project-coco.uibk.ac.at/ARI/lctrs.php"><b>ARI</b></a> format, together with an APR problem below the LCTRS definition:
+<blockquote>
+<code>(</code> <code>starvation-freedom</code> [<code>:fairness</code>] <i>term</i> <i>irreiducible-constant</i> [<code>:guard</code> <i>formula</i>] [<code>:var</code> <i>vars</i>] <code>)</code>
+</blockquote>
+The semantics of the above form is the same as that for constrained rewrite rules in the ARI format, and the only difference is that destinations corresponding to the right-hand sides of rewrite rules are restricted to irreducible constants.
+The notation
+<code>(</code> <code>starvation-freedom</code> <i>s</i> <i>c</i> <code>:guard</code> <i>&phi;</i> <code>)</code>
+represents the APR problem &lang; <i>s</i> | <i>&phi;</i> &rang; &rArr; <i>c</i>.
+</p>
+
+<p>
+By adding <code>:fairness</code>, APR problems for starvation freedom are proved under process fairness.
+</p>
+
+<hr>
+<a name="examples"><h2>Examples</h2></a>
+
+<h3>[<a href="#BK08">BK08</a>, Example 2.24] for Starvation Freedom</h3>
+
+<h4><a href="examples/example_2-24_sf.ari">Not Under Process Fairness</a></h4>
+
+<table border="1">
+<tr>
+<td>
+<pre>
+(format LCTRS :smtlib 2.6)
+(theory Ints)
+
+(sort Loc)
+(sort State)
+
+(fun state (-> Loc Loc Int Int State))
+(fun noncrit1 Loc)
+(fun wait1 Loc)
+(fun crit1 Loc)
+(fun noncrit2 Loc)
+(fun wait2 Loc)
+(fun crit2 Loc)
+(fun success State)
+(fun error State)
+
+(rule (state noncrit1 p2 y c) (state wait1 p2 y c1)  :guard (and (= c1 1) (<= c 3))                        :var ((c1 Int)))
+(rule (state wait1 p2 y c) (state crit1 p2 y1 c1)    :guard (and (> y 0) (= y1 (- y 1)) (= c1 0) (<= c 3)) :var ((y1 Int) (c1 Int)))
+(rule (state crit1 p2 y c) (state noncrit1 p2 y1 c)  :guard (and (= y1 (+ y 1)) (<= c 3))                  :var ((y1 Int)))
+(rule (state p1 noncrit2 y c) (state p1 wait2 y c1)  :guard (and (= c1 (ite (>= c 1) (+ c 1) c)) (<= c 3)) :var ((c1 Int)))
+
+(rule (state p1 wait2 y c) (state p1 crit2 y1 c1)    :guard (and (> y 0) (= y1 (- y 1)) (= c1 (ite (>= c 1) (+ c 1) c)) (<= c 3)) :var ((y1 Int) (c1 Int)))
+(rule (state p1 crit2 y c) (state p1 noncrit2 y1 c1) :guard (and (= y1 (+ y 1)) (= c1 (ite (>= c 1) (+ c 1) c)) (<= c 3)) :var ((y1 Int) (c1 Int)))
+
+(rule (state p1 p2 y c) success )
+
+(rule (state wait1 p2 y c) error    :guard (> c 3) )
+(rule (state wait1 wait2 y c) error :guard (and (<= y 0) (> c 0)) )
+
+(starvation-freedom (state noncrit1 noncrit2 y c) success :guard (and (= y 1) (= c 0)) :var ((y Int) (c Int)))
+</pre>
+</td>
+</tr>
+</table>
+
+<h4><a href="examples/example_2-24_sf_fair.ari">Under Process Fairness</a></h4>
+
+<table border="1">
+<tr>
+<td>
+<pre>
+(format LCTRS :smtlib 2.6)
+(theory Ints)
+
+(sort Loc)
+(sort State)
+
+(fun state (-> Loc Loc Int Int State))
+(fun noncrit1 Loc)
+(fun wait1 Loc)
+(fun crit1 Loc)
+(fun noncrit2 Loc)
+(fun wait2 Loc)
+(fun crit2 Loc)
+(fun success State)
+(fun error State)
+
+(rule (state noncrit1 p2 y c) (state wait1 p2 y c1)  :guard (and (= c1 1) (<= c 3))                        :var ((c1 Int)))
+(rule (state wait1 p2 y c) (state crit1 p2 y1 c1)    :guard (and (> y 0) (= y1 (- y 1)) (= c1 0) (<= c 3)) :var ((y1 Int) (c1 Int)))
+(rule (state crit1 p2 y c) (state noncrit1 p2 y1 c)  :guard (and (= y1 (+ y 1)) (<= c 3))                  :var ((y1 Int)))
+(rule (state p1 noncrit2 y c) (state p1 wait2 y c1)  :guard (and (= c1 (ite (>= c 1) (+ c 1) c)) (<= c 3)) :var ((c1 Int)))
+
+(rule (state p1 wait2 y c) (state p1 crit2 y1 c1)    :guard (and (> y 0) (= y1 (- y 1)) (= c1 (ite (>= c 1) (+ c 1) c)) (<= c 3)) :var ((y1 Int) (c1 Int)))
+(rule (state p1 crit2 y c) (state p1 noncrit2 y1 c1) :guard (and (= y1 (+ y 1)) (= c1 (ite (>= c 1) (+ c 1) c)) (<= c 3)) :var ((y1 Int) (c1 Int)))
+
+(rule (state p1 p2 y c) success )
+
+(rule (state wait1 p2 y c) error    :guard (> c 3) )
+(rule (state wait1 wait2 y c) error :guard (and (<= y 0) (> c 0)) )
+
+(starvation-freedom :fairness (state noncrit1 noncrit2 y c) success :guard (and (= y 1) (= c 0)) :var ((y Int) (c Int)))
+</pre>
+</td>
+</tr>
+</table>
+
+<h3>[<a href="#BK08">BK08</a>, Example 2.28] for Starvation Freedom under Process Fairness</h3>
+
+<p><a href="examples/example_2-24_sf_fair.ari">LCTRS file</a></p>
+
+<h3>[<a href="#BK08">BK08</a>, Exercise 2.10] for Starvation Freedom under Process Fairness</h3>
+
+<p><a href="examples/exercise_2-10_sf_fair.ari">LCTRS file</a></p>
+
+
+<hr>
+<a name="references"><h2>References</h2></a>
+
+<dl compact>
+
+ <dt>[<a name="KN24rp">KN24rp</a>]</dt>
+ <dd>Misaki Kojima and Naoki Nishida,<br>
+	<b>On Verifying Starvation under Process Fairness by Reduction to All-Path Reachability Problems</b>,<br>
+	submitted to <a href="https://easychair.org/smart-program/RP24/">RP 2024</a>.
+ </dd><br>
+ 
+ <dt>[<a name="KN23jlamp">KN23jlamp</a>]</dt>
+ <dd>Misaki Kojima and Naoki Nishida,<br>
+	<b>Reducing Non-Occurrence of Specified Runtime Errors to All-Path Reachability Problems of Constrained Rewriting</b>,<br>
+	<i>Journal of Logical and Algebraic Methods in
+	  Programming</i>,
+	vol. 135, 19 pages, October 2023.<br>
+	Available
+	  from <a href="https://doi.org/10.1016/j.jlamp.2023.100903">ScienceDirect</a>.
+ </dd><br>
+
+ <dt>[<a name="KN23padl">KN23padl</a>]</dt>
+ <dd>Misaki Kojima and Naoki Nishida,<br>
+	<b>On Verifying Starvation Freedom by Reducing to All-Path Reachability of Logically Constrained Rewriting</b>,<br>
+	In <i>Proceedings of the 25th International Symposium on Practical Aspects of Declarative Languages (PADL 2023)</i>,
+	<i>Lecture Notes in Computer Science</i>, vol. 13880,
+        pp. 161-179, Springer, 2023.
+ </dd><br>
+
+ <!--
+ <dt>[<a name="KN22wpte">KN22wpte</a>]</dt>
+ <dd>Misaki Kojima and Naoki Nishida,<br>
+	<b>On Reducing Non-Occurrence of Specified Runtime Errors to All-Path Reachability Problems of Constrained Rewriting</b>,<br>
+	In <i>Informal Proceedings of <a href="https://wpte2022.github.io">the 9th International Workshop on Rewriting Techniques for Program Transformations and Evaluation</a></i> (WPTE 2022), 16 pages, 2022.<br>
+	[<a href="https://easychair.org/publications/preprint/TM7q">PDF</a>]
+ </dd><br>
+-->
+
+ <dt>[<a name="CL18">CL18</a>]</dt>
+ <dd>Stefan Ciobaca and Dorel Lucanu,<br>
+	<b>A Coinductive Approach to Proving Reachability Properties in Logically Constrained Term Rewriting Systems</b>,<br>
+      In <i>Proceedings of the 9th International Joint Conference on Automated Reasoning</i> (IJCAR 2018),<br>
+      <i>Lecture Notes in Computer Science</i>, vol. 10900,
+      pp. 295-311, 2018.<br>
+      Available from <a href="https://doi.org/10.1007/978-3-319-94205-6_20">Springer</a>.
+      </dd><br>
+
+ <dt>[<a name="KNF15">FKN17</a>]</dt>
+ <dd>Carsten Fuhs, Cynthia Kop, and Naoki Nishida,<br>
+      <b>Verifying Procedural Programs via Constrained Rewriting Induction</b>,<br>
+      <i>ACM Transactions on Computational Logic</i>,
+      vol. 18, no. 2, pp. 14:1-14:50, 2017.<br>
+      Available from <a href="https://doi.org/10.1145/3060143">ACM</a>.
+      </dd><br>
+
+ <dt>[<a name="KN14">KN14</a>]</dt>
+ <dd>Cynthia Kop and Naoki Nishida,<br>
+      <b>Automatic Constrained Rewriting Induction towards Verifying
+      Procedural Programs</b>,<br>
+      In <i>Proceedings of the 12th Asian Symposium on Programming
+      Languages and Systems</i> (APLAS 2014),<br>
+      <i>Lecture Notes in Computer Science</i>, vol. 8858,
+      pp. 334-353, 2014.<br>
+      Available from <a href="https://doi.org/10.1007/978-3-319-12736-1_18">Springer</a>.
+      </dd><br>
+
+ <dt>[<a name="KN13">KN13</a>]</dt>
+ <dd>Cynthia Kop and Naoki Nishida,<br>
+      <b>Term Rewriting with Logical Constraints</b>,<br>
+      In <i>Proceedings of the 9th International Symposium on Frontiers
+      of Combining Systems</i> (FroCoS 2013),<br>
+      <i>Lecture Notes in Computer Science</i>, vol. 8152,
+      pp. 343-358, 2013.<br>
+      Available from <a href="https://doi.org/10.1007/978-3-642-40885-4_24">Springer</a>.
+      </dd><br>
+
+<dt>[<a name="BK08">BK08</a>]</dt>
+<dd>Christel Baier and Joost-Pieter Katoen,<br>
+     <b>Principles of model checking</b>,<br>
+     MIT Press, 2008.
+     <//dd><br>
+
+</dl>
+
+<hr>
+
+<a name="contributers"><h2>Contributers</h2></a>
+
+<ul>
+  <li><a href="https://www.trs.css.i.nagoya-u.ac.jp/~nishida/">Naoki Nishida</a> (Nagoya University)</li>
+  <li><a href="https://www.trs.css.i.nagoya-u.ac.jp/~nishida/">Misaki Kojima</a> (Nagoya University)</li>
+</ul>
+
+<hr>
+
+<a name="contact"><h2>Contact</h2></a>
+
+<dl>
+ <dt><a href="https://www.trs.css.i.nagoya-u.ac.jp/~nishida/">Naoki Nishida</a> (Nagoya University)</dt>
+      <dd><code>nishida [at] i.nagoya-u.ac.jp</code></dd>
+</dl>
+
+<hr>
+
+</body>
+</html>

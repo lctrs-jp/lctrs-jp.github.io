@@ -1,0 +1,37 @@
+(SET-LOGIC QF_LIA)
+
+(FUN state             : Loc * Loc * Bool * Bool * Int * Int -> State)
+(FUN c00 c10 c20 crit0 : Loc)
+(FUN c01 c11 c21 crit1 : Loc)
+(FUN success error     : State)
+
+(VAR b01 b11 : Bool)
+(VAR k1 c1 : Int)
+
+(RULES
+  state(c00,   p1, b0, b1, k, c) -> state(c10,   p1, b01, b1, k , c1) WHEN (and (not b01) (= c1 1) (<= c 10))
+  state(c10,   p1, b0, b1, k, c) -> state(c20,   p1, b0,  b1, k , c ) WHEN (and (distinct k 0) (<= c 10))
+  state(c10,   p1, b0, b1, k, c) -> state(crit0, p1, b0,  b1, k , c1) WHEN (and (= k 0) (= c1 0) (<= c 10))
+  state(c20,   p1, b0, b1, k, c) -> state(c10,   p1, b0,  b1, k1, c ) WHEN (and b1 (= k1 0) (<= c 10))
+  state(crit0, p1, b0, b1, k, c) -> state(c00,   p1, b01, b1, k , c ) WHEN (and b01 (<= c 10))
+
+  state(p0, c01,   b0, b1, k, c) -> state(p0, c11,   b0, b11, k , c1) WHEN (and (not b11) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10))
+  state(p0, c11,   b0, b1, k, c) -> state(p0, c21,   b0, b1,  k , c1) WHEN (and (distinct k 1) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10))
+  state(p0, c11,   b0, b1, k, c) -> state(p0, crit1, b0, b1,  k , c1) WHEN (and (= k 1) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10))
+  state(p0, c21,   b0, b1, k, c) -> state(p0, c11,   b0, b1,  k1, c1) WHEN (and b0 (= k1 1) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10))
+  state(p0, crit1, b0, b1, k, c) -> state(p0, c01,   b0, b11, k , c1) WHEN (and b11 (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10))
+
+  state(p0, p1, b0, b1, k, c) -> success
+
+  state(c10, p1,  b0, b1, k, c) -> error WHEN (> c 10)
+  state(c20, p1,  b0, b1, k, c) -> error WHEN (> c 10)
+  state(c20, c21, b0, b1, k, c) -> error WHEN (and (not b1) (not b0) (> c 0))
+)
+
+(VAR k : Int)
+
+(EQUATIONS
+  state(c00, c01, true, true, k, 0) == success WHEN (or (= k 0) (= k 1))
+)
+
+(QUERY all-path-reachability)

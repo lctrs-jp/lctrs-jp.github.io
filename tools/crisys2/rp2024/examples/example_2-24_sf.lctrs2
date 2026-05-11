@@ -1,0 +1,32 @@
+(SET-LOGIC QF_LIA)
+
+(FUN state                : Loc * Loc * Int * Int -> State)
+(FUN noncrit1 wait1 crit1 : Loc)
+(FUN noncrit2 wait2 crit2 : Loc)
+(FUN success error        : State)
+
+(VAR y1 c1 : Int)
+
+(RULES
+  state(noncrit1, p2, y, c) -> state(wait1,    p2, y,  c1) WHEN (and (= c1 1) (<= c 3))
+  state(wait1,    p2, y, c) -> state(crit1,    p2, y1, c1) WHEN (and (> y 0) (= y1 (- y 1)) (= c1 0) (<= c 3))
+  state(crit1,    p2, y, c) -> state(noncrit1, p2, y1, c ) WHEN (and (= y1 (+ y 1)) (<= c 3))
+
+  state(p1, noncrit2, y, c) -> state(p1, wait2,    y,  c1) WHEN (and (= c1 (ite (>= c 1) (+ c 1) c)) (<= c 3))
+  state(p1, wait2,    y, c) -> state(p1, crit2,    y1, c1) WHEN (and (> y 0) (= y1 (- y 1)) (= c1 (ite (>= c 1) (+ c 1) c)) (<= c 3))
+  state(p1, crit2,    y, c) -> state(p1, noncrit2, y1, c1) WHEN (and (= y1 (+ y 1)) (= c1 (ite (>= c 1) (+ c 1) c)) (<= c 3))
+
+  state(p1, p2, y, c) -> success
+
+  state(wait1, p2,    y, c) -> error WHEN (> c 3)
+  state(wait1, wait2, y, c) -> error WHEN (and (<= y 0) (> c 0))
+
+)
+
+(VAR y1 c1 : Int)
+
+(EQUATIONS
+   state(noncrit1, noncrit2, y1, c1) == success WHEN (and (= y1 1) (= c1 0))
+)
+
+(QUERY starvation-freedom)

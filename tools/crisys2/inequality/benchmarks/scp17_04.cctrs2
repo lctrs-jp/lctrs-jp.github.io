@@ -1,0 +1,66 @@
+
+SORTS:
+  int;
+
+FUNCTIONS:
+  0    : int;
+  s, p : int -> int;
+
+  +, - : int * int -> int (infix 6 left);
+  *    : int * int -> int (infix 7 left);
+  isqrt : int  -> int;
+  u : int * int -> int;
+
+PREDICATES:
+  =, /=, <, <=, >, >= : int * int (infix);
+
+SMT_SOLVER: 
+  z3 -smt -in;
+
+SMT_SORTS:
+  int : Int;
+
+INTERPRETATIONS:
+  0 : 0;
+  s : (+ $1 1);  
+  p : (- $1 1); 
+  + : (+ $1 $2);
+  - : (- $1 $2);
+  * : (* $1 $2);
+
+  =  : (=  $1 $2);
+  /= : (distinct $1 $2);
+  <  : (<  $1 $2);
+  <= : (<= $1 $2);
+  >  : (>  $1 $2);
+  >= : (>= $1 $2);
+
+RULES:
+   1 : s(p(x)) -> x;
+   2 : p(s(x)) -> x;
+   3 : x + 0   -> x;
+   4 : x + s(y) -> s(x + y);
+   5 : x + p(y) -> p(x + y);
+   6 : x - 0    -> x;
+   7 : x - s(y) -> p(x - y);
+   8 : x - p(y) -> s(x - y);
+   9 : 0 * y    -> 0;
+  10 : s(x) * y -> x * y + y;
+  11 : p(x) * y -> x * y - y;
+
+  isqrt(n) -> u(0, n);
+  u(i, n) -> u(s(i), n)  [s(i) * s(i) <= n];
+  u(i, n) -> i           [not (s(i) * s(i) <= n)];
+
+CONJECTURES:
+  isqrt(n) >= 0                     [n >= 0];
+  n >= isqrt(n) * isqrt(n)          [n >= 0];
+  s(isqrt(n)) * s(isqrt(n)) >= s(n) [n >= 0];
+  u(i, n) >= 0                      [i >= 0 && i * i <= n && n >= 0];
+  n >= u(i, n) * u(i, n)            [i >= 0 && i * i <= n && n >= 0];
+  s(u(i, n)) * s(u(i, n)) >= s(n)   [i >= 0 && i * i <= n && n >= 0];
+
+PROPERTIES:
+  GCR(1-11), IMPLIES(s(i) * s(i) <= n, s(i) <= n);
+
+

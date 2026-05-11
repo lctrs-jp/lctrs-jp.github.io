@@ -1,0 +1,28 @@
+(format LCTRS :smtlib 2.6)
+(theory Ints)
+
+(sort Loc)
+(sort State)
+
+(fun state (-> Loc Loc Loc Int State))
+(fun noncrit1 Loc)
+(fun crit1 Loc)
+(fun noncrit2 Loc)
+(fun crit2 Loc)
+(fun unlock Loc)
+(fun lock Loc)
+(fun success State)
+(fun error State)
+
+(rule (state noncrit1 p2 unlock c) (state crit1 p2 lock c1) :guard (and (= c1 0) (<= c 2)) :var ((c1 Int)))
+(rule (state crit1 p2 lock c) (state noncrit1 p2 unlock c1) :guard (and (= c1 1) (<= c 2)) :var ((c1 Int)))
+(rule (state p1 noncrit2 unlock c) (state p1 crit2 lock c1) :guard (and (= c1 (ite (> c 0) (+ c 1) c)) (<= c 2)) :var ((c1 Int)))
+(rule (state p1 crit2 lock c) (state p1 noncrit2 unlock c1) :guard (and (= c1 (ite (> c 0) (+ c 1) c)) (<= c 2)) :var ((c1 Int)))
+
+(rule (state p1 p2 p3 c) success )
+
+(rule (state noncrit1 p2 p3 c) error :guard (> c 2) )
+(rule (state noncrit1 noncrit2 lock c) error :guard (> c 0) )
+(rule (state crit1 crit2 unlock c) error :guard (> c 0) )
+
+(starvation-freedom (state noncrit1 noncrit2 unlock c) success :guard (= c 1) :var ((c Int))))

@@ -1,0 +1,33 @@
+sorts Loc, State;
+
+signature
+  state    : Loc Loc Int Int Int -> State,
+  noncrit0 : -> Loc,
+  level0   : -> Loc,
+  crit0    : -> Loc,
+  noncrit1 : -> Loc,
+  level1   : -> Loc,
+  crit1    : -> Loc,
+  success  : -> State,
+  error    : -> State;
+
+variables
+  Proc0 : Loc, Proc1 : Loc, P0 : Int, P1 : Int, Y : Int, P01 : Int, P11 : Int, Y1 : Int;
+
+rewrite-system main
+  (state noncrit0 Proc1 P0 P1 Y) /\ (band (mequals P01 1) (mequals Y1 0)) => (state level0   Proc1 P01 P1 Y1),
+  (state level0   Proc1 P0 P1 Y) /\ (bor (bnot (mequals Y 0)) (mgt 1 P1)) => (state crit0    Proc1 P0  P1 Y ),
+  (state crit0    Proc1 P0 P1 Y) /\ (mequals P01 0)                       => (state noncrit0 Proc1 P01 P1 Y ),
+
+  (state Proc0 noncrit1 P0 P1 Y) /\ (band (mequals P11 1) (mequals Y1 1)) => (state Proc0 level1   P0 P11 Y1),
+  (state Proc0 level1   P0 P1 Y) /\ (bor (bnot (mequals Y 1)) (mgt 1 P0)) => (state Proc0 crit1    P0 P1  Y ),
+  (state Proc0 crit1    P0 P1 Y) /\ (mequals P11 0)                       => (state Proc0 noncrit1 P0 P11 Y ),
+
+  (state Proc0 Proc1 P0 P1 Y) => success,
+
+  (state crit0 crit1 P0 P1 Y) => error;
+
+rewrite-system apr
+  (state noncrit0 noncrit1 0 0 Y) => success;
+
+prove [10,10] in main : apr;

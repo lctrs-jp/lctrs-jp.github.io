@@ -1,0 +1,73 @@
+sorts Process, Semaphore, Cnfg, Fcall;
+
+signature
+    cnfg : Process Process Semaphore Semaphore Semaphore Int Int  -> Cnfg,
+    p : Fcall Int Int Int  -> Process,
+    sem : Int Int Int  -> Semaphore,
+    bbr2 :  -> Fcall,
+    bbr3 :  -> Fcall,
+    bbr4 :  -> Fcall,
+    bbr5 :  -> Fcall,
+    bbr6 :  -> Fcall,
+    cmr2 :  -> Fcall,
+    cmr3 :  -> Fcall,
+    cmr4 :  -> Fcall,
+    cmr5 :  -> Fcall,
+    cmr6 :  -> Fcall,
+    cmr7 :  -> Fcall,
+    cmr11 :  -> Fcall,
+    success :  -> Cnfg,
+    error :  -> Cnfg;
+
+variables
+    Nb : Int, Ns : Int, Pc : Process, Semb : Semaphore, Dc : Int, Tc : Int, Sems : Semaphore, Fs : Int, Sc1 : Int, Sc : Int, Tc2 : Int, Nc : Int, Semc : Semaphore, Ds : Int, Ts : Int, Ss1 : Int, Ss : Int, Ts2 : Int, Fs1 : Int, Sb : Int, Tb : Int, Db2 : Int, Db : Int, Sb1 : Int, Ds2 : Int, Pb : Process, Dc2 : Int, Tb2 : Int, A : Int, Nbb : Int, Nbc : Int, Nbs : Int, Ncb : Int, Ncc : Int, Ncs : Int,
+    Tb : Int, Db : Int, Tc : Int, Dc : Int, Ts : Int, Ds : Int;
+
+constrained-rewrite-system main
+    (cnfg (p bbr2 Nb 0 Ns) Pc Semb (sem Sc Dc Tc) Sems Fs 0) /\ (band (bnot (mequals Sc 0)) (mequals Sc1 (mminus Sc 1))) => (cnfg (p bbr3 Nb 0 Ns) Pc Semb (sem Sc1 Dc Tc) Sems Fs 0),
+    (cnfg (p bbr2 Nb 0 Ns) Pc Semb (sem Sc Dc Tc) Sems Fs 0) /\ (band (mequals Sc 0) (mequals Tc2 (mplus Tc 2))) => (cnfg (p bbr2 Nb Tc Ns) Pc Semb (sem Sc Dc Tc2) Sems Fs 0),
+    (cnfg (p bbr2 Nb Nc Ns) Pc Semb (sem Sc Dc Tc) Sems Fs 1) /\ (band (bnot (mequals Nc 0)) (mequals Nc Dc)) => (cnfg (p bbr3 Nb 0 Ns) Pc Semb (sem Sc Dc Tc) Sems Fs 0),
+    (cnfg (p bbr3 Nb Nc 0) Pc Semb Semc (sem Ss Ds Ts) Fs 0) /\ (band (bnot (mequals Ss 0)) (mequals Ss1 (mminus Ss 1))) => (cnfg (p bbr4 Nb Nc 0) Pc Semb Semc (sem Ss1 Ds Ts) Fs 0),
+    (cnfg (p bbr3 Nb Nc 0) Pc Semb Semc (sem Ss Ds Ts) Fs 0) /\ (band (mequals Ss 0) (mequals Ts2 (mplus Ts 2))) => (cnfg (p bbr3 Nb Nc Ts) Pc Semb Semc (sem Ss Ds Ts2) Fs 0),
+    (cnfg (p bbr3 Nb Nc Ns) Pc Semb Semc (sem Ss Ds Ts) Fs 1) /\ (band (bnot (mequals Ns 0)) (mequals Ns Ds)) => (cnfg (p bbr4 Nb Nc 0) Pc Semb Semc (sem Ss Ds Ts) Fs 0),
+    (cnfg (p bbr4 Nb Nc Ns) Pc Semb Semc Sems Fs 0) /\ (mequals Fs1 (mplus Fs 1)) => (cnfg (p bbr5 Nb Nc Ns) Pc Semb Semc Sems Fs1 0),
+    (cnfg (p bbr5 0 Nc Ns) Pc (sem Sb Db Tb) Semc Sems Fs 0) /\ (band (bnot (mequals Tb (mplus Db 2))) (mequals Db2 (mplus Db 2))) => (cnfg (p bbr6 0 Nc Ns) Pc (sem Sb Db2 Tb) Semc Sems Fs 1),
+    (cnfg (p bbr5 0 Nc Ns) Pc (sem Sb Db Tb) Semc Sems Fs 0) /\ (band (mequals Tb (mplus Db 2)) (mequals Sb1 (mplus Sb 1))) => (cnfg (p bbr6 0 Nc Ns) Pc (sem Sb1 Db Tb) Semc Sems Fs 0),
+    (cnfg (p bbr6 Nb Nc 0) Pc Semb Semc (sem Ss Ds Ts) Fs 0) /\ (band (bnot (mequals Ts (mplus Ds 2))) (mequals Ds2 (mplus Ds 2))) => (cnfg (p bbr2 Nb Nc 0) Pc Semb Semc (sem Ss Ds2 Ts) Fs 1),
+    (cnfg (p bbr6 Nb Nc 0) Pc Semb Semc (sem Ss Ds Ts) Fs 0) /\ (band (mequals Ts (mplus Ds 2)) (mequals Ss1 (mplus Ss 1))) => (cnfg (p bbr2 Nb Nc 0) Pc Semb Semc (sem Ss1 Ds Ts) Fs 0),
+    (cnfg Pb (p cmr2 Nb Nc 0) Semb Semc (sem Ss Ds Ts) Fs 0) /\ (band (bnot (mequals Ss 0)) (mequals Ss1 (mminus Ss 1))) => (cnfg Pb (p cmr3 Nb Nc 0) Semb Semc (sem Ss1 Ds Ts) Fs 0),
+    (cnfg Pb (p cmr2 Nb Nc 0) Semb Semc (sem Ss Ds Ts) Fs 0) /\ (band (mequals Ss 0) (mequals Ts2 (mplus Ts 2))) => (cnfg Pb (p cmr2 Nb Nc Ts) Semb Semc (sem Ss Ds Ts2) Fs 0),
+    (cnfg Pb (p cmr2 Nb Nc Ns) Semb Semc (sem Ss Ds Ts) Fs 1) /\ (band (bnot (mequals Ns 0)) (mequals Ns Ds)) => (cnfg Pb (p cmr3 Nb Nc 0) Semb Semc (sem Ss Ds Ts) Fs 0),
+    (cnfg Pb (p cmr3 Nb Nc Ns) Semb Semc Sems Fs 0) /\ (mgt Fs 0) => (cnfg Pb (p cmr4 Nb Nc Ns) Semb Semc Sems Fs 0),
+    (cnfg Pb (p cmr3 Nb Nc Ns) Semb Semc Sems Fs 0) /\ (mle Fs 0) => (cnfg Pb (p cmr11 Nb Nc Ns) Semb Semc Sems Fs 0),
+    (cnfg Pb (p cmr4 Nb Nc Ns) Semb Semc Sems Fs 0) /\ (mequals Fs1 (mminus Fs 1)) => (cnfg Pb (p cmr5 Nb Nc Ns) Semb Semc Sems Fs1 0),
+    (cnfg Pb (p cmr5 Nb 0 Ns) Semb (sem Sc Dc Tc) Sems Fs 0) /\ (band (bnot (mequals Tc (mplus Dc 2))) (mequals Dc2 (mplus Dc 2))) => (cnfg Pb (p cmr6 Nb 0 Ns) Semb (sem Sc Dc2 Tc) Sems Fs 1),
+    (cnfg Pb (p cmr5 Nb 0 Ns) Semb (sem Sc Dc Tc) Sems Fs 0) /\ (band (mequals Tc (mplus Dc 2)) (mequals Sc1 (mplus Sc 1))) => (cnfg Pb (p cmr6 Nb 0 Ns) Semb (sem Sc1 Dc Tc) Sems Fs 0),
+    (cnfg Pb (p cmr6 Nb Nc 0) Semb Semc (sem Ss Ds Ts) Fs 0) /\ (band (bnot (mequals Ts (mplus Ds 2))) (mequals Ds2 (mplus Ds 2))) => (cnfg Pb (p cmr7 Nb Nc 0) Semb Semc (sem Ss Ds2 Ts) Fs 1),
+    (cnfg Pb (p cmr6 Nb Nc 0) Semb Semc (sem Ss Ds Ts) Fs 0) /\ (band (mequals Ts (mplus Ds 2)) (mequals Ss1 (mplus Ss 1))) => (cnfg Pb (p cmr7 Nb Nc 0) Semb Semc (sem Ss1 Ds Ts) Fs 0),
+    (cnfg Pb (p cmr7 0 Nc Ns) (sem Sb Db Tb) Semc Sems Fs 0) /\ (band (bnot (mequals Sb 0)) (mequals Sb1 (mminus Sb 1))) => (cnfg Pb (p cmr2 0 Nc Ns) (sem Sb1 Db Tb) Semc Sems Fs 0),
+    (cnfg Pb (p cmr7 0 Nc Ns) (sem Sb Db Tb) Semc Sems Fs 0) /\ (band (mequals Sb 0) (mequals Tb2 (mplus Tb 2))) => (cnfg Pb (p cmr7 Tb Nc Ns) (sem Sb Db Tb2) Semc Sems Fs 0),
+    (cnfg Pb (p cmr7 Nb Nc Ns) (sem Sb Db Tb) Semc Sems Fs 1) /\ (band (bnot (mequals Nb 0)) (mequals Nb Db)) => (cnfg Pb (p cmr2 0 Nc Ns) (sem Sb Db Tb) Semc Sems Fs 0),
+    (cnfg Pb (p cmr11 Nb Nc 0) Semb Semc (sem Ss Ds Ts) Fs 0) /\ (band (bnot (mequals Ts (mplus Ds 2))) (mequals Ds2 (mplus Ds 2))) => (cnfg Pb (p cmr2 Nb Nc 0) Semb Semc (sem Ss Ds2 Ts) Fs 1),
+    (cnfg Pb (p cmr11 Nb Nc 0) Semb Semc (sem Ss Ds Ts) Fs 0) /\ (band (mequals Ts (mplus Ds 2)) (mequals Ss1 (mplus Ss 1))) => (cnfg Pb (p cmr2 Nb Nc 0) Semb Semc (sem Ss1 Ds Ts) Fs 0),
+    (cnfg Pb Pc Semb Semc Sems Fs A) => success,
+    (cnfg (p bbr4 Nbb Nbc Nbs) (p cmr3 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error,
+    (cnfg (p bbr5 Nbb Nbc Nbs) (p cmr3 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error,
+    (cnfg (p bbr6 Nbb Nbc Nbs) (p cmr3 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error,
+    (cnfg (p bbr4 Nbb Nbc Nbs) (p cmr4 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error,
+    (cnfg (p bbr5 Nbb Nbc Nbs) (p cmr4 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error,
+    (cnfg (p bbr6 Nbb Nbc Nbs) (p cmr4 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error,
+    (cnfg (p bbr4 Nbb Nbc Nbs) (p cmr5 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error,
+    (cnfg (p bbr5 Nbb Nbc Nbs) (p cmr5 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error,
+    (cnfg (p bbr6 Nbb Nbc Nbs) (p cmr5 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error,
+    (cnfg (p bbr4 Nbb Nbc Nbs) (p cmr6 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error,
+    (cnfg (p bbr5 Nbb Nbc Nbs) (p cmr6 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error,
+    (cnfg (p bbr6 Nbb Nbc Nbs) (p cmr6 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error,
+    (cnfg (p bbr4 Nbb Nbc Nbs) (p cmr11 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error,
+    (cnfg (p bbr5 Nbb Nbc Nbs) (p cmr11 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error,
+    (cnfg (p bbr6 Nbb Nbc Nbs) (p cmr11 Ncb Ncc Ncs) Semb Semc Sems Fs A) => error;
+
+rewrite-system apr
+    (cnfg (p bbr2 0 0 0) (p cmr2 0 0 0) (sem 0 Db Tb) (sem 0 Dc Tc) (sem 1 Ds Ts) 1 0) /\ (band (mequals Tb (mplus Db 2)) (band (mgt Db 0) (band (mequals Tc (mplus Dc 2)) (band (mgt Dc 0) (band (mequals Ts (mplus Ds 2)) (mgt Ds 0)))))) => success;
+
+prove [10,10] in main : apr;

@@ -1,0 +1,203 @@
+\documentclass[a4paper]{article}
+%\usepackage{latexsym}
+%\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\newcommand{\ttsym}[1]{\mbox{\tt #1}}
+\def\ttsharp{\ttsym{\symbol{35}}}
+\newcommand{\Sort}[1]{\mathit{#1}}
+\newcommand{\symb}[1]{\mathsf{#1}}
+\newcommand{\var}[1]{\mathit{#1}}
+\newcommand{\Constraint}[1]{[\, #1 \,]}
+\newcommand{\bv}[2][b]{{\ttsharp\symb{#1}{#2}}}
+\newcommand{\Sigmainttheory}{\Sigma^{\mathit{int}}_{\mathit{theory}}}
+\newcommand{\Sigmabvtheory}{\Sigma^{\mathit{bv}}_{\mathit{theory}}}
+
+\begin{document}
+%\scriptsize
+
+\section*{Original LCTRSs (2 Processes)}
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{state} & : & \Sort{Loc} \times \Sort{Loc} \times \Sort{int} \times \Sort{int} \times \Sort{int} \Rightarrow \Sort{State}\\
+\symb{noncrit0} & : & \Sort{Loc}\\
+\symb{level0} & : & \Sort{Loc}\\
+\symb{crit0} & : & \Sort{Loc}\\
+\symb{noncrit1} & : & \Sort{Loc}\\
+\symb{level1} & : & \Sort{Loc}\\
+\symb{crit1} & : & \Sort{Loc}\\
+\symb{success} & : & \Sort{State}\\
+\symb{error} & : & \Sort{State}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{state}(\symb{noncrit0},\var{proc1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{state}(\symb{level0},\var{proc1},\var{p01},\var{p1},\var{y1})
+ & \Constraint{\var{p01} = \symb{1} \land \var{y1} = \symb{0}}\\
+
+\mathrm{2} : 
+ & \symb{state}(\symb{level0},\var{proc1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{state}(\symb{crit0},\var{proc1},\var{p0},\var{p1},\var{y})
+ & \Constraint{\var{y} \ne \symb{0} \lor (\var{p1} < \symb{1})}\\
+
+\mathrm{3} : 
+ & \symb{state}(\symb{crit0},\var{proc1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{state}(\symb{noncrit0},\var{proc1},\var{p01},\var{p1},\var{y})
+ & \Constraint{\var{p01} = \symb{0}}\\
+
+\mathrm{4} : 
+ & \symb{state}(\var{proc0},\symb{noncrit1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{state}(\var{proc0},\symb{level1},\var{p0},\var{p11},\var{y1})
+ & \Constraint{\var{p11} = \symb{1} \land \var{y1} = \symb{1}}\\
+
+\mathrm{5} : 
+ & \symb{state}(\var{proc0},\symb{level1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{state}(\var{proc0},\symb{crit1},\var{p0},\var{p1},\var{y})
+ & \Constraint{\var{y} \ne \symb{1} \lor (\var{p0} < \symb{1})}\\
+
+\mathrm{6} : 
+ & \symb{state}(\var{proc0},\symb{crit1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{state}(\var{proc0},\symb{noncrit1},\var{p0},\var{p11},\var{y})
+ & \Constraint{\var{p11} = \symb{0}}\\
+
+\mathrm{7} : 
+ & \symb{state}(\var{proc0},\var{proc1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{success}\\
+
+\mathrm{8} : 
+ & \symb{state}(\symb{crit0},\symb{crit1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{error}\\
+
+\end{array}
+\right\}
+\]
+
+
+
+\paragraph{APR Problem}
+
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{9} : 
+ & \symb{state}(\symb{noncrit0},\symb{noncrit1},\symb{0},\symb{0},\var{y})
+ & \Rightarrow 
+ & \symb{success}\\
+
+\end{array}
+\right\}
+\]
+
+\newpage
+\section*{BV-LCTRS Version (2 Processes)}
+
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{state} & : & \Sort{Loc} \times \Sort{Loc} \times \Sort{bitvec}_{1} \times \Sort{bitvec}_{1} \times \Sort{bitvec}_{1} \Rightarrow \Sort{State}\\
+\symb{noncrit0} & : & \Sort{Loc}\\
+\symb{level0} & : & \Sort{Loc}\\
+\symb{crit0} & : & \Sort{Loc}\\
+\symb{noncrit1} & : & \Sort{Loc}\\
+\symb{level1} & : & \Sort{Loc}\\
+\symb{crit1} & : & \Sort{Loc}\\
+\symb{success} & : & \Sort{State}\\
+\symb{error} & : & \Sort{State}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{state}(\symb{noncrit0},\var{proc1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{state}(\symb{level0},\var{proc1},\var{p01},\var{p1},\var{y1})
+ & \Constraint{\var{p01} = \bv{1} \land \var{y1} = \bv{0}}\\
+
+\mathrm{2} : 
+ & \symb{state}(\symb{level0},\var{proc1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{state}(\symb{crit0},\var{proc1},\var{p0},\var{p1},\var{y})
+ & \Constraint{\var{y} \ne \bv{0} \lor (\var{p1} \symb{bvult} \bv{1})}\\
+
+\mathrm{3} : 
+ & \symb{state}(\symb{crit0},\var{proc1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{state}(\symb{noncrit0},\var{proc1},\var{p01},\var{p1},\var{y})
+ & \Constraint{\var{p01} = \bv{0}}\\
+
+\mathrm{4} : 
+ & \symb{state}(\var{proc0},\symb{noncrit1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{state}(\var{proc0},\symb{level1},\var{p0},\var{p11},\var{y1})
+ & \Constraint{\var{p11} = \bv{1} \land \var{y1} = \bv{1}}\\
+
+\mathrm{5} : 
+ & \symb{state}(\var{proc0},\symb{level1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{state}(\var{proc0},\symb{crit1},\var{p0},\var{p1},\var{y})
+ & \Constraint{\var{y} \ne \bv{1} \lor (\var{p0} \symb{bvugt} \bv{1})}\\
+
+\mathrm{6} : 
+ & \symb{state}(\var{proc0},\symb{crit1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{state}(\var{proc0},\symb{noncrit1},\var{p0},\var{p11},\var{y})
+ & \Constraint{\var{p11} = \bv{0}}\\
+
+\mathrm{7} : 
+ & \symb{state}(\var{proc0},\var{proc1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{success}\\
+
+\mathrm{8} : 
+ & \symb{state}(\symb{crit0},\symb{crit1},\var{p0},\var{p1},\var{y})
+ & \to 
+ & \symb{error}\\
+
+\end{array}
+\right\}
+\]
+
+
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{9} : 
+ & \symb{state}(\symb{noncrit0},\symb{noncrit1},\bv{0},\bv{0},\var{y})
+ & \Rightarrow 
+ & \symb{success}\\
+
+\end{array}
+\right\}
+\]
+
+
+\end{document}
+
+

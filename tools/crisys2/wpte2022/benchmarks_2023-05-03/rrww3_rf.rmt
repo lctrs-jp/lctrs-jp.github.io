@@ -1,0 +1,68 @@
+sorts Process, Semaphore, Cnfg, Fcall;
+
+signature
+    cnfg : Process Process Process Process Semaphore Int Int  -> Cnfg,
+    p : Fcall Int  -> Process,
+    sem : Int Int Int  -> Semaphore,
+    rdr7 :  -> Fcall,
+    rdr9 : Int  -> Fcall,
+    rdr10 : Int  -> Fcall,
+    rdr11 : Int  -> Fcall,
+    wrtr18 :  -> Fcall,
+    wrtr19 :  -> Fcall,
+    wrtr20 :  -> Fcall,
+    success :  -> Cnfg,
+    error :  -> Cnfg;
+
+variables
+    P2 : Process, P3 : Process, P4 : Process, S : Int, D : Int, T : Int, X : Int, Y : Int, S1 : Int, T2 : Int, N : Int, D2 : Int, P1 : Process, A : Int, N1 : Int, N2 : Int, N3 : Int, N4 : Int;
+
+constrained-rewrite-system main
+    (cnfg (p rdr7 0) P2 P3 P4 (sem S D T) X 0) => (cnfg (p (rdr9 0) 0) P2 P3 P4 (sem S D T) X 0),
+    (cnfg (p (rdr9 Y) 0) P2 P3 P4 (sem S D T) X 0) /\ (band (bnot (mequals S 0)) (mequals S1 (mminus S 1))) => (cnfg (p (rdr10 Y) 0) P2 P3 P4 (sem S1 D T) X 0),
+    (cnfg (p (rdr9 Y) 0) P2 P3 P4 (sem S D T) X 0) /\ (band (mequals S 0) (mequals T2 (mplus T 2))) => (cnfg (p (rdr9 Y) T) P2 P3 P4 (sem S D T2) X 0),
+    (cnfg (p (rdr9 Y) N) P2 P3 P4 (sem S D T) X 1) /\ (band (mequals N D) (bnot (mequals N 0))) => (cnfg (p (rdr10 Y) 0) P2 P3 P4 (sem S D T) X 0),
+    (cnfg (p (rdr10 Y) 0) P2 P3 P4 (sem S D T) X 0) => (cnfg (p (rdr11 X) 0) P2 P3 P4 (sem S D T) X 0),
+    (cnfg (p (rdr11 Y) 0) P2 P3 P4 (sem S D T) X 0) /\ (band (bnot (mequals T (mplus D 2))) (mequals D2 (mplus D 2))) => (cnfg (p rdr7 0) P2 P3 P4 (sem S D2 T) X 1),
+    (cnfg (p (rdr11 Y) 0) P2 P3 P4 (sem S D T) X 0) /\ (band (mequals T (mplus D 2)) (mequals S1 (mplus S 1))) => (cnfg (p rdr7 0) P2 P3 P4 (sem S1 D2 T) X 0),
+    (cnfg P1 (p rdr7 0) P3 P4 (sem S D T) X 0) => (cnfg P1 (p (rdr9 0) 0) P3 P4 (sem S D T) X 0),
+    (cnfg P1 (p (rdr9 Y) 0) P3 P4 (sem S D T) X 0) /\ (band (bnot (mequals S 0)) (mequals S1 (mminus S 1))) => (cnfg P1 (p (rdr10 Y) 0) P3 P4 (sem S1 D T) X 0),
+    (cnfg P1 (p (rdr9 Y) 0) P3 P4 (sem S D T) X 0) /\ (band (mequals S 0) (mequals T2 (mplus T 2))) => (cnfg P1 (p (rdr9 Y) T) P3 P4 (sem S D T2) X 0),
+    (cnfg P1 (p (rdr9 Y) N) P3 P4 (sem S D T) X 1) /\ (band (mequals N D) (bnot (mequals N 0))) => (cnfg P1 (p (rdr10 Y) 0) P3 P4 (sem S D T) X 0),
+    (cnfg P1 (p (rdr10 Y) 0) P3 P4 (sem S D T) X 0) => (cnfg P1 (p (rdr11 X) 0) P3 P4 (sem S D T) X 0),
+    (cnfg P1 (p (rdr11 Y) 0) P3 P4 (sem S D T) X 0) /\ (band (bnot (mequals T (mplus D 2))) (mequals D2 (mplus D 2))) => (cnfg P1 (p rdr7 0) P3 P4 (sem S D2 T) X 1),
+    (cnfg P1 (p (rdr11 Y) 0) P3 P4 (sem S D T) X 0) /\ (band (mequals T (mplus D 2)) (mequals S1 (mplus S 1))) => (cnfg P1 (p rdr7 0) P3 P4 (sem S1 D2 T) X 0),
+    (cnfg P1 P2 (p wrtr18 0) P4 (sem S D T) X 0) /\ (band (bnot (mequals S 0)) (mequals S1 (mminus S 1))) => (cnfg P1 P2 (p wrtr19 0) P4 (sem S1 D T) X 0),
+    (cnfg P1 P2 (p wrtr18 0) P4 (sem S D T) X 0) /\ (band (mequals S 0) (mequals T2 (mplus T 2))) => (cnfg P1 P2 (p wrtr18 T) P4 (sem S D T2) X 0),
+    (cnfg P1 P2 (p wrtr18 N) P4 (sem S D T) X 1) /\ (band (mequals N D) (bnot (mequals N 0))) => (cnfg P1 P2 (p wrtr19 0) P4 (sem S D T) X 0),
+    (cnfg P1 P2 (p wrtr19 0) P4 (sem S D T) X 0) => (cnfg P1 P2 (p wrtr20 0) P4 (sem S D T) 1 0),
+    (cnfg P1 P2 (p wrtr20 0) P4 (sem S D T) X 0) /\ (band (bnot (mequals T (mplus D 2))) (mequals D2 (mplus D 2))) => (cnfg P1 P2 (p wrtr18 0) P4 (sem S D2 T) X 1),
+    (cnfg P1 P2 (p wrtr20 0) P4 (sem S D T) X 0) /\ (band (mequals T (mplus D 2)) (mequals S1 (mplus S 1))) => (cnfg P1 P2 (p wrtr18 0) P4 (sem S1 D T) X 0),
+    (cnfg P1 P2 P3 (p wrtr18 0) (sem S D T) X 0) /\ (band (bnot (mequals S 0)) (mequals S1 (mminus S 1))) => (cnfg P1 P2 P3 (p wrtr19 0) (sem S1 D T) X 0),
+    (cnfg P1 P2 P3 (p wrtr18 0) (sem S D T) X 0) /\ (band (mequals S 0) (mequals T2 (mplus T 2))) => (cnfg P1 P2 P3 (p wrtr18 T) (sem S D T2) X 0),
+    (cnfg P1 P2 P3 (p wrtr18 N) (sem S D T) X 1) /\ (band (mequals N D) (bnot (mequals N 0))) => (cnfg P1 P2 P3 (p wrtr19 0) (sem S D T) X 0),
+    (cnfg P1 P2 P3 (p wrtr19 0) (sem S D T) X 0) => (cnfg P1 P2 P3 (p wrtr20 0) (sem S D T) 1 0),
+    (cnfg P1 P2 P3 (p wrtr20 0) (sem S D T) X 0) /\ (band (bnot (mequals T (mplus D 2))) (mequals D2 (mplus D 2))) => (cnfg P1 P2 P3 (p wrtr18 0) (sem S D2 T) X 1),
+    (cnfg P1 P2 P3 (p wrtr20 0) (sem S D T) X 0) /\ (band (mequals T (mplus D 2)) (mequals S1 (mplus S 1))) => (cnfg P1 P2 P3 (p wrtr18 0) (sem S1 D T) X 0),
+    (cnfg P1 P2 P3 P4 (sem S D T) X A) => success,
+    (cnfg (p (rdr10 Y) N1) (p (rdr10 Y) N2) (p wrtr19 N3) (p wrtr19 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr11 Y) N1) (p (rdr10 Y) N2) (p wrtr19 N3) (p wrtr19 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr10 Y) N1) (p (rdr11 Y) N2) (p wrtr19 N3) (p wrtr19 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr11 Y) N1) (p (rdr11 Y) N2) (p wrtr19 N3) (p wrtr19 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr10 Y) N1) (p (rdr10 Y) N2) (p wrtr20 N3) (p wrtr19 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr11 Y) N1) (p (rdr10 Y) N2) (p wrtr20 N3) (p wrtr19 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr10 Y) N1) (p (rdr11 Y) N2) (p wrtr20 N3) (p wrtr19 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr11 Y) N1) (p (rdr11 Y) N2) (p wrtr20 N3) (p wrtr19 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr10 Y) N1) (p (rdr10 Y) N2) (p wrtr19 N3) (p wrtr20 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr11 Y) N1) (p (rdr10 Y) N2) (p wrtr19 N3) (p wrtr20 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr10 Y) N1) (p (rdr11 Y) N2) (p wrtr19 N3) (p wrtr20 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr11 Y) N1) (p (rdr11 Y) N2) (p wrtr19 N3) (p wrtr20 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr10 Y) N1) (p (rdr10 Y) N2) (p wrtr20 N3) (p wrtr20 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr11 Y) N1) (p (rdr10 Y) N2) (p wrtr20 N3) (p wrtr20 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr10 Y) N1) (p (rdr11 Y) N2) (p wrtr20 N3) (p wrtr20 N4) (sem S D T) X A) => error,
+    (cnfg (p (rdr11 Y) N1) (p (rdr11 Y) N2) (p wrtr20 N3) (p wrtr20 N4) (sem S D T) X A) => error;
+
+rewrite-system apr
+    (cnfg (p rdr7 0) (p rdr7 0) (p wrtr18 0) (p wrtr18 0) (sem 3 D T) 0 0) /\ (band (mgt D 0) (mequals T (mplus D 2))) => success;
+
+prove [10,10] in main : apr;

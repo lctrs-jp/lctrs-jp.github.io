@@ -1,0 +1,404 @@
+\documentclass[a4paper]{article}
+\usepackage{lscape}
+%\usepackage{latexsym}
+%\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\newcommand{\ttsym}[1]{\mbox{\tt #1}}
+\def\ttsharp{\ttsym{\symbol{35}}}
+\newcommand{\Sort}[1]{\mathit{#1}}
+\newcommand{\symb}[1]{\mathsf{#1}}
+\newcommand{\var}[1]{\mathit{#1}}
+\newcommand{\Constraint}[1]{[\, #1 \,]}
+\newcommand{\bv}[2][b]{{\ttsharp\symb{#1}{#2}}}
+\newcommand{\Sigmainttheory}{\Sigma^{\mathit{int}}_{\mathit{theory}}}
+\newcommand{\Sigmabvtheory}{\Sigma^{\mathit{bv}}_{\mathit{theory}}}
+
+\begin{document}
+\footnotesize
+
+\begin{landscape}
+
+\section*{Original LCTRSs}
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{config} & : & \Sort{Thread} \times \Sort{Thread} \times \Sort{Thread} \times \Sort{Thread} \times \Sort{Thread} \times \Sort{int} \times \Sort{int} \Rightarrow \Sort{Config}\\
+\symb{thread} & : & \Sort{State} \Rightarrow \Sort{Thread}\\
+\symb{none} & : & \Sort{Thread}\\
+\symb{main} & : & \Sort{State}\\
+\symb{main0} & : & \Sort{State}\\
+\symb{main1} & : & \Sort{State}\\
+\symb{main2} & : & \Sort{State}\\
+\symb{main3} & : & \Sort{State}\\
+\symb{main4} & : & \Sort{State}\\
+\symb{main5} & : & \Sort{State}\\
+\symb{main6} & : & \Sort{State}\\
+\symb{main7} & : & \Sort{State}\\
+\symb{return0} & : & \Sort{State}\\
+\symb{setThread} & : & \Sort{State}\\
+\symb{setThread1} & : & \Sort{State}\\
+\symb{setThread2} & : & \Sort{State}\\
+\symb{checkThread} & : & \Sort{State}\\
+\symb{success} & : & \Sort{Config}\\
+\symb{error} & : & \Sort{Config}\\
+\symb{assert0} & : & \Sort{Config}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{config}(\symb{thread}(\symb{main}),\symb{none},\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main0}),\symb{thread}(\symb{setThread}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{2} : 
+ & \symb{config}(\symb{thread}(\symb{main}),\symb{thread}(\var{s}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{3} : 
+ & \symb{config}(\symb{thread}(\symb{main0}),\var{thrd0},\symb{none},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main1}),\var{thrd0},\symb{thread}(\symb{setThread}),\var{thrd2},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{4} : 
+ & \symb{config}(\symb{thread}(\symb{main0}),\var{thrd0},\symb{thread}(\var{s}),\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{5} : 
+ & \symb{config}(\symb{thread}(\symb{main1}),\var{thrd0},\var{thrd1},\symb{none},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main2}),\var{thrd0},\var{thrd1},\symb{thread}(\symb{setThread}),\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{6} : 
+ & \symb{config}(\symb{thread}(\symb{main1}),\var{thrd0},\var{thrd1},\symb{thread}(\var{s}),\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{7} : 
+ & \symb{config}(\symb{thread}(\symb{main2}),\var{thrd0},\var{thrd1},\var{thrd2},\symb{none},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main3}),\var{thrd0},\var{thrd1},\var{thrd2},\symb{thread}(\symb{checkThread}),\var{a},\var{b})\\
+
+\mathrm{8} : 
+ & \symb{config}(\symb{thread}(\symb{main2}),\var{thrd0},\var{thrd1},\var{thrd2},\symb{thread}(\var{s}),\var{a},\var{b})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{9} : 
+ & \symb{config}(\symb{thread}(\symb{main3}),\symb{thread}(\symb{return0}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main4}),\symb{none},\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{10} : 
+ & \symb{config}(\symb{thread}(\symb{main4}),\var{thrd0},\symb{thread}(\symb{return0}),\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main5}),\var{thrd0},\symb{none},\var{thrd2},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{11} : 
+ & \symb{config}(\symb{thread}(\symb{main5}),\var{thrd0},\var{thrd1},\symb{thread}(\symb{return0}),\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main6}),\var{thrd0},\var{thrd1},\symb{none},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{12} : 
+ & \symb{config}(\symb{thread}(\symb{main6}),\var{thrd0},\var{thrd1},\var{thrd2},\symb{thread}(\symb{return0}),\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main7}),\var{thrd0},\var{thrd1},\var{thrd2},\symb{none},\var{a},\var{b})\\
+
+\mathrm{13} : 
+ & \symb{config}(\symb{thread}(\symb{main7}),\var{thrd0},\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{return0}),\var{thrd0},\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{14} : 
+ & \symb{config}(\var{thrd},\symb{thread}(\symb{setThread}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\symb{thread}(\symb{setThread1}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a1},\var{b})
+ & \Constraint{\var{a1} = \symb{1}}\\
+
+\mathrm{15} : 
+ & \symb{config}(\var{thrd},\symb{thread}(\symb{setThread1}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\symb{thread}(\symb{setThread2}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b1})
+ & \Constraint{\var{b1} = \symb{-1}}\\
+
+\mathrm{16} : 
+ & \symb{config}(\var{thrd},\symb{thread}(\symb{setThread2}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\symb{thread}(\symb{return0}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{17} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\symb{thread}(\symb{setThread}),\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\var{thrd0},\symb{thread}(\symb{setThread1}),\var{thrd2},\var{thrd3},\var{a1},\var{b})
+ & \Constraint{\var{a1} = \symb{1}}\\
+
+\mathrm{18} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\symb{thread}(\symb{setThread1}),\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\var{thrd0},\symb{thread}(\symb{setThread2}),\var{thrd2},\var{thrd3},\var{a},\var{b1})
+ & \Constraint{\var{b1} = \symb{-1}}\\
+
+\mathrm{19} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\symb{thread}(\symb{setThread2}),\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\var{thrd0},\symb{thread}(\symb{return0}),\var{thrd2},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{20} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\symb{thread}(\symb{setThread}),\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\symb{thread}(\symb{setThread1}),\var{thrd3},\var{a1},\var{b})
+ & \Constraint{\var{a1} = \symb{1}}\\
+
+\mathrm{21} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\symb{thread}(\symb{setThread1}),\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\symb{thread}(\symb{setThread2}),\var{thrd3},\var{a},\var{b1})
+ & \Constraint{\var{b1} = \symb{-1}}\\
+
+\mathrm{22} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\symb{thread}(\symb{setThread2}),\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\symb{thread}(\symb{return0}),\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{23} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\var{thrd2},\symb{thread}(\symb{checkThread}),\var{a},\var{b})
+ & \to 
+ & \symb{assert0}
+ & \Constraint{\neg(((\var{a} = \symb{0} \land \var{b} = \symb{0}) \lor (\var{a} = \symb{1} \land \var{b} = \symb{-1})))}\\
+
+\mathrm{24} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\var{thrd2},\symb{thread}(\symb{checkThread}),\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\var{thrd2},\symb{thread}(\symb{return0}),\var{a},\var{b})
+ & \Constraint{(\var{a} = \symb{0} \land \var{b} = \symb{0}) \lor (\var{a} = \symb{1} \land \var{b} = \symb{-1})}\\
+
+\mathrm{25} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{success}\\
+
+\end{array}
+\right\}
+\]
+
+
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{26} : 
+ & \symb{config}(\symb{thread}(\symb{main}),\symb{none},\symb{none},\symb{none},\symb{none},\symb{0},\symb{0})
+ & \Rightarrow 
+ & \symb{success}\\
+
+\end{array}
+\right\}
+\]
+
+
+\newpage
+\section*{BV-LCTRS Version}
+
+\scriptsize
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{config} & : & \Sort{Thread} \times \Sort{Thread} \times \Sort{Thread} \times \Sort{Thread} \times \Sort{Thread} \times \Sort{bitvec}_{32} \times \Sort{bitvec}_{32} \Rightarrow \Sort{Config}\\
+\symb{thread} & : & \Sort{State} \Rightarrow \Sort{Thread}\\
+\symb{none} & : & \Sort{Thread}\\
+\symb{main} & : & \Sort{State}\\
+\symb{main0} & : & \Sort{State}\\
+\symb{main1} & : & \Sort{State}\\
+\symb{main2} & : & \Sort{State}\\
+\symb{main3} & : & \Sort{State}\\
+\symb{main4} & : & \Sort{State}\\
+\symb{main5} & : & \Sort{State}\\
+\symb{main6} & : & \Sort{State}\\
+\symb{main7} & : & \Sort{State}\\
+\symb{return0} & : & \Sort{State}\\
+\symb{setThread} & : & \Sort{State}\\
+\symb{setThread1} & : & \Sort{State}\\
+\symb{setThread2} & : & \Sort{State}\\
+\symb{checkThread} & : & \Sort{State}\\
+\symb{success} & : & \Sort{Config}\\
+\symb{error} & : & \Sort{Config}\\
+\symb{assert0} & : & \Sort{Config}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{config}(\symb{thread}(\symb{main}),\symb{none},\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main0}),\symb{thread}(\symb{setThread}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{2} : 
+ & \symb{config}(\symb{thread}(\symb{main}),\symb{thread}(\var{s}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{3} : 
+ & \symb{config}(\symb{thread}(\symb{main0}),\var{thrd0},\symb{none},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main1}),\var{thrd0},\symb{thread}(\symb{setThread}),\var{thrd2},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{4} : 
+ & \symb{config}(\symb{thread}(\symb{main0}),\var{thrd0},\symb{thread}(\var{s}),\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{5} : 
+ & \symb{config}(\symb{thread}(\symb{main1}),\var{thrd0},\var{thrd1},\symb{none},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main2}),\var{thrd0},\var{thrd1},\symb{thread}(\symb{setThread}),\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{6} : 
+ & \symb{config}(\symb{thread}(\symb{main1}),\var{thrd0},\var{thrd1},\symb{thread}(\var{s}),\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{7} : 
+ & \symb{config}(\symb{thread}(\symb{main2}),\var{thrd0},\var{thrd1},\var{thrd2},\symb{none},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main3}),\var{thrd0},\var{thrd1},\var{thrd2},\symb{thread}(\symb{checkThread}),\var{a},\var{b})\\
+
+\mathrm{8} : 
+ & \symb{config}(\symb{thread}(\symb{main2}),\var{thrd0},\var{thrd1},\var{thrd2},\symb{thread}(\var{s}),\var{a},\var{b})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{9} : 
+ & \symb{config}(\symb{thread}(\symb{main3}),\symb{thread}(\symb{return0}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main4}),\symb{none},\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{10} : 
+ & \symb{config}(\symb{thread}(\symb{main4}),\var{thrd0},\symb{thread}(\symb{return0}),\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main5}),\var{thrd0},\symb{none},\var{thrd2},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{11} : 
+ & \symb{config}(\symb{thread}(\symb{main5}),\var{thrd0},\var{thrd1},\symb{thread}(\symb{return0}),\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main6}),\var{thrd0},\var{thrd1},\symb{none},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{12} : 
+ & \symb{config}(\symb{thread}(\symb{main6}),\var{thrd0},\var{thrd1},\var{thrd2},\symb{thread}(\symb{return0}),\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{main7}),\var{thrd0},\var{thrd1},\var{thrd2},\symb{none},\var{a},\var{b})\\
+
+\mathrm{13} : 
+ & \symb{config}(\symb{thread}(\symb{main7}),\var{thrd0},\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\symb{thread}(\symb{return0}),\var{thrd0},\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{14} : 
+ & \symb{config}(\var{thrd},\symb{thread}(\symb{setThread}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\symb{thread}(\symb{setThread1}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a1},\var{b})
+ & \Constraint{\var{a1} = \bv[x]{00000001}}\\
+
+\mathrm{15} : 
+ & \symb{config}(\var{thrd},\symb{thread}(\symb{setThread1}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\symb{thread}(\symb{setThread2}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b1})
+ & \Constraint{\var{b1} = \bv[x]{11111111}}\\
+
+\mathrm{16} : 
+ & \symb{config}(\var{thrd},\symb{thread}(\symb{setThread2}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\symb{thread}(\symb{return0}),\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{17} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\symb{thread}(\symb{setThread}),\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\var{thrd0},\symb{thread}(\symb{setThread1}),\var{thrd2},\var{thrd3},\var{a1},\var{b})
+ & \Constraint{\var{a1} = \bv[x]{00000001}}\\
+
+\mathrm{18} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\symb{thread}(\symb{setThread1}),\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\var{thrd0},\symb{thread}(\symb{setThread2}),\var{thrd2},\var{thrd3},\var{a},\var{b1})
+ & \Constraint{\var{b1} = \bv[x]{11111111}}\\
+
+\mathrm{19} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\symb{thread}(\symb{setThread2}),\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\var{thrd0},\symb{thread}(\symb{return0}),\var{thrd2},\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{20} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\symb{thread}(\symb{setThread}),\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\symb{thread}(\symb{setThread1}),\var{thrd3},\var{a1},\var{b})
+ & \Constraint{\var{a1} = \bv[x]{00000001}}\\
+
+\mathrm{21} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\symb{thread}(\symb{setThread1}),\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\symb{thread}(\symb{setThread2}),\var{thrd3},\var{a},\var{b1})
+ & \Constraint{\var{b1} = \bv[x]{11111111}}\\
+
+\mathrm{22} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\symb{thread}(\symb{setThread2}),\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\symb{thread}(\symb{return0}),\var{thrd3},\var{a},\var{b})\\
+
+\mathrm{23} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\var{thrd2},\symb{thread}(\symb{checkThread}),\var{a},\var{b})
+ & \to 
+ & \symb{assert0}
+ & \Constraint{\neg(((\var{a} = \bv[x]{00000000} \land \var{b} = \bv[x]{00000000}) \lor (\var{a} = \bv[x]{00000001} \land \var{b} = \bv[x]{11111111})))}\\
+
+\mathrm{24} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\var{thrd2},\symb{thread}(\symb{checkThread}),\var{a},\var{b})
+ & \to 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\var{thrd2},\symb{thread}(\symb{return0}),\var{a},\var{b})
+ & \Constraint{(\var{a} = \bv[x]{00000000} \land \var{b} = \bv[x]{00000000}) \lor (\var{a} = \bv[x]{00000001} \land \var{b} = \bv[x]{11111111})}\\
+
+\mathrm{25} : 
+ & \symb{config}(\var{thrd},\var{thrd0},\var{thrd1},\var{thrd2},\var{thrd3},\var{a},\var{b})
+ & \to 
+ & \symb{success}\\
+
+\end{array}
+\right\}
+\]
+
+
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{26} : 
+ & \symb{config}(\symb{thread}(\symb{main}),\symb{none},\symb{none},\symb{none},\symb{none},\bv[x]{00000000},\bv[x]{00000000})
+ & \Rightarrow 
+ & \symb{success}\\
+
+\end{array}
+\right\}
+\]
+
+\end{landscape}
+
+\end{document}
+
+

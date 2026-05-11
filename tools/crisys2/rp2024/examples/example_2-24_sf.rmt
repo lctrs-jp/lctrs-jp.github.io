@@ -1,0 +1,35 @@
+sorts Loc, State;
+
+signature
+  state    : Loc Loc Int Int -> State,
+  noncrit1 : -> Loc,
+  wait1    : -> Loc,
+  crit1    : -> Loc,
+  noncrit2 : -> Loc,
+  wait2    : -> Loc,
+  crit2    : -> Loc,
+  success  : -> State,
+  error    : -> State;
+
+variables
+  P1 : Loc, P2 : Loc,
+  Y : Int, Y1 : Int, C : Int, C1 : Int;
+
+rewrite-system main
+  (state noncrit1 P2 Y C) /\ (band (mequals C1 1) (mle C 3))                                                   => (state wait1    P2 Y  C1),
+  (state wait1    P2 Y C) /\ (band (band (band (mgt Y 0) (mequals Y1 (mminus Y 1))) (mequals C1 0)) (mle C 3)) => (state crit1    P2 Y1 C1),
+  (state crit1    P2 Y C) /\ (band (mequals Y1 (mplus Y 1)) (mle C 3))                                         => (state noncrit1 P2 Y1 C ),
+
+  (state P1 noncrit2 Y C) /\ (band (bor (band (mgt C 0) (mequals C1 (mplus C 1))) (band (mle C 0) (mequals C1 C))) (mle C 3))                                                   => (state P1 wait2    Y  C1),
+  (state P1 wait2    Y C) /\ (band (band (band (mgt Y 0) (mequals Y1 (mminus Y 1))) (bor (band (mgt C 0) (mequals C1 (mplus C 1))) (band (mle C 0) (mequals C1 C)))) (mle C 3)) => (state P1 crit2    Y1 C1),
+  (state P1 crit2    Y C) /\ (band (band (mequals Y1 (mplus Y 1)) (bor (band (mgt C 0) (mequals C1 (mplus C 1))) (band (mle C 0) (mequals C1 C)))) (mle C 3))                   => (state P1 noncrit2 Y1 C1),
+    
+  (state P1 P2 Y C) => success,
+
+  (state wait1 P2    Y C) /\ (mgt C 3)                 => error,
+  (state wait1 wait2 Y C) /\ (band (mle Y 0) (mgt C 0)) => error;
+
+rewrite-system starvation-freedom
+  (state noncrit1 noncrit2 Y C) /\ (band (mequals Y 1) (mequals C 0)) => success;
+
+prove [10,10] in main : starvation-freedom;

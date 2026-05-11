@@ -1,0 +1,39 @@
+sorts Loc, State;
+
+signature
+  state   : Loc Loc Bool Bool Int -> State,
+  c00     : -> Loc,
+  c10     : -> Loc,
+  c20     : -> Loc,
+  crit0   : -> Loc,
+  c01     : -> Loc,
+  c11     : -> Loc,
+  c21     : -> Loc,
+  crit1   : -> Loc,
+  success : -> State,
+  error   : -> State;
+
+variables
+  P0 : Loc, P1 : Loc, B0 : Bool, B1 : Bool, B01 : Bool, B11 : Bool, K : Int, K1 : Int;
+
+rewrite-system main
+  (state c00   P1 B0 B1 K) /\ (bnot B01)               => (state c10   P1 B01 B1 K ),
+  (state c10   P1 B0 B1 K) /\ (bnot (mequals K 0))     => (state c20   P1 B0  B1 K ),
+  (state c10   P1 B0 B1 K) /\ (mequals K 0)            => (state crit0 P1 B0  B1 K ),
+  (state c20   P1 B0 B1 K) /\ (band B1 (mequals K1 0)) => (state c10   P1 B0  B1 K1),
+  (state crit0 P1 B0 B1 K) /\ B01                      => (state c00   P1 B01 B1 K ),
+
+  (state P0 c01   B0 B1 K) /\ (bnot B11)               => (state P0 c11   B0 B11 K ),
+  (state P0 c11   B0 B1 K) /\ (bnot (mequals K 1))     => (state P0 c21   B0 B1  K ),
+  (state P0 c11   B0 B1 K) /\ (mequals K 1)            => (state P0 crit1 B0 B1  K ),
+  (state P0 c21   B0 B1 K) /\ (band B0 (mequals K1 1)) => (state P0 c11   B0 B1  K1),
+  (state P0 crit1 B0 B1 K) /\ B11                      => (state P0 c01   B0 B11 K ),
+
+  (state P0 P1 B0 B1 K) => success,
+
+  (state crit0 crit1 B0 B1 K) => error;
+
+rewrite-system apr
+    (state c00 c01 true true K) /\ (bor (mequals K 0) (mequals K 1)) => success;
+
+prove [10,10] in main : apr;

@@ -1,0 +1,255 @@
+\documentclass[a4paper]{article}
+%\usepackage{latexsym}
+%\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\newcommand{\ttsym}[1]{\mbox{\tt #1}}
+\def\ttsharp{\ttsym{\symbol{35}}}
+\newcommand{\Sort}[1]{\mathit{#1}}
+\newcommand{\symb}[1]{\mathsf{#1}}
+\newcommand{\var}[1]{\mathit{#1}}
+\newcommand{\Constraint}[1]{[\, #1 \,]}
+\newcommand{\bv}[2][b]{{\ttsharp\symb{#1}{#2}}}
+\newcommand{\Sigmainttheory}{\Sigma^{\mathit{int}}_{\mathit{theory}}}
+\newcommand{\Sigmabvtheory}{\Sigma^{\mathit{bv}}_{\mathit{theory}}}
+
+\begin{document}
+%\scriptsize
+
+\section*{Original LCTRSs}
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{state} & : & \Sort{Loc} \times \Sort{Loc} \times \Sort{bool} \times \Sort{bool} \times \Sort{int} \Rightarrow \Sort{State}\\
+\symb{c00} & : & \Sort{Loc}\\
+\symb{c10} & : & \Sort{Loc}\\
+\symb{c20} & : & \Sort{Loc}\\
+\symb{crit0} & : & \Sort{Loc}\\
+\symb{c01} & : & \Sort{Loc}\\
+\symb{c11} & : & \Sort{Loc}\\
+\symb{c21} & : & \Sort{Loc}\\
+\symb{crit1} & : & \Sort{Loc}\\
+\symb{success} & : & \Sort{State}\\
+\symb{error} & : & \Sort{State}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{state}(\symb{c00},\var{p1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\symb{c10},\var{p1},\var{b01},\var{b1},\var{k})
+ & \Constraint{\neg(\var{b01})}\\
+
+\mathrm{2} : 
+ & \symb{state}(\symb{c10},\var{p1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\symb{c20},\var{p1},\var{b0},\var{b1},\var{k})
+ & \Constraint{\var{k} \ne \symb{0}}\\
+
+\mathrm{3} : 
+ & \symb{state}(\symb{c10},\var{p1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\symb{crit0},\var{p1},\var{b0},\var{b1},\var{k})
+ & \Constraint{\var{k} = \symb{0}}\\
+
+\mathrm{4} : 
+ & \symb{state}(\symb{c20},\var{p1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\symb{c10},\var{p1},\var{b0},\var{b1},\var{k1})
+ & \Constraint{\var{b1} \land \var{k1} = \symb{0}}\\
+
+\mathrm{5} : 
+ & \symb{state}(\symb{crit0},\var{p1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\symb{c00},\var{p1},\var{b01},\var{b1},\var{k})
+ & \Constraint{\var{b01}}\\
+
+\mathrm{6} : 
+ & \symb{state}(\var{p0},\symb{c01},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\var{p0},\symb{c11},\var{b0},\var{b11},\var{k})
+ & \Constraint{\neg(\var{b11})}\\
+
+\mathrm{7} : 
+ & \symb{state}(\var{p0},\symb{c11},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\var{p0},\symb{c21},\var{b0},\var{b1},\var{k})
+ & \Constraint{\var{k} \ne \symb{1}}\\
+
+\mathrm{8} : 
+ & \symb{state}(\var{p0},\symb{c11},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\var{p0},\symb{crit1},\var{b0},\var{b1},\var{k})
+ & \Constraint{\var{k} = \symb{1}}\\
+
+\mathrm{9} : 
+ & \symb{state}(\var{p0},\symb{c21},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\var{p0},\symb{c11},\var{b0},\var{b1},\var{k1})
+ & \Constraint{\var{b0} \land \var{k1} = \symb{1}}\\
+
+\mathrm{10} : 
+ & \symb{state}(\var{p0},\symb{crit1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\var{p0},\symb{c01},\var{b0},\var{b11},\var{k})
+ & \Constraint{\var{b11}}\\
+
+\mathrm{11} : 
+ & \symb{state}(\var{p0},\var{p1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{success}\\
+
+\mathrm{12} : 
+ & \symb{state}(\symb{crit0},\symb{crit1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{error}\\
+
+\end{array}
+\right\}
+\]
+
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{13} : 
+ & \symb{state}(\symb{c00},\symb{c01},\symb{true},\symb{true},\var{k})
+ & \Rightarrow 
+ & \symb{success}
+ & \Constraint{\var{k} = \symb{0} \lor \var{k} = \symb{1}} \\
+
+\end{array}
+\right\}
+\]
+
+
+\newpage
+\section*{BV-LCTRS Version}
+
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{state} & : & \Sort{Loc} \times \Sort{Loc} \times \Sort{bool} \times \Sort{bool} \times \Sort{bitvec}_{1} \Rightarrow \Sort{State}\\
+\symb{c00} & : & \Sort{Loc}\\
+\symb{c10} & : & \Sort{Loc}\\
+\symb{c20} & : & \Sort{Loc}\\
+\symb{crit0} & : & \Sort{Loc}\\
+\symb{c01} & : & \Sort{Loc}\\
+\symb{c11} & : & \Sort{Loc}\\
+\symb{c21} & : & \Sort{Loc}\\
+\symb{crit1} & : & \Sort{Loc}\\
+\symb{success} & : & \Sort{State}\\
+\symb{error} & : & \Sort{State}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{state}(\symb{c00},\var{p1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\symb{c10},\var{p1},\var{b01},\var{b1},\var{k})
+ & \Constraint{\neg(\var{b01})}\\
+
+\mathrm{2} : 
+ & \symb{state}(\symb{c10},\var{p1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\symb{c20},\var{p1},\var{b0},\var{b1},\var{k})
+ & \Constraint{\var{k} \ne \bv{0}}\\
+
+\mathrm{3} : 
+ & \symb{state}(\symb{c10},\var{p1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\symb{crit0},\var{p1},\var{b0},\var{b1},\var{k})
+ & \Constraint{\var{k} = \bv{0}}\\
+
+\mathrm{4} : 
+ & \symb{state}(\symb{c20},\var{p1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\symb{c10},\var{p1},\var{b0},\var{b1},\var{k1})
+ & \Constraint{\var{b1} \land \var{k1} = \bv{0}}\\
+
+\mathrm{5} : 
+ & \symb{state}(\symb{crit0},\var{p1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\symb{c00},\var{p1},\var{b01},\var{b1},\var{k})
+ & \Constraint{\var{b01}}\\
+
+\mathrm{6} : 
+ & \symb{state}(\var{p0},\symb{c01},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\var{p0},\symb{c11},\var{b0},\var{b11},\var{k})
+ & \Constraint{\neg(\var{b11})}\\
+
+\mathrm{7} : 
+ & \symb{state}(\var{p0},\symb{c11},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\var{p0},\symb{c21},\var{b0},\var{b1},\var{k})
+ & \Constraint{\var{k} \ne \bv{1}}\\
+
+\mathrm{8} : 
+ & \symb{state}(\var{p0},\symb{c11},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\var{p0},\symb{crit1},\var{b0},\var{b1},\var{k})
+ & \Constraint{\var{k} = \bv{1}}\\
+
+\mathrm{9} : 
+ & \symb{state}(\var{p0},\symb{c21},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\var{p0},\symb{c11},\var{b0},\var{b1},\var{k1})
+ & \Constraint{\var{b0} \land \var{k1} = \bv{1}}\\
+
+\mathrm{10} : 
+ & \symb{state}(\var{p0},\symb{crit1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{state}(\var{p0},\symb{c01},\var{b0},\var{b11},\var{k})
+ & \Constraint{\var{b11}}\\
+
+\mathrm{11} : 
+ & \symb{state}(\var{p0},\var{p1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{success}\\
+
+\mathrm{12} : 
+ & \symb{state}(\symb{crit0},\symb{crit1},\var{b0},\var{b1},\var{k})
+ & \to 
+ & \symb{error}\\
+
+\end{array}
+\right\}
+\]
+
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{13} : 
+ & \symb{state}(\symb{c00},\symb{c01},\symb{true},\symb{true},\var{k})
+ & \Rightarrow 
+ & \symb{success}
+ & \Constraint{\var{k} = \bv{0} \lor \var{k} = \bv{1}} \\
+
+\end{array}
+\right\}
+\]
+
+
+\end{document}
+
+

@@ -1,0 +1,869 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Format of .cctrs2 Files</title>
+<style type="text/css">
+body {
+  font-size: 92%;
+}
+
+table {
+  font-size: 1em;
+}
+
+td.lhs {
+  text-align: right;
+  white-space: nowrap;
+}
+td.is  {
+  text-align: center;
+  white-space: nowrap;
+  padding-left: 5px;
+  padding-right: 5px; 
+  font-family: times, 'times new roman', serif; 
+}
+td.rhs { 
+  text-align: left;
+  white-space: nowrap;
+}
+td.notes { 
+  text-align: left;
+  white-space: nowrap;
+  padding-left: 10px; 
+  font-family: times, 'times new roman', serif; 
+}
+
+/* nonterminals */
+.n { 
+  font-style: italic; 
+  font-family: times, 'times new roman', serif; 
+}
+/* terminals */
+.t { 
+  color: #00a; 
+  font-style: normal; 
+  font-family: 'courier new', monospace; 
+}
+/* metasymbols */
+.m {
+  font-style: normal;
+  font-family: times, 'times new roman', serif; 
+}
+
+.i { font-style: italic; }
+.u { font-style: normal; }
+
+code {
+  color: #00a;
+  font-family: 'courier new', monospace; 
+}
+
+pre {
+  font-family: 'courier new', monospace; 
+}
+</style>
+</head>
+<body>
+<h1>Format of <code>.cctrs2</code> Files (tentative)</h1>
+<h3>August 10, 2016</h3>
+
+
+<hr>
+
+<h2>Grammar</h2>
+
+<p>In the following grammar, the notation <span class="m">[ . . . ]</span> represents an optional part.</p>
+
+<table cellpadding="0" cellspacing="2" align="center">
+<tbody>
+ <tr>
+  <td class="lhs"><span class="n">spec</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="n">section<sub class="u">1</sub></span>
+   <span class="m">. . .</span>
+   <span class="n">section<sub class="i">n</sub></span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 0)</td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">section</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="n">sorts_section</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">functions_section</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">precdicates_section</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">smt_solver_section</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">logic_section</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">smt_sorts_section</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">interpretations_section</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">rules_section</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">properties_section</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">conjectures_section</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+
+
+ <tr>
+  <td class="lhs"><span class="n">sorts_section</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">SORTS</span>
+   <span class="t">:</span>
+   <span class="n">ident<sub class="u">1</sub></span>
+   <span class="t">,</span>
+   <span class="m">. . .</span>
+   <span class="t">,</span>
+   <span class="n">ident<sub class="i">n</sub></span>
+   <span class="t">;</span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 0)</td>
+ </tr>
+ <tr>
+  <td class="lhs"><span class="n">functions_section</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">FUNCTIONS</span>
+   <span class="t">:</span>
+   <span class="n">func_decl<sub class="u">1</sub></span>
+   <span class="m">. . .</span>
+   <span class="n">func_decl<sub class="i">n</sub></span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 0)</td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">func_decl</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="n">ident<sub class="u">1</sub></span>
+   <span class="t">,</span>
+   <span class="m">. . .</span>
+   <span class="t">,</span>
+   <span class="n">ident<sub class="i">n</sub></span>
+   <span class="t">:</span>
+   <span class="n">func_sort</span>
+   <span class="m">[</span>
+   <span class="n">func_infix</span>
+   <span class="m">]</span>
+   <span class="t">;</span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 1)</td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">func_sort</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="n">ident</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">ident<sub class="u">1</sub></span>
+   <span class="t">*</span>
+   <span class="m">. . .</span>
+   <span class="t">*</span>
+   <span class="n">ident<sub class="i">n</sub></span>
+   <span class="t">-></span>
+   <span class="n">ident</span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 1)</td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">func_infix</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">(</span>
+   <span class="t">infix</span>
+   <span class="m">[</span>
+   <span class="n">digits</span>
+   <span class="n">assoc</span>
+   <span class="m">]</span>
+   <span class="t">)</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">assoc</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">left</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="t">right</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="t">nonassoc</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+
+
+ <tr>
+  <td class="lhs"><span class="n">predicates_section</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">PREDICATES</span>
+   <span class="t">:</span>
+   <span class="n">pred_decl<sub class="u">1</sub></span>
+   <span class="m">. . .</span>
+   <span class="n">pred_decl<sub class="i">n</sub></span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 0)</td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">pred_decl</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="n">ident<sub class="u">1</sub></span>
+   <span class="t">,</span>
+   <span class="m">. . .</span>
+   <span class="t">,</span>
+   <span class="n">ident<sub class="i">n</sub></span>
+   <span class="t">:</span>
+   <span class="n">pred_sort</span>
+   <span class="m">[</span>
+   <span class="t">(</span>
+   <span class="t">infix</span>
+   <span class="t">)</span>
+   <span class="m">]</span>
+   <span class="t">;</span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 1)</td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">pred_sort</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">constant</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">ident<sub class="u">1</sub></span>
+   <span class="t">*</span>
+   <span class="m">. . .</span>
+   <span class="t">*</span>
+   <span class="n">ident<sub class="i">n</sub></span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 1)</td>
+ </tr>
+
+
+ <tr>
+  <td class="lhs"><span class="n">smt_sorts_section</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">SMT_SORTS</span>
+   <span class="t">:</span>
+   <span class="n">smt_sort_decl<sub class="u">1</sub></span>
+   <span class="m">. . .</span>
+   <span class="n">smt_sort_decl<sub class="i">n</sub></span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 0)</td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">smt_sort_decl</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="n">ident</span>
+   <span class="t">:</span>
+   <span class="n">any_chars</span>
+   <span class="t">;</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">logic_section</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">LOGIC</span>
+   <span class="t">:</span>
+   <span class="n">any_chars</span>
+   <span class="t">;</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">interpretations_section</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">INTERPRETATIONS</span>
+   <span class="t">:</span>
+   <span class="n">interp_decl<sub class="u">1</sub></span>
+   <span class="m">. . .</span>
+   <span class="n">interp_decl<sub class="i">n</sub></span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 0)</td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">interp_decl</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="n">ident</span>
+   <span class="t">:</span>
+   <span class="n">smt_expr</span>
+   <span class="t">;</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">smt_expr</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="n">any_chars<sub class="u">1</sub></span>
+   <span class="m">. . .</span>
+   <span class="n">any_chars<sub class="i">n</sub></span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 1)</td>
+ </tr>
+
+
+ <tr>
+  <td class="lhs"><span class="n">smt_solver_section</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">SMT_SOLVER</span>
+   <span class="t">:</span>
+   <span class="n">any_chars</span>
+   <span class="t">;</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">rules_section</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">RULES</span>
+   <span class="t">:</span>
+   <span class="n">rule_decl<sub class="u">1</sub></span>
+   <span class="m">. . .</span>
+   <span class="n">rule_decl<sub class="i">n</sub></span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 0)</td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">rule_decl</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="m">[</span>
+   <span class="n">digits</span>
+   <span class="t">:</span>
+   <span class="m">]</span>
+   <span class="n">term</span>
+   <span class="t">-&gt;</span>
+   <span class="n">term</span>
+   <span class="m">[</span>
+   <span class="t">[</span>
+   <span class="n">formula</span>
+   <span class="t">]</span>
+   <span class="m">]</span>
+   <span class="t">;</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">properties_section</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">CONJECTURES</span>
+   <span class="t">:</span>
+   <span class="n">property<sub class="u">1</sub></span>
+   <span class="t">,</span>
+   <span class="m">. . .</span>
+   <span class="t">,</span>
+   <span class="n">property<sub class="i">n</sub></span>
+   <span class="t">;</span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 0)</td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">property</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">SN</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="t">GCR</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="t">SC</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="t">LS</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">conjectures_section</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">CONJECTURES</span>
+   <span class="t">:</span>
+   <span class="n">conj_decl<sub class="u">1</sub></span>
+   <span class="m">. . .</span>
+   <span class="n">conj_decl<sub class="i">n</sub></span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 0)</td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">conj_decl</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="m">[</span>
+   <span class="n">digits</span>
+   <span class="t">:</span>
+   <span class="m">]</span>
+   <span class="n">nterm</span>
+   <span class="m">[</span>
+   <span class="t">[</span>
+   <span class="n">formula</span>
+   <span class="t">]</span>
+   <span class="m">]</span>
+   <span class="t">;</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">formula</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="n">aform</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">formula</span>
+   <span class="t">&amp;&amp;</span>
+   <span class="n">formula</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">formula</span>
+   <span class="t">||</span>
+   <span class="n">formula</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">formula</span>
+   <span class="t">=&gt;</span>
+   <span class="n">formula</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">formula</span>
+   <span class="t">&lt;=&gt;</span>
+   <span class="n">formula</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">aform</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="t">true</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="t">false</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="t">not</span>
+   <span class="n">aform</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">term</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="t">(</span>
+   <span class="n">formula</span>
+   <span class="t">)</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+
+ <tr>
+  <td class="lhs"><span class="n">term</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="n">aterm<sub class="u">1</sub></span>
+   <span class="n">infixop<sub class="u">1</sub></span>
+   <span class="m">. . .</span>
+   <span class="n">aterm<sub class="i">n</sub></span>
+   <span class="n">infixop<sub class="i">n</sub></span>
+   <span class="n">aterm<sub class="u"><i>n</i>+1</sub></span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 0)</td>
+ </tr>
+
+
+ <tr>
+  <td class="lhs"><span class="n">aterm</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="n">ident</span>
+   <span class="t">(</span>
+   <span class="n">term<sub class="u">1</sub></span>
+   <span class="t">,</span>
+   <span class="m">. . .</span>
+   <span class="t">,</span>
+   <span class="n">term<sub class="i">n</sub></span>
+   <span class="t">)</span>
+  </td>
+  <td class="notes">(<span class="i">n</span> &ge; 1)</td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="n">ident</span>
+   <span class="t">^</span>
+   <span class="n">digits</span>
+   <span class="t">(</span>
+   <span class="n">term</span>
+   <span class="t">)</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+  <td class="lhs"></td>
+  <td class="is">|</td>
+  <td class="rhs">
+   <span class="t">(</span>
+   <span class="n">term</span>
+   <span class="t">)</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+ <tr>
+
+  <td class="lhs"><span class="n">infixop</span></td>
+  <td class="is">::=</td>
+  <td class="rhs">
+   <span class="n">ident</span>
+  </td>
+  <td class="notes"></td>
+ </tr>
+
+</tbody>
+</table>
+ 
+
+<h3>Identifiers</h3>
+
+<p><span class="n">ident</span> is one of the following:</p>
+<ul>
+ <li>a non-empty sequence of <em>digits</em> (<code>0</code>-<code>9</code>);</li>
+ <li>a sequence of digits, <em>underscores</em> (<code>_</code>), and <em>letters</em> (<code>A</code>-<code>Z</code>, <code>a</code>-<code>z</code>) starting with a letter or an underscore;
+ <li>a non-empty sequence of <em>symbols</em>
+  (<code>#</code>, 
+  <code>+</code>, 
+  <code>-</code>, 
+  <code>/</code>, 
+  <code>*</code>, 
+  <code>=</code>, 
+  <code>%</code>, 
+  <code>?</code>, 
+  <code>!</code>, 
+  <code>.</code>, 
+  <code>$</code>, 
+  <code>~</code>, 
+  <code>&amp;</code>, 
+  <code>^</code>, 
+  <code>&lt;</code>, 
+  <code>&gt;</code>, 
+  <code>@</code>); or</li>
+ <li>a non-empty sequence of <em>colons</em> (<code>:</code>).</li>
+</ul>
+
+<p><span class="n">any_chars</span> is a non-empty sequence of digits, underscores, letters, symbols, colons, and <em>parentheses</em> (<code>(</code>, <code>)</code>).</p>
+
+<p><span class="n">digits</span> is a non-empty sequence of digits.</p>
+
+<h3>Keywords</h3>
+
+<p>The following character sequences are reserved as keywords:</p>
+<pre>
+  SORTS       FUNCTIONS  PREDICATES  RULES             PROPERTIES 
+  SMT_SOLVER  LOGIC      SMT_SORTS   INTERPRETATIONS   CONJECTURES  INCLUDE
+  not         true       false       infix             bool
+  //    /*    :     ^    ->    &amp;&amp;    =&gt;     &lt;=&gt;    ==
+</pre>
+
+<p>The character sequences <code>left</code>, <code>right</code>, and <code>nonassoc</code> are reserved in the <span class="n">assoc</span> part.</p>
+
+<p>The character sequences <code>*</code> and <code>constant</code> are reserved in the <span class="n">func_sort</span> and <span class="n">pred_sort</span> parts.</p>
+
+<p>The character sequences <code>SN</code>, <code>GCR</code>, <code>SC</code>, and <code>LS</code> are reserved in the <span class="n">property</span> part.
+
+<h3>Comments</h3>
+
+<p>C-style block comments and line comments are available.</p>
+
+<p>Block comments begin with <code>/*</code> and terminate at the first appearance of <code>*/</code>.
+This style of comments cannot be nested.</p>
+
+<p>Line comments begin with <code>//</code> and terminate at the end of line.</p>
+
+
+<h3>Sections</h3>
+
+<p>The sections <code>SMT_SOLVER</code> and <code>LOGIC</code> must appear just once.</p>
+
+<p>The other sections may appear zero or more times.  
+If they appear more than once, their union is taken.
+The order of appearance is unconcerned.
+</p>
+
+<!--
+<p>
+At least one <tt>VAR</tt> and one <tt>RULES</tt> sections are
+ mandatory. If they are several, the union is taken and :
+</p><ul><li>
+a symbol declared in a <tt>VAR</tt> section must not have been used
+ in previous declarations, and is assumed to denote a variable in
+ remaining declarations (in particular must not be applied to
+ arguments)
+
+</li><li>a symbol occuring in a <tt>RULES</tt> section which has not been
+ used before is assumed to denote a function symbol, and must be used
+ afterwards always with the same arity.
+</li></ul>
+-->
+
+
+<h3>Sorts</h3>
+
+<p>The boolean sort <code>bool</code> is implicitly declared by the system. 
+Therefore <code>SORTS</code> section may not have the declaration of <code>bool</code>.</p>
+
+
+
+<h3>Conjectures</h3>
+
+<p>Conjectures for equivalence are written in the form <code>s == t [c]</code>.
+Outside the context of equivalence checking, conjectures may have the form of constrained formulas <code>p(t1, ..., tn) [c]</code> rooted by a predicate symbol other than <code>==</code>.
+</p>
+
+
+<h3>Infix operators</h3>
+
+<p>Binary function symbols and predicate symbols declared with the <code>infix</code> keyword are used as infix operators in <code>RULES</code> and <code>CONJECTURES</code> sections.
+Infix function symbols may have precedence and associativity. 
+If precedence and associativity are not specified in the declaration, the symbol has the lowest precedence 0 with non-associativity.
+</p>
+
+
+<p>The precedence of logical connectives in formulas is as follows: <code>&amp;&amp;</code> &gt; <code>||</code> &gt; <code>=&gt;</code> &gt; <code>&lt;=&gt;</code>.</p>
+
+
+
+
+<h2>Example</h2>
+
+<pre style="border: solid 1px #aaa; padding: 5px; font-size: 92%;">
+SORTS:
+  int, list;   // bool is implicitly declared
+
+FUNCTIONS:
+  0    : int;
+  s, p : int -> int;
+  +    : int * int -> int   (infix 6 left);
+  nil  : list;
+  ::   : int * list -> list (infix 5 right);
+  sum1, sum2 : list -> int;
+
+PREDICATES:
+  &gt;, &lt;, = : int * int  (infix);
+
+SMT_SOLVER: 
+  yices-smt;
+
+LOGIC: 
+  QF_LIA;
+
+SMT_SORTS:
+  int : Int;
+
+INTERPRETATIONS:
+  0 : 0;
+  s : (+ $1 1);  
+  p : (- $1 1); 
+  + : (+ $1 $2);
+
+  &gt; : (&gt; $1 $2);
+  &lt; : (&lt; $1 $2);
+  = : (= $1 $2);
+
+RULES:
+   1: sum1(nil) -&gt; 0;
+   2: sum1(x::xs) -&gt; x + sum1(xs);
+
+   3: sum2(nil) -&gt; 0;
+   4: sum2(x::xs) -&gt; sum2(xs)      [x = 0];
+   5: sum2(x::xs) -&gt; x + sum2(xs)  [x &gt; 0 || x &lt; 0];
+
+   6: 0 + y -&gt; y;
+   7: s(x) + y -&gt; s(x + y);
+   8: p(x) + y -&gt; p(x + y);
+
+   9: s(p(x)) -&gt; x;
+  10: p(s(x)) -&gt; x;
+
+CONJECTURES:
+  11: sum1(xs) == sum2(xs);
+
+PROPERTIES:
+  GCR, SC, LS;
+</pre>
+
+
+</body></html>

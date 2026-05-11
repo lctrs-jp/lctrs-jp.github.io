@@ -1,0 +1,54 @@
+(SET-LOGIC QF_BV)
+(FUN cnfg   : Process * Process * Semaphore * (_ BitVec 32) * (_ BitVec 32) -> Cnfg)
+(FUN p      : Fcall * (_ BitVec 32) -> Process)
+(FUN sem    : (_ BitVec 32) * List -> Semaphore)
+(FUN rdr7   : Fcall)
+(FUN rdr9   : (_ BitVec 32) -> Fcall)
+(FUN rdr10  : (_ BitVec 32) -> Fcall)
+(FUN rdr11  : (_ BitVec 32) -> Fcall)
+(FUN wrtr18 : Fcall)
+(FUN wrtr19 : Fcall)
+(FUN wrtr20 : Fcall)
+(FUN success: Cnfg)
+(FUN error  : Cnfg)
+(FUN snoc   : List * (_ BitVec 32) -> List)
+(FUN cons   : (_ BitVec 32) * List -> List)
+(FUN nil    : List)
+
+(VAR s1 x1 y1 : (_ BitVec 32))
+
+(RULES
+  cnfg(p(rdr7,#x00000000),p2,sem(s,w),x,#x00000000) -> cnfg(p(rdr9(#x00000000),#x00000000),p2,sem(s,w),x,#x00000000)
+  cnfg(p(rdr9(y),#x00000000),p2,sem(s,w),x,#x00000000) -> cnfg(p(rdr10(y),#x00000000),p2,sem(s1,w),x,#x00000000) WHEN (and (not (= s #x00000000)) (= s1 (bvsub s #x00000001)))
+  cnfg(p(rdr9(y),#x00000000),p2,sem(s,w),x,#x00000000) -> cnfg(p(rdr9(y),#x00000001),p2,sem(s,snoc(w,#x00000001)),x,#x00000002) WHEN (= s #x00000000)
+  cnfg(p(rdr9(y),n),p2,sem(s,cons(k,w)),x,#x00000001) -> cnfg(p(rdr10(y),#x00000000),p2,sem(s,w),x,#x00000000) WHEN (and (= n k) (not (= n #x00000000)))
+  cnfg(p(rdr9(y),n),p2,sem(s,nil),x,#x00000001) -> error
+  cnfg(p(rdr10(y),#x00000000),p2,sem(s,w),x,#x00000000) -> cnfg(p(rdr11(x1),#x00000000),p2,sem(s,w),x,#x00000000)
+  cnfg(p(rdr11(y),#x00000000),p2,sem(s,cons(k,w)),x,#x00000000) -> cnfg(p(rdr7,#x00000000),p2,sem(s,cons(k,w)),x,#x00000001)
+  cnfg(p(rdr11(y),#x00000000),p2,sem(s,nil),x,#x00000000) -> cnfg(p(rdr7,#x00000000),p2,sem(s1,nil),x,#x00000000) WHEN (= s1 (bvadd s #x00000001))
+
+  cnfg(p1,p(wrtr18,#x00000000),sem(s,w),x,#x00000000) -> cnfg(p1,p(wrtr19,#x00000000),sem(s1,w),x,#x00000000) WHEN (and (not (= s #x00000000)) (= s1 (bvsub s #x00000001)))
+  cnfg(p1,p(wrtr18,#x00000000),sem(s,w),x,#x00000000) -> cnfg(p1,p(wrtr18,#x00000002),sem(s,snoc(w,#x00000002)),x,#x00000002) WHEN (= s #x00000000)
+  cnfg(p1,p(wrtr18,n),sem(s,cons(k,w)),x,#x00000001) -> cnfg(p1,p(wrtr19,#x00000000),sem(s,w),x,#x00000000) WHEN (and (= n k) (not (= n #x00000000)))
+  cnfg(p1,p(wrtr18,n),sem(s,nil),x,#x00000001) -> error
+  cnfg(p1,p(wrtr19,#x00000000),sem(s,w),x,#x00000000) -> cnfg(p1,p(wrtr20,#x00000000),sem(s,w),x1,#x00000000) WHEN (= x1 (bvadd x #x00000001))
+  cnfg(p1,p(wrtr20,#x00000000),sem(s,cons(k,w)),x,#x00000000) -> cnfg(p1,p(wrtr18,#x00000000),sem(s,cons(k,w)),x,#x00000001)
+  cnfg(p1,p(wrtr20,#x00000000),sem(s,nil),x,#x00000000) -> cnfg(p1,p(wrtr18,#x00000000),sem(s1,nil),x,#x00000000) WHEN (= s1 (bvadd s #x00000001))
+
+  cnfg(p1,p2,sem(s,w),x,a) -> success
+
+
+  cnfg(p1,p2,sem(s,snoc(nil,n)),x,#x00000002) -> cnfg(p1,p2,sem(s,cons(n,nil)),x,#x00000000)
+  cnfg(p1,p2,sem(s,snoc(cons(m,w),n)),x,#x00000002) -> cnfg(p1,p2,sem(s,cons(m,snoc(w,n))),x,#x00000002)
+
+)
+
+(VAR w : List)
+(VAR s x : (_ BitVec 32))
+(VAR p1 p2 : Process)
+
+(EQUATIONS
+   cnfg(p(rdr7,#x00000000),p(wrtr18,#x00000000),sem(#x00000002,w),x,#x00000000) == success
+)
+
+(QUERY all-path-reachability)

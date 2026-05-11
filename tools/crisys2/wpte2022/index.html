@@ -1,0 +1,973 @@
+<html>
+<head>
+<title>Crisys2 2023 version</title>
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+<script language="javascript">
+  function toggleVisible(divId) {
+    var div = document.getElementById(divId);
+    if (div) {
+      if (div.style.display != 'block') {
+        div.style.display = 'block';
+      } else {
+        div.style.display = 'none';
+      }
+    }
+  }
+</script>
+</head>
+<body>
+Updated: 
+<?php 
+  date_default_timezone_set('Asia/Tokyo');
+  $filename = basename($_SERVER['SCRIPT_NAME']);
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+
+<hr>
+<h1>Crisys2cdcc : a proof system DCC- for All-Path Reachability problems in Crisys2</h1>
+<h2><a href="#KN23jlamp">Journal Submission</a> version</h2>
+
+<p>This page provides a tool <b>Crisys2cdcc</b>, a proof system <i>DCC-</i> for <b>A</b>ll-<b>P</b>ath <b>R</b>eachability problems in <b>Crisys2</b>.
+<b>Crisys2</b>, <u>Constrained Rewriting Induction SYStem (version 2)</u>, is a proof system based on <i>Constrained Rewriting Induction</i> [<a href="#KN14">KN14</a>,<a href="#FKN17">FKN17</a>] for <i>logically constrained term rewrite systems</i> (LCTRSs) [<a href="#KN13">KN13</a>], the current version of which works interactively.
+<b>cDCC</b> [<a href="#KN23jlamp">KN23</a>] is a simplified variant of <b>DCC</b> [<a href="CL18">CL18</a>], a proof system for <i>all-path reachability</i> (APR) problems of LCTRSs.
+</p>
+
+<hr>
+<h4>News</h4>
+
+<dl>
+
+  <dt>May 2nd, 2023</dt>
+  <dd>
+   Updated for a journal submission [<a href="#KN23jlamp">KN23</a>].
+  </dd>
+
+  <dt>January 9th, 2023</dt>
+  <dd>
+   Open this page.
+  </dd>
+
+</dl>
+
+<hr>
+
+<h4>Contents</h4>
+<ul>
+ <li><a href="#downloads">Downloads</a></li>
+ <li><a href="#how2use">How to Use</a></li>
+ <li><a href="#input">Input Files</a></li>
+ <li><a href="#examples">Examples</a></li>
+ <li><a href="#references">References</a></li>
+ <li><a href="#contributers">Contributers</a></li>
+ <li><a href="#contact">Contact</a></li>
+</ul>
+
+<hr>
+<a name="downloads"><h2>Downloads</h2></a>
+
+<ul>
+  <li><a href="downloads/crisys2cdcc">crisys2cdcc</a> (OCaml bytecode)</li>
+</ul>
+
+<h3>Requirement</h3>
+
+<ul>
+	<li>The tool is implemented by <a href="https://ocaml.org">OCaml</a> (ver. 4.12.1), and to run the downloaded bytecode, <code>ocaml </code> (or later version) is necessary.</li>
+	<li>The tool needs an SMT solver that follows <a href="https://smtlib.cs.uiowa.edu">SMT-LIB 2 format</a>. Please put the following file <a href="downloads/crisys2.config"><code>crisys2.config</code></a> into the same directory as the tool:
+	<blockquote>
+<table border="1">
+<tr>
+<td>
+<pre>
+(SMTSOLVER STDIN "xxxx")
+(VERBOSE on)
+</pre>
+</td>
+</tr>
+</table>
+	</blockquote>
+Please replace <code>xxxx</code> by a command for the SMT solver you use. For example, please write <code>(SMTSOLVER STDIN "z3 -in")</code> for <a href="https://github.com/Z3Prover/z3">Z3</a>.
+
+</li>
+</ul>
+
+<hr>
+<a name="how2use"><h2>How to Use</h2></a>
+
+<p>Run <code>crisys2cdcc</code> from Command Line as follows:
+<blockquote>
+<pre>
+> ./crisys2cdcc example_2-24_rf.rmt
+</pre>
+or
+<pre>
+> ocamlrun ./crisys2cdcc example_2-24_rf.rmt
+</pre>
+</blockquote>
+</p>
+
+<p>
+The tool tries to prove a problem written the input file, constructing a proof tree.
+The search space for proof trees is limited for the height, and the upper limit is <code>X * Y</code> from <code>[X,Y]</code> in <code>prove [X,Y] in main : apr;</code>.
+For example, the limit is 100 for <code>[10,10]</code>.
+</p>
+
+<!--
+<p>
+Unfortunately, the current version is a simply automated one of an interactive mode, and the tool tries to prove even after finding an unsolved subgoal.
+</p>
+-->
+
+<hr>
+<a name="input"><h2>Input Files</h2></a>
+
+
+<p>
+The tool takes an LCTRS written in a simplified varaint of <b>RMT</b> format.
+<a href="https://github.com/ciobaca/rmt"><b>RMT</b></a>, <u>Rewriting Modulo Theories Tool</u>, is a proof system for APR of LCTRSs (see also <a href="https://isr2019.minesparis.psl.eu/lecturers/stefan-ciobaca/">ISR 2019 Lecture by Stefan Ciobaca</a>).
+We restrict the format to <i>asynchronous integer transition systems with shared variables</i> [<a href="#KN23padl">KN23padl</a>] which are written as LCTRSs.
+</p>
+
+<hr>
+<a name="examples"><h2>Examples</h2></a>
+
+<h3><a href="downloads/benchmarks_2023-05-03.zip">benchmarks_2023-05-03.zip</a></h3>
+
+<h3>[<a href="#KN3jlamp">KN23</a>, <a href="benchmarks_2023-05-03/rrw2_rf.rmt">Example 5.8</a>] for Race Freedom of Mutual Exclusion</h3>
+
+<table border="1">
+<tr>
+<td>
+<pre>
+sorts Process, Semaphore, Cnfg, Fcall;
+
+signature
+  cnfg    : Process Process Process Semaphore Int Int -> Cnfg,
+  p       : Fcall Int -> Process,
+  sem     : Int Int Int -> Semaphore,
+  rdr7    : -> Fcall,
+  rdr9    : Int -> Fcall,
+  rdr10   : Int -> Fcall,
+  rdr11   : Int -> Fcall,
+  wrtr18  : -> Fcall,
+  wrtr19  : -> Fcall,
+  wrtr20  : -> Fcall,
+  success : -> Cnfg,
+  error   : -> Cnfg;
+
+variables
+  P1 : Process, P2 : Process, P3 : Process,
+  N : Int, N1 : Int, N2 : Int, N3 : Int,
+  S : Int, D : Int, T : Int, S1 : Int, D2 : Int, T2 : Int,
+  X : Int, Y : Int, A : Int;
+
+constrained-rewrite-system main
+  (cnfg (p rdr7      0) P2 P3 (sem S D T) X 0)                                                                   => (cnfg (p (rdr9  0) 0) P2 P3 (sem S  D  T ) X 0),
+  (cnfg (p (rdr9 Y)  0) P2 P3 (sem S D T) X 0) /\ (band (bnot (mequals S 0)) (mequals S1 (mminus S 1)))          => (cnfg (p (rdr10 Y) 0) P2 P3 (sem S1 D  T ) X 0),
+  (cnfg (p (rdr9 Y)  0) P2 P3 (sem S D T) X 0) /\ (band (mequals S 0) (mequals T2 (mplus T 2)))                  => (cnfg (p (rdr9  Y) T) P2 P3 (sem S  D  T2) X 0),
+  (cnfg (p (rdr9 Y)  N) P2 P3 (sem S D T) X 1) /\ (band (mequals N D) (bnot (mequals N 0)))                      => (cnfg (p (rdr10 Y) 0) P2 P3 (sem S  D  T ) X 0),
+  (cnfg (p (rdr10 Y) 0) P2 P3 (sem S D T) X 0)                                                                   => (cnfg (p (rdr11 X) 0) P2 P3 (sem S  D  T ) X 0),
+  (cnfg (p (rdr11 Y) 0) P2 P3 (sem S D T) X 0) /\ (band (bnot (mequals T (mplus D 2))) (mequals D2 (mplus D 2))) => (cnfg (p rdr7      0) P2 P3 (sem S  D2 T ) X 1),
+  (cnfg (p (rdr11 Y) 0) P2 P3 (sem S D T) X 0) /\ (band (mequals T (mplus D 2)) (mequals S1 (mplus S 1)))        => (cnfg (p rdr7      0) P2 P3 (sem S1 D2 T ) X 0),
+
+  (cnfg P1 (p rdr7      0) P3 (sem S D T) X 0)                                                                   => (cnfg P1 (p (rdr9  0) 0) P3 (sem S  D  T ) X 0),
+  (cnfg P1 (p (rdr9 Y)  0) P3 (sem S D T) X 0) /\ (band (bnot (mequals S 0)) (mequals S1 (mminus S 1)))          => (cnfg P1 (p (rdr10 Y) 0) P3 (sem S1 D  T ) X 0),
+  (cnfg P1 (p (rdr9 Y)  0) P3 (sem S D T) X 0) /\ (band (mequals S 0) (mequals T2 (mplus T 2)))                  => (cnfg P1 (p (rdr9  Y) T) P3 (sem S  D  T2) X 0),
+  (cnfg P1 (p (rdr9 Y)  N) P3 (sem S D T) X 1) /\ (band (mequals N D) (bnot (mequals N 0)))                      => (cnfg P1 (p (rdr10 Y) 0) P3 (sem S  D  T ) X 0),
+  (cnfg P1 (p (rdr10 Y) 0) P3 (sem S D T) X 0)                                                                   => (cnfg P1 (p (rdr11 X) 0) P3 (sem S  D  T ) X 0),
+  (cnfg P1 (p (rdr11 Y) 0) P3 (sem S D T) X 0) /\ (band (bnot (mequals T (mplus D 2))) (mequals D2 (mplus D 2))) => (cnfg P1 (p rdr7      0) P3 (sem S  D2 T ) X 1),
+  (cnfg P1 (p (rdr11 Y) 0) P3 (sem S D T) X 0) /\ (band (mequals T (mplus D 2)) (mequals S1 (mplus S 1)))        => (cnfg P1 (p rdr7      0) P3 (sem S1 D2 T ) X 0),
+
+  (cnfg P1 P2 (p wrtr18 0) (sem S D T) X 0) /\ (band (bnot (mequals S 0)) (mequals S1 (mminus S 1)))          => (cnfg P1 P2 (p wrtr19 0) (sem S1 D  T ) X 0),
+  (cnfg P1 P2 (p wrtr18 0) (sem S D T) X 0) /\ (band (mequals S 0) (mequals T2 (mplus T 2)))                  => (cnfg P1 P2 (p wrtr18 T) (sem S  D  T2) X 0),
+  (cnfg P1 P2 (p wrtr18 N) (sem S D T) X 1) /\ (band (mequals N D) (bnot (mequals N 0)))                      => (cnfg P1 P2 (p wrtr19 0) (sem S  D  T ) X 0),
+  (cnfg P1 P2 (p wrtr19 0) (sem S D T) X 0)                                                                   => (cnfg P1 P2 (p wrtr20 0) (sem S  D  T ) 1 0),
+  (cnfg P1 P2 (p wrtr20 0) (sem S D T) X 0) /\ (band (bnot (mequals T (mplus D 2))) (mequals D2 (mplus D 2))) => (cnfg P1 P2 (p wrtr18 0) (sem S  D2 T ) X 1),
+  (cnfg P1 P2 (p wrtr20 0) (sem S D T) X 0) /\ (band (mequals T (mplus D 2)) (mequals S1 (mplus S 1)))        => (cnfg P1 P2 (p wrtr18 0) (sem S1 D  T ) X 0),
+
+  (cnfg P1 P2 P3 (sem S D T) X A) => success,
+
+  (cnfg (p (rdr10 Y) N1) (p (rdr10 Y) N2) (p wrtr19 N3) (sem S D T) X A) => error,
+  (cnfg (p (rdr11 Y) N1) (p (rdr10 Y) N2) (p wrtr19 N3) (sem S D T) X A) => error,
+  (cnfg (p (rdr10 Y) N1) (p (rdr11 Y) N2) (p wrtr19 N3) (sem S D T) X A) => error,
+  (cnfg (p (rdr11 Y) N1) (p (rdr11 Y) N2) (p wrtr19 N3) (sem S D T) X A) => error,
+  (cnfg (p (rdr10 Y) N1) (p (rdr10 Y) N2) (p wrtr20 N3) (sem S D T) X A) => error,
+  (cnfg (p (rdr11 Y) N1) (p (rdr10 Y) N2) (p wrtr20 N3) (sem S D T) X A) => error,
+  (cnfg (p (rdr10 Y) N1) (p (rdr11 Y) N2) (p wrtr20 N3) (sem S D T) X A) => error,
+  (cnfg (p (rdr11 Y) N1) (p (rdr11 Y) N2) (p wrtr20 N3) (sem S D T) X A) => error;
+
+rewrite-system apr
+  (cnfg (p rdr7 0) (p rdr7 0) (p wrtr18 0) (sem 2 D T) 0 0) /\ (band (mgt D 0) (mequals T (mplus D 2))) => success;
+
+prove [10,10] in main : apr;
+</pre>
+</td>
+</tr>
+</table>
+
+<h3>[<a href="#KN23jlamp">KN23</a>, <a href="benchmarks_2023-05-03/rw1_rf.rmt">Example 5.8 (2 processes)</a>] for Race Freedom of Mutual Exclusion</h3>
+
+<h3>[<a href="#KN23jlamp">KN23</a>, <a href="benchmarks_2023-05-03/sbb_2proc_rf.rmt">Example 5.9</a>] for Race Freedom of Mutual Exclusion</h3>
+
+<h3>[<a href="#KN23jlamp">KN23</a>, <a href="benchmarks_2023-05-03/sbb_3proc_rf.rmt">Example 5.9 (3 processes)</a>] for Race Freedom of Mutual Exclusion</h3>
+
+<h3>[<a href="#BK08">BK08</a>, <a href="benchmarks_2023-05-03/example_2-24_rf.rmt">Example 2.24</a>] for Race Freedom</h3>
+
+<!--
+Mutual Exclusion with Semaphores [<A
+ HREF="node1.html#BK08">1</A>, Example&nbsp;2.24]
+ -->
+
+<a href="#ex4" onclick="toggleVisible('ex4'); return false;">Detail...</a>
+
+ <div class="example" id="ex4">
+<P>
+Two processes <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img19.svg"
+ ALT="$P_0$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img20.svg"
+ ALT="$P_1$"></SPAN> share a binary semaphore <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.68ex; vertical-align: -0.57ex; " SRC="figures/img21.svg"
+ ALT="$y$"></SPAN>, a lock to access the critical sections <!-- MATH
+ $\mathsf{crit}_0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.15ex; vertical-align: -0.46ex; " SRC="figures/img22.svg"
+ ALT="$\mathsf{crit}_0$"></SPAN> and <!-- MATH
+ $\mathsf{crit}_1$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.15ex; vertical-align: -0.46ex; " SRC="figures/img23.svg"
+ ALT="$\mathsf{crit}_1$"></SPAN>:
+If <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.17ex; vertical-align: -0.57ex; " SRC="figures/img24.svg"
+ ALT="$y=0$"></SPAN>, then the semaphore is currently possessed by one of the processes;
+otherwise, the semaphore is available, and a process enters the critical section, decrementing the value of <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.68ex; vertical-align: -0.57ex; " SRC="figures/img21.svg"
+ ALT="$y$"></SPAN> by <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.72ex; vertical-align: -0.12ex; " SRC="figures/img25.svg"
+ ALT="$1$"></SPAN>;
+when the process exits the critical section, it increments the value of <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.68ex; vertical-align: -0.57ex; " SRC="figures/img21.svg"
+ ALT="$y$"></SPAN> by <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.72ex; vertical-align: -0.12ex; " SRC="figures/img25.svg"
+ ALT="$1$"></SPAN>.
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\xymatrix @C=6ex{
+            \ar[r] & \ovalbox{$\mathsf{noncrit}_i$} \ar[rrr] &&& \ovalbox{$\mathsf{wait}_i$} \ar[rrr]^{y>0 : y:=y-1} &&& \ovalbox{$\mathsf{crit}_i$} \ar@/^12pt/[llllll]^{y:=y+1}
+        }
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE="height: 8.50ex; vertical-align: -5.08ex; " SRC="figures/img26.svg"
+ ALT="$\displaystyle \xymatrix @C=6ex{
+\ar[r] &amp; \ovalbox{$\mathsf{noncrit}_i$} \ar[rr...
+...{y&gt;0 : y:=y-1} &amp;&amp;&amp; \ovalbox{$\mathsf{crit}_i$} \ar@/^12pt/[llllll]^{y:=y+1}
+}
+$">
+</DIV>
+Note that this AITS is race-free.
+
+</div>
+
+<h3>[<a href="#BK08">BK08</a>, <a href="benchmarks_2023-05-03/example_2-25_rf.rmt">Example 2.25</a>] for Race Freedom of Mutual Exclusion</h3>
+
+<a href="#ex1" onclick="toggleVisible('ex1'); return false;">Detail...</a>
+
+ <div class="example" id="ex1">
+<P>
+Consider the following program graph for <SPAN  CLASS="textit">Peterson's mutual exclusion algorithm, which specifies the behavior of process <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN>:
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\xymatrix @C=5ex{
+            \ar[r] & \ovalbox{$\mathsf{noncrit}_i$} \ar[rrrr]^{\langle b_i,x \rangle:=\langle \mathsf{true},\mathsf{1}-i \rangle} &&&& \ovalbox{$\mathsf{wait}_i$} \ar[rrrr]^{x=i \,\lor\,\lnot b_{1-i}} &&&& \ovalbox{$\mathsf{crit}_i$} \ar@/^12pt/[llllllll]^{b_i:=\mathsf{false}}
+        }
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE="height: 8.76ex; vertical-align: -5.08ex; " SRC="figures/img2.svg"
+ ALT="$\displaystyle \xymatrix @C=5ex{
+\ar[r] &amp; \ovalbox{$\mathsf{noncrit}_i$} \ar[rr...
+...&amp;&amp;&amp; \ovalbox{$\mathsf{crit}_i$} \ar@/^12pt/[llllllll]^{b_i:=\mathsf{false}}
+}
+$">
+</DIV>
+Two processes <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.26ex; vertical-align: -0.57ex; " SRC="figures/img3.svg"
+ ALT="$P_0,P_1$"></SPAN> share Boolean variables <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.29ex; vertical-align: -0.57ex; " SRC="figures/img4.svg"
+ ALT="$b_0,b_1$"></SPAN> and an integer variable <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.23ex; vertical-align: -0.12ex; " SRC="figures/img5.svg"
+ ALT="$x$"></SPAN>;
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.19ex; vertical-align: -0.46ex; " SRC="figures/img6.svg"
+ ALT="$b_i$"></SPAN> indicates that <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN> wants to enter the critical section <!-- MATH
+ $\mathsf{crit}_i$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.15ex; vertical-align: -0.46ex; " SRC="figures/img7.svg"
+ ALT="$\mathsf{crit}_i$"></SPAN>;
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.23ex; vertical-align: -0.12ex; " SRC="figures/img5.svg"
+ ALT="$x$"></SPAN> stores the identifier of the process that has priority for the critical section at that time.
+The AITS consisting of <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img8.svg"
+ ALT="$\mathit{PG}_0$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img9.svg"
+ ALT="$\mathit{PG}_1$"></SPAN> is represented by the following LCTRS:
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\mathcal{R}_{\scriptsize 1} =
+  \left\{ \begin{array}{l@{\,}l@{\,}l@{\>}c@{\>}l@{\,}l@{\,}l@{}ll}
+  \mathsf{state}(\mathsf{noncrit}_0,& p_1,& b_0, b_1, x) & \to & \mathsf{state}(\mathsf{wait}_0, & p_1, & b'_0, b_1, x'&) & [\, b'_0=\mathsf{true} \land x'=\mathsf{1}\,]\\
+  \mathsf{state}(\mathsf{wait}_0,& p_1,& b_0, b_1, x) & \to & \mathsf{state}(\mathsf{crit}_0,& p_1,& b_0, b_1, x &) & [\, x=\mathsf{0}\lor \lnot b_1 \,] \\
+  \mathsf{state}(\mathsf{crit}_0,& p_1,& b_0, b_1, x) & \to & \mathsf{state}(\mathsf{noncrit}_0,& p_1,& b'_0, b_1, x&) & [\, b'_0=\mathsf{false} \,] \\[3pt]
+\mathsf{state}(p_0,&\hspace{-3ex}\mathsf{noncrit}_1,& b_0, b_1, x) & \to & \mathsf{state}(p_0,&\hspace{-2ex} \mathsf{wait}_1,& b_0, b'_1, x'&) & [\, b'_1=\mathsf{true} \land x'=\mathsf{0}\,]\\
+  \mathsf{state}(p_0,& \hspace{-3ex}\mathsf{wait}_1,& b_0, b_1, x) & \to & \mathsf{state}(p_0,&\hspace{-2ex} \mathsf{crit}_1,& b_0, b_1, x&) & [\, x=\mathsf{1}\lor \lnot b_0 \,] \\
+  \mathsf{state}(p_0,&\hspace{-3ex} \mathsf{crit}_1,& b_0, b_1, x) & \to & \mathsf{state}(p_0,&\hspace{-2ex}\mathsf{noncrit}_1,& b_0, b'_1, x&) & [\, b'_0=\mathsf{false} \,]\\
+ \end{array} \right\}
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE="height: 17.59ex; vertical-align: -8.25ex; " SRC="figures/img10.svg"
+ ALT="$\displaystyle \mathcal{R}_{\scriptsize 1} =
+\left\{ \begin{array}{l@{\,}l@{\,}...
+...rit}_1,&amp; b_0, b'_1, x&amp;) &amp; [\, b'_0=\mathsf{false} \,]\\
+\end{array} \right\}
+$">
+</DIV>
+The initial state is the term <!-- MATH
+ $\mathsf{state}(\mathsf{noncrit}_0,\mathsf{noncrit}_1,\mathsf{false}, \mathsf{false}, \mathsf{0})$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.55ex; vertical-align: -0.70ex; " SRC="figures/img11.svg"
+ ALT="$\mathsf{state}(\mathsf{noncrit}_0,\mathsf{noncrit}_1,\mathsf{false}, \mathsf{false}, \mathsf{0})$"></SPAN>.
+For the <SPAN  CLASS="textit">race freedom</SPAN> of mutual exclusion in the above LCTRS <!-- MATH
+ $\mathcal{R}_{\scriptsize 1}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img12.svg"
+ ALT="$\mathcal{R}_{\scriptsize 1}$"></SPAN>, the error states are represented by <!-- MATH
+ $\langle \mathsf{state}(\mathsf{crit}_0,\mathsf{crit}_1,b_0, b_1, x) \mid \mathsf{true} \rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.55ex; vertical-align: -0.70ex; " SRC="figures/img13.svg"
+ ALT="$\langle \mathsf{state}(\mathsf{crit}_0,\mathsf{crit}_1,b_0, b_1, x) \mid \mathsf{true} \rangle$"></SPAN>, and we generate the following LCTRS:
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\mathcal{R}_{\scriptsize 1}^\forall
+    =
+    \mathcal{R}_{\scriptsize 1}
+    \cup
+    \{~
+    \mathsf{state}(p_0,p_1,b_0,b_1,x) \to \mathsf{success}, ~
+    \mathsf{state}(\mathsf{crit}_0,\mathsf{crit}_1,b_0,b_1,x) \to \mathsf{error}
+    ~\}
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE="height: 2.89ex; vertical-align: -0.70ex; " SRC="figures/img14.svg"
+ ALT="$\displaystyle \mathcal{R}_{\scriptsize 1}^\forall
+=
+\mathcal{R}_{\scriptsize ...
+...thsf{state}(\mathsf{crit}_0,\mathsf{crit}_1,b_0,b_1,x) \to \mathsf{error}
+~\}
+$">
+</DIV>
+The race freedom is reduced to the following APR problem of <!-- MATH
+ $\mathcal{R}_{\scriptsize 1}^\forall$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.77ex; vertical-align: -0.69ex; " SRC="figures/img15.svg"
+ ALT="$\mathcal{R}_{\scriptsize 1}^\forall$"></SPAN>:
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\langle
+\mathsf{state}(\mathsf{noncrit}_0,\mathsf{noncrit}_1,\mathsf{false}, \mathsf{false}, \mathsf{0})
+\mid \mathsf{true} \rangle
+\Rightarrow
+\langle \mathsf{success}\mid \mathsf{true} \rangle
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE="height: 2.55ex; vertical-align: -0.70ex; " SRC="figures/img16.svg"
+ ALT="$\displaystyle \langle
+\mathsf{state}(\mathsf{noncrit}_0,\mathsf{noncrit}_1,\mat...
+...f{true} \rangle
+\Rightarrow
+\langle \mathsf{success}\mid \mathsf{true} \rangle
+$">
+</DIV> 
+</div>
+
+<h3>A Variant of [<a href="#BK08">BK08</a>, <a href="benchmarks_2023-05-03/example_2-25z_rf.rmt">Example 2.25</a>] for Race Freedom</h3>
+
+<a href="#ex3" onclick="toggleVisible('ex3'); return false;">Detail...</a>
+
+<div class="example" id="ex3">
+<P>
+If we add to the LCTRS in [<A
+ HREF="#BK08">BK08</A>, Example&nbsp;2.25] a shared variable <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.23ex; vertical-align: -0.12ex; " SRC="figures/img17.svg"
+ ALT="$z$"></SPAN> that is incremented in moving from <!-- MATH
+ $\mathsf{crit}_i$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.15ex; vertical-align: -0.46ex; " SRC="figures/img7.svg"
+ ALT="$\mathsf{crit}_i$"></SPAN> to <!-- MATH
+ $\mathsf{noncrit}_i$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.15ex; vertical-align: -0.46ex; " SRC="figures/img18.svg"
+ ALT="$\mathsf{noncrit}_i$"></SPAN>, then the AITS has infinitely many states.
+</div>
+
+<h3>[<a href="#BK08">BK08</a>, <a href="benchmarks_2023-05-03/example_2-28_rf.rmt">Example 2.28</a>] for Race Freedom</h3>
+
+<a href="#ex5" onclick="toggleVisible('ex5'); return false;">Detail...</a>
+
+ <div class="example" id="ex5">
+<P>
+Two processes <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img19.svg"
+ ALT="$P_0$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img20.svg"
+ ALT="$P_1$"></SPAN> alternate infinitely often between noncritical and critical sections, and 
+the third process, named <SPAN  CLASS="textit">Arbiter</SPAN>, behaves like a semaphore:
+    <DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\begin{array}{cc}
+        \xymatrix @C=3ex{
+            \ar[r] & \ovalbox{$\mathsf{noncrit}_i$} \ar[rrr]^{request} &&& \ovalbox{$\mathsf{crit}_i$} \ar@<0.8ex>[lll]^{release}
+        }
+	&
+    
+        \xymatrix @C=3ex{
+            \ar[r] & \ovalbox{$\mathsf{unlock}$} \ar[rrr]^{request} &&& \ovalbox{$\mathsf{lock}$} \ar@<0.8ex>[lll]^{release}
+        }
+    \\[20pt]
+    \mbox{(a) $P_i$}
+    &
+	\mbox{(b) \textit{Arbiter}}
+    \end{array}
+    
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE="height: 11.75ex; vertical-align: -5.31ex; " SRC="figures/img27.svg"
+ ALT="$\displaystyle \begin{array}{cc}
+\xymatrix @C=3ex{
+\ar[r] &amp; \ovalbox{$\maths...
+...}
+}
+\\ [20pt]
+\mbox{(a) $P_i$}
+&amp;
+\mbox{(b) \textit{Arbiter}}
+\end{array} $">
+</DIV>
+Processes <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img19.svg"
+ ALT="$P_0$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img20.svg"
+ ALT="$P_1$"></SPAN> have to transition simultaneously with <SPAN  CLASS="textit">Arbiter</SPAN> by means of <SPAN  CLASS="textit">handshaking</SPAN>&mdash;this ITS is not an AITS but an <SPAN  CLASS="textit">ITS with handshaking</SPAN>.
+When the location of <SPAN  CLASS="textit">Arbiter</SPAN> is <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.12ex; " SRC="figures/img28.svg"
+ ALT="$\mathsf{lock}$"></SPAN>, the critical section is locked, and when the location is <!-- MATH
+ $\mathsf{unlock}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.12ex; " SRC="figures/img29.svg"
+ ALT="$\mathsf{unlock}$"></SPAN>, the critical section is free.
+Note that this ITS is race-free.
+</div>
+
+<h3>[<a href="#BK08">BK08</a>, <a href="benchmarks_2023-05-03/example_2-30_rf.rmt">Example 2.30</a>] for Race Freedom</h3>
+
+<a href="#ex6" onclick="toggleVisible('ex6'); return false;">Detail...</a>
+
+ <div class="example" id="ex6">
+<P>
+A railroad crossing control system consists of three processes <SPAN  CLASS="textit">Train</SPAN>, <SPAN  CLASS="textit">Gate</SPAN>, and <SPAN  CLASS="textit">Controller</SPAN>:
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\begin{array}{ccc}
+        \xymatrix @R=3ex@C=4ex{
+        \ar[d]\\
+            \ovalbox{$\mathsf{far}$} \ar[rr]^{approach} && \ovalbox{$\mathsf{near}$} \ar[ld]^{enter} \\
+            & \ovalbox{$\mathsf{in}$} \ar[lu]^{exit} &
+        }
+	&
+	
+        \xymatrix @R=3ex@C=7ex{
+            \ar[d]\\
+            \ovalbox{$\mathsf{ctrl0}$} \ar[d]_{approach} & \ovalbox{$\mathsf{ctrl3}$} \ar[l]_{raise} \\
+            \ovalbox{$\mathsf{ctrl1}$} \ar[r]_{lower} & \ovalbox{$\mathsf{ctrl2}$} \ar[u]_{exit}
+         }
+    &
+    
+        \xymatrix @R=3ex@C=7ex{
+            \ar[d] \\
+             \ovalbox{$\mathsf{up}$} \ar[r]^{lower} & \ovalbox{$\mathsf{down}$} \ar@<0.8ex>[l]^{raise}
+        }
+    \\[70pt]
+    \mbox{(a) \textit{Train}}
+    &
+	\mbox{(b) \textit{Controller}}
+	&
+    \mbox{(c) \textit{Gate}}
+\end{array}
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE="height: 21.98ex; vertical-align: -10.45ex; " SRC="figures/img30.svg"
+ ALT="$\displaystyle \begin{array}{ccc}
+\xymatrix @R=3ex@C=4ex{
+\ar[d]\\
+\ovalbo...
+...n}}
+&amp;
+\mbox{(b) \textit{Controller}}
+&amp;
+\mbox{(c) \textit{Gate}}
+\end{array}$">
+</DIV>
+Process <SPAN  CLASS="textit">Train</SPAN> has three locations, <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.12ex; " SRC="figures/img31.svg"
+ ALT="$\mathsf{far}$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.26ex; vertical-align: -0.12ex; " SRC="figures/img32.svg"
+ ALT="$\mathsf{near}$"></SPAN>, and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.80ex; vertical-align: -0.12ex; " SRC="figures/img33.svg"
+ ALT="$\mathsf{in}$"></SPAN>:
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.12ex; " SRC="figures/img31.svg"
+ ALT="$\mathsf{far}$"></SPAN> means that a train is not close to the crossing;
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.26ex; vertical-align: -0.12ex; " SRC="figures/img32.svg"
+ ALT="$\mathsf{near}$"></SPAN> means that  the train is approaching the crossing and has just sent a
+signal to notify this;
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.80ex; vertical-align: -0.12ex; " SRC="figures/img33.svg"
+ ALT="$\mathsf{in}$"></SPAN> means that the train is at the crossing.
+Process <SPAN  CLASS="textit">Gate</SPAN> has two locations, <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.71ex; vertical-align: -0.57ex; " SRC="figures/img34.svg"
+ ALT="$\mathsf{up}$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.12ex; " SRC="figures/img35.svg"
+ ALT="$\mathsf{down}$"></SPAN>:
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.71ex; vertical-align: -0.57ex; " SRC="figures/img34.svg"
+ ALT="$\mathsf{up}$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.12ex; " SRC="figures/img35.svg"
+ ALT="$\mathsf{down}$"></SPAN> mean that the bar of the gate is up and down, respectively.
+Process <SPAN  CLASS="textit">Controller</SPAN> transitions from state <!-- MATH
+ $\mathsf{ctrl0}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.12ex; " SRC="figures/img36.svg"
+ ALT="$\mathsf{ctrl0}$"></SPAN> to location <!-- MATH
+ $\mathsf{ctrl1}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.12ex; " SRC="figures/img37.svg"
+ ALT="$\mathsf{ctrl1}$"></SPAN> when the train is approaching the crossing, i.e., <SPAN  CLASS="textit">Train</SPAN> transitions from <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.12ex; " SRC="figures/img31.svg"
+ ALT="$\mathsf{far}$"></SPAN> to <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.26ex; vertical-align: -0.12ex; " SRC="figures/img32.svg"
+ ALT="$\mathsf{near}$"></SPAN>;
+then, the controller sends a signal to the gate in order to raise the gate. 
+Locations <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.80ex; vertical-align: -0.12ex; " SRC="figures/img33.svg"
+ ALT="$\mathsf{in}$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.12ex; " SRC="figures/img35.svg"
+ ALT="$\mathsf{down}$"></SPAN> can be considered critical sections of <SPAN  CLASS="textit">Train</SPAN> and <SPAN  CLASS="textit">Gate</SPAN>, respectively.
+Note that this AITS is race-free.
+</div>
+
+<h3>[<a href="#BK08">BK08</a>, Exercise 2.7] (with <a href="benchmarks_2023-05-03/exercise_2-7_2proc_rf.rmt">2 processes</a> and <a href="benchmarks_2023-05-03/exercise_2-7_3proc_rf.rmt">3 processes</a>) for Race Freedom</h3>
+
+<a href="#ex7" onclick="toggleVisible('ex7'); return false;">Detail...</a>
+
+ <div class="example" id="ex7">
+<P>
+Given an arbitrary number <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.23ex; vertical-align: -0.12ex; " SRC="figures/img38.svg"
+ ALT="$n$"></SPAN> (<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.04ex; vertical-align: -0.43ex; " SRC="figures/img39.svg"
+ ALT="$\ge 2$"></SPAN>),
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.23ex; vertical-align: -0.12ex; " SRC="figures/img38.svg"
+ ALT="$n$"></SPAN> processes <!-- MATH
+ $P_0,\ldots,P_{n-1}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.35ex; vertical-align: -0.66ex; " SRC="figures/img40.svg"
+ ALT="$P_0,\ldots,P_{n-1}$"></SPAN> (<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.04ex; vertical-align: -0.43ex; " SRC="figures/img41.svg"
+ ALT="$n\geq 2$"></SPAN>) share variables <!-- MATH
+ $p_0, \ldots, p_{n-1}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.77ex; vertical-align: -0.66ex; " SRC="figures/img42.svg"
+ ALT="$p_0, \ldots, p_{n-1}$"></SPAN> and <!-- MATH
+ $y_1, \ldots, y_{n-1}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.77ex; vertical-align: -0.66ex; " SRC="figures/img43.svg"
+ ALT="$y_1, \ldots, y_{n-1}$"></SPAN>.
+The basic concept of the mutual exclusion algorithm is that each process passes through <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.23ex; vertical-align: -0.12ex; " SRC="figures/img38.svg"
+ ALT="$n$"></SPAN> &ldquo;levels&rdquo;&mdash;<!-- MATH
+ $\mathsf{level}_{i,1},\ldots,\mathsf{level}_{i,n-1}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.50ex; vertical-align: -0.78ex; " SRC="figures/img44.svg"
+ ALT="$\mathsf{level}_{i,1},\ldots,\mathsf{level}_{i,n-1}$"></SPAN> are waiting locations of <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN>&mdash;before acquiring access to the critical section <!-- MATH
+ $\mathsf{crit}_i$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.15ex; vertical-align: -0.46ex; " SRC="figures/img7.svg"
+ ALT="$\mathsf{crit}_i$"></SPAN>, where
+<!-- MATH
+ $\phi_{i,j} =~ {y_j \ne i}\lor \bigwedge_{0\le k<n, k\ne i}p_k < j$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.98ex; vertical-align: -1.13ex; " SRC="figures/img45.svg"
+ ALT="$\phi_{i,j} =~ {y_j \ne i}\lor \bigwedge_{0\le k&lt;n, k\ne i}p_k &lt; j
+$"></SPAN>:
+    <DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\xymatrix @R=5ex@C=12ex{
+            \ar[d] \\
+            \ovalbox{$\mathsf{noncrit}_i$} \ar[d]^{\langle p_i, y_1\rangle := \langle\mathsf{1},i\rangle} &&& \ovalbox{$\mathsf{crit}_i$} \ar[lll]_{p_i := \mathsf{0}}
+            & \ovalbox{$\mathsf{level}_{i,n-1}$} \ar[l]_{\phi_{i,n-1}} \\
+            \ovalbox{$\mathsf{level}_{i,1}$} \ar[rr]_{\phi_{i,1}: \langle p_i,y_2\rangle := \langle\mathsf{2},i\rangle} && \,\cdots\, \ar[rr]_{\hspace{-3ex}\phi_{i,n-3}: \langle p_i,y_{n-2}\rangle := \langle n-2, i\rangle} && \ovalbox{$\mathsf{level}_{i,n-2}$} \ar[u]^{\phi_{i,n-2}: \langle p_i,y_{n-1}\rangle := \langle n-1, i\rangle}
+        }
+    
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE="height: 22.20ex; vertical-align: -21.18ex; " SRC="figures/img46.svg"
+ ALT="$\displaystyle \xymatrix @R=5ex@C=12ex{
+\ar[d] \\
+\ovalbox{$\mathsf{noncrit}_...
+...\ar[u]^{\phi_{i,n-2}: \langle p_i,y_{n-1}\rangle := \langle n-1, i\rangle}
+}
+$">
+</DIV>
+If <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.21ex; vertical-align: -0.57ex; " SRC="figures/img47.svg"
+ ALT="$p_i = j$"></SPAN>, then process <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN> is currently at level <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.21ex; vertical-align: -0.57ex; " SRC="figures/img48.svg"
+ ALT="$j$"></SPAN>;
+if <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.42ex; vertical-align: -0.78ex; " SRC="figures/img49.svg"
+ ALT="$y_j = i$"></SPAN>, then process <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN> has the lowest priority at level <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.21ex; vertical-align: -0.57ex; " SRC="figures/img48.svg"
+ ALT="$j$"></SPAN>.
+Process <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN> starts at level <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.75ex; vertical-align: -0.12ex; " SRC="figures/img50.svg"
+ ALT="$\mathsf{0}$"></SPAN> (the non-critical section <!-- MATH
+ $\mathsf{noncrit}_i$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.15ex; vertical-align: -0.46ex; " SRC="figures/img18.svg"
+ ALT="$\mathsf{noncrit}_i$"></SPAN>).
+When trying to access the critical section, the process moves to level <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.75ex; vertical-align: -0.12ex; " SRC="figures/img51.svg"
+ ALT="$\mathsf{1}$"></SPAN>, having that <!-- MATH
+ $p_i = \mathsf{1}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.20ex; vertical-align: -0.57ex; " SRC="figures/img52.svg"
+ ALT="$p_i = \mathsf{1}$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.21ex; vertical-align: -0.57ex; " SRC="figures/img53.svg"
+ ALT="$y_1 = i$"></SPAN>.
+The process at level <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.21ex; vertical-align: -0.57ex; " SRC="figures/img48.svg"
+ ALT="$j$"></SPAN> can move to the next level either when its priority at the level is not the lowest, i.e., the case where <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.29ex; vertical-align: -0.57ex; " SRC="figures/img54.svg"
+ ALT="$y_1 \ne i$"></SPAN>, or when all other processes are at  lower levels, i.e., the case where <!-- MATH
+ $\bigwedge_{0\le k<n, k\ne i}p_k < j$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.98ex; vertical-align: -1.13ex; " SRC="figures/img55.svg"
+ ALT="$\bigwedge_{0\le k&lt;n, k\ne i}p_k &lt; j$"></SPAN>.
+The process moves to level <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.92ex; vertical-align: -0.31ex; " SRC="figures/img56.svg"
+ ALT="$n-1$"></SPAN> after repeating this.
+Moving from level <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.92ex; vertical-align: -0.31ex; " SRC="figures/img56.svg"
+ ALT="$n-1$"></SPAN>, the process can finally enter the critical section.
+Note that this AITS is race-free for any <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.04ex; vertical-align: -0.43ex; " SRC="figures/img41.svg"
+ ALT="$n\geq 2$"></SPAN>.
+</div>
+
+<h3>[<a href="#BK08">BK08</a>, <a href="benchmarks_2023-05-03/exercise_2-9_rf.rmt">Exercise 2.9</a>] for Race Freedom</h3>
+
+<a href="#ex8" onclick="toggleVisible('ex8'); return false;">Detail...</a>
+
+ <div class="example" id="ex8">
+<P>
+Two processes <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img19.svg"
+ ALT="$P_0$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img20.svg"
+ ALT="$P_1$"></SPAN> share two variables <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.68ex; vertical-align: -0.57ex; " SRC="figures/img59.svg"
+ ALT="$y_0$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.68ex; vertical-align: -0.57ex; " SRC="figures/img60.svg"
+ ALT="$y_1$"></SPAN> that are initialized by <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.72ex; vertical-align: -0.12ex; " SRC="figures/img61.svg"
+ ALT="$0$"></SPAN>:
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\xymatrix @C=7ex{
+            \ar[r] & \ovalbox{$\mathsf{noncrit}_i$} \ar[rrr]^{y_i := y_{i-1}+1} &&& \ovalbox{$\mathsf{wait}_i$} \ar[rrr]^{y_{i-1}=0\lor y_i<y_{i-1}} &&& \ovalbox{$\mathsf{crit}_i$} \ar@/^12pt/[llllll]^{y_i:=0}
+        }
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE="height: 8.61ex; vertical-align: -5.08ex; " SRC="figures/img62.svg"
+ ALT="$\displaystyle \xymatrix @C=7ex{
+\ar[r] &amp; \ovalbox{$\mathsf{noncrit}_i$} \ar[rr...
+...r y_i&lt;y_{i-1}} &amp;&amp;&amp; \ovalbox{$\mathsf{crit}_i$} \ar@/^12pt/[llllll]^{y_i:=0}
+}
+$">
+</DIV>
+To enter the critical section, <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN> moves to state <!-- MATH
+ $\mathsf{wait}_i$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.15ex; vertical-align: -0.46ex; " SRC="figures/img63.svg"
+ ALT="$\mathsf{wait}_i$"></SPAN> with <!-- MATH
+ $y_i := y_{i-1}+1$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.26ex; vertical-align: -0.66ex; " SRC="figures/img64.svg"
+ ALT="$y_i := y_{i-1}+1$"></SPAN>.
+If <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.17ex; vertical-align: -0.57ex; " SRC="figures/img65.svg"
+ ALT="$y_i&gt;0$"></SPAN>, then process <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN> is waiting for the critical section;
+otherwise, <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN> is not waiting.
+If <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.14ex; vertical-align: -0.78ex; " SRC="figures/img66.svg"
+ ALT="$y_i&lt;y_j$"></SPAN>, then <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN> has priority for the critical section because <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.48ex; vertical-align: -0.78ex; " SRC="figures/img67.svg"
+ ALT="$P_j$"></SPAN> started waiting after <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN>.
+Therefore, <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN> can enter the critical section when <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.26ex; vertical-align: -0.66ex; " SRC="figures/img68.svg"
+ ALT="$y_{i-1}=0$"></SPAN> or <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.02ex; vertical-align: -0.66ex; " SRC="figures/img69.svg"
+ ALT="$y_i&lt;y_{i-1}$"></SPAN> hold.
+Note that this AITS is race-free.
+</div>
+
+<h3>[<a href="#BK08">BK08</a>, <a href="benchmarks_2023-05-03/exercise_2-10_rf.rmt">Exercise 2.10</a>] for Race Freedom</h3>
+
+<a href="#ex9" onclick="toggleVisible('ex9'); return false;">Detail...</a>
+
+ <div class="example" id="ex9">
+<P>
+Two processes <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.26ex; vertical-align: -0.57ex; " SRC="figures/img3.svg"
+ ALT="$P_0,P_1$"></SPAN> share Boolean variables <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.29ex; vertical-align: -0.57ex; " SRC="figures/img4.svg"
+ ALT="$b_0,b_1$"></SPAN> and an integer variable <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.12ex; " SRC="figures/img70.svg"
+ ALT="$k$"></SPAN>:
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\xymatrix @C=15ex{
+            & \ar[d] \\
+            & \ovalbox{$\mathsf{c0}_i$} \ar[d]_{b_i:=\mathsf{false}} \\
+            \ovalbox{$\mathsf{c2}_i$} \ar@(ul,ur)^{\lnot b_{i-1}} \ar[r]^{b_{i-1} : k:=i} & \ovalbox{$\mathsf{c1}_i$} \ar[d]_{k=i} \ar@<0.8ex>[l]^{k\ne i} \\
+            & \ovalbox{$\mathsf{crit}_i$} \ar@/_20pt/[uu]_{b_i:=\mathsf{true}}
+            }
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE="height: 32.49ex; vertical-align: -31.51ex; " SRC="figures/img71.svg"
+ ALT="$\displaystyle \xymatrix @C=15ex{
+&amp; \ar[d] \\
+&amp; \ovalbox{$\mathsf{c0}_i$} \ar...
+...i} \\
+&amp; \ovalbox{$\mathsf{crit}_i$} \ar@/_20pt/[uu]_{b_i:=\mathsf{true}}
+}
+$">
+</DIV>
+If <!-- MATH
+ $b_i = \mathsf{false}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.19ex; vertical-align: -0.46ex; " SRC="figures/img72.svg"
+ ALT="$b_i = \mathsf{false}$"></SPAN>, then <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN> is waiting for the critical section and the other case indicates that <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN> is not waiting.
+Variable <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.12ex; " SRC="figures/img70.svg"
+ ALT="$k$"></SPAN> stores the identifier of the process that has priority for the critical section at that time.
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN> can enter the critical section when <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.12ex; " SRC="figures/img73.svg"
+ ALT="$k = i$"></SPAN> holds.
+If <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.29ex; vertical-align: -0.57ex; " SRC="figures/img74.svg"
+ ALT="$k \ne i$"></SPAN>, then <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.16ex; vertical-align: -0.46ex; " SRC="figures/img1.svg"
+ ALT="$P_i$"></SPAN> has to wait until <!-- MATH
+ $b_{i-1} = \mathsf{true}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.38ex; vertical-align: -0.66ex; " SRC="figures/img75.svg"
+ ALT="$b_{i-1} = \mathsf{true}$"></SPAN> holds, i.e., <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.35ex; vertical-align: -0.66ex; " SRC="figures/img76.svg"
+ ALT="$P_{i-1}$"></SPAN> is not waiting for the critical section.
+Note that this AITS is race-free.
+</div>
+
+<hr>
+<a name="references"><h2>References</h2></a>
+
+<dl compact>
+
+ <dt>[<a name="KN23jlamp">KN23</a>]</dt>
+ <dd>Misaki Kojima and Naoki Nishida,<br>
+	<b>Reducing Non-Occurrence of Specified Runtime Errors to All-Path Reachability Problems of Constrained Rewriting</b>,<br>
+	submitted to a journal, 2023.
+ </dd><br>
+
+ <dt>[<a name="KN23padl">KN23padl</a>]</dt>
+ <dd>Misaki Kojima and Naoki Nishida,<br>
+	<b>On Verifying Starvation Freedom by Reducing to All-Path Reachability of Logically Constrained Rewriting</b>,<br>
+	In <i>Proceedings of the 25th International Symposium on Practical Aspects of Declarative Languages</i> (<a href="https://popl23.sigplan.org/home/PADL-2023">PADL 2023</a>),<br>
+	<i>Lecture Notes in Computer Science</i>, vol. 13880,
+      pp. 161-179, Springer, 2023.<br>
+      Available from <a href="https://doi.org/10.1007/978-3-031-24841-2_11">Springer</a>.
+ </dd><br>
+ 
+ <dt>[<a name="KN22wpte">KN22wpte</a>]</dt>
+ <dd>Misaki Kojima and Naoki Nishida,<br>
+	<b>On Reducing Non-Occurrence of Specified Runtime Errors to All-Path Reachability Problems of Constrained Rewriting</b>,<br>
+	In <i>Informal Proceedings of <a href="https://wpte2022.github.io">the 9th International Workshop on Rewriting Techniques for Program Transformations and Evaluation</a></i> (WPTE 2022), 16 pages, 2022.<br>
+	[<a href="https://easychair.org/publications/preprint/TM7q">PDF</a>]
+ </dd><br>
+
+ <dt>[<a name="CL18">CL18</a>]</dt>
+ <dd>Stefan Ciobaca and Dorel Lucanu,<br>
+	<b>A Coinductive Approach to Proving Reachability Properties in Logically Constrained Term Rewriting Systems</b>,<br>
+      In <i>Proceedings of the 9th International Joint Conference on Automated Reasoning</i> (IJCAR 2018),<br>
+      <i>Lecture Notes in Computer Science</i>, vol. 10900,
+      pp. 295-311, Springer, 2018.<br>
+      Available from <a href="https://doi.org/10.1007/978-3-319-94205-6_20">Springer</a>.
+      </dd><br>
+
+ <dt>[<a name="KNF15">FKN17</a>]</dt>
+ <dd>Carsten Fuhs, Cynthia Kop, and Naoki Nishida,<br>
+      <b>Verifying Procedural Programs via Constrained Rewriting Induction</b>,<br>
+      <i>ACM Transactions on Computational Logic</i>,
+      vol. 18, no. 2, pp. 14:1-14:50, 2017.<br>
+      Available from <a href="https://doi.org/10.1145/3060143">ACM</a>.
+      </dd><br>
+
+ <dt>[<a name="KN14">KN14</a>]</dt>
+ <dd>Cynthia Kop and Naoki Nishida,<br>
+      <b>Automatic Constrained Rewriting Induction towards Verifying
+      Procedural Programs</b>,<br>
+      In <i>Proceedings of the 12th Asian Symposium on Programming
+      Languages and Systems</i> (APLAS 2014),<br>
+      <i>Lecture Notes in Computer Science</i>, vol. 8858,
+      pp. 334-353, Springer, 2014.<br>
+      Available from <a href="https://doi.org/10.1007/978-3-319-12736-1_18">Springer</a>.
+      </dd><br>
+
+ <dt>[<a name="KN13">KN13</a>]</dt>
+ <dd>Cynthia Kop and Naoki Nishida,<br>
+      <b>Term Rewriting with Logical Constraints</b>,<br>
+      In <i>Proceedings of the 9th International Symposium on Frontiers
+      of Combining Systems</i> (FroCoS 2013),<br>
+      <i>Lecture Notes in Computer Science</i>, vol. 8152,
+      pp. 343-358, Springer, 2013.<br>
+      Available from <a href="https://doi.org/10.1007/978-3-642-40885-4_24">Springer</a>.
+      </dd><br>
+
+<dt>[<a name="BK08">BK08</a>]</dt>
+<dd>Christel Baier and Joost-Pieter Katoen,<br>
+     <b>Principles of model checking</b>,<br>
+     MIT Press, 2008.
+     <//dd><br>
+
+</dl>
+
+<hr>
+
+<a name="contributers"><h2>Contributers</h2></a>
+
+<ul>
+  <li><a href="https://www.trs.css.i.nagoya-u.ac.jp/~nishida/index-en.html">Naoki Nishida</a> (Nagoya University)</li>
+  <li>Misaki Kojima (Nagoya University)</li>
+</ul>
+
+<hr>
+
+<a name="contact"><h2>Contact</h2></a>
+
+<dl>
+ <dt><a href="https://www.trs.css.i.nagoya-u.ac.jp/~nishida/index-en.html">Naoki Nishida</a> (Nagoya University)</dt>
+      <dd><code>nishida [at] i.nagoya-u.ac.jp</code></dd>
+</dl>
+
+<hr>
+
+</body>
+</html>

@@ -1,0 +1,439 @@
+\documentclass[a4paper]{article}
+\usepackage{lscape}
+%\usepackage{latexsym}
+%\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\newcommand{\ttsym}[1]{\mbox{\tt #1}}
+\def\ttsharp{\ttsym{\symbol{35}}}
+\newcommand{\Sort}[1]{\mathit{#1}}
+\newcommand{\symb}[1]{\mathsf{#1}}
+\newcommand{\var}[1]{\mathit{#1}}
+\newcommand{\Constraint}[1]{[\, #1 \,]}
+\newcommand{\bv}[2][b]{{\ttsharp\symb{#1}{#2}}}
+\newcommand{\Sigmainttheory}{\Sigma^{\mathit{int}}_{\mathit{theory}}}
+\newcommand{\Sigmabvtheory}{\Sigma^{\mathit{bv}}_{\mathit{theory}}}
+
+\begin{document}
+\footnotesize
+
+\begin{landscape}
+
+\section*{Original LCTRSs}
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{cnfg} & : & \Sort{Process} \times \Sort{Process} \times \Sort{Process} \times \Sort{Semaphore} \times \Sort{int} \times \Sort{int} \Rightarrow \Sort{Cnfg}\\
+\symb{p} & : & \Sort{Fcall} \times \Sort{int} \Rightarrow \Sort{Process}\\
+\symb{sem} & : & \Sort{int} \times \Sort{int} \times \Sort{int} \Rightarrow \Sort{Semaphore}\\
+\symb{rdr7} & : & \Sort{Fcall}\\
+\symb{rdr9} & : & \Sort{int} \Rightarrow \Sort{Fcall}\\
+\symb{rdr10} & : & \Sort{int} \Rightarrow \Sort{Fcall}\\
+\symb{rdr11} & : & \Sort{int} \Rightarrow \Sort{Fcall}\\
+\symb{wrtr18} & : & \Sort{Fcall}\\
+\symb{wrtr19} & : & \Sort{Fcall}\\
+\symb{wrtr20} & : & \Sort{Fcall}\\
+\symb{success} & : & \Sort{Cnfg}\\
+\symb{error} & : & \Sort{Cnfg}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr7},\symb{0}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{rdr9}(\symb{0}),\symb{0}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})\\
+
+\mathrm{2} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr9}(\var{y}),\symb{0}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{rdr10}(\var{y}),\symb{0}),\var{p2},\var{p3},\symb{sem}(\var{s1},\var{d},\var{t}),\var{x},\symb{0})
+ & \Constraint{\neg \var{s} = \symb{0} \land \var{s1} = \var{s} - \symb{1}}\\
+
+\mathrm{3} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr9}(\var{y}),\symb{0}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{rdr9}(\var{y}),\var{t}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t2}),\var{x},\symb{0})
+ & \Constraint{\var{s} = \symb{0} \land \var{t2} = \var{t} + \symb{2}}\\
+
+\mathrm{4} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr9}(\var{y}),\var{n}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{1})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{rdr10}(\var{y}),\symb{0}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \Constraint{\var{n} = \var{d} \land \neg \var{n} = \symb{0}}\\
+
+\mathrm{5} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr10}(\var{y}),\symb{0}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{rdr11}(\var{x}),\symb{0}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})\\
+
+\mathrm{6} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr11}(\var{y}),\symb{0}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{rdr7},\symb{0}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d2},\var{t}),\var{x},\symb{1})
+ & \Constraint{\neg \var{t} = \var{d} + \symb{2} \land \var{d2} = \var{d} + \symb{2}}\\
+
+\mathrm{7} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr11}(\var{y}),\symb{0}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{rdr7},\symb{0}),\var{p2},\var{p3},\symb{sem}(\var{s1},\var{d2},\var{t}),\var{x},\symb{0})
+ & \Constraint{\var{t} = \var{d} + \symb{2} \land \var{s1} = \var{s} + \symb{1}}\\
+
+\mathrm{8} : 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr7},\symb{0}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr9}(\symb{0}),\symb{0}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})\\
+
+\mathrm{9} : 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr9}(\var{y}),\symb{0}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr10}(\var{y}),\symb{0}),\var{p3},\symb{sem}(\var{s1},\var{d},\var{t}),\var{x},\symb{0})
+ & \Constraint{\neg \var{s} = \symb{0} \land \var{s1} = \var{s} - \symb{1}}\\
+
+\mathrm{10} : 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr9}(\var{y}),\symb{0}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr9}(\var{y}),\var{t}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t2}),\var{x},\symb{0})
+ & \Constraint{\var{s} = \symb{0} \land \var{t2} = \var{t} + \symb{2}}\\
+
+\mathrm{11} : 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr9}(\var{y}),\var{n}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{1})
+ & \to 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr10}(\var{y}),\symb{0}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \Constraint{\var{n} = \var{d} \land \neg \var{n} = \symb{0}}\\
+
+\mathrm{12} : 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr10}(\var{y}),\symb{0}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr11}(\var{x}),\symb{0}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})\\
+
+\mathrm{13} : 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr11}(\var{y}),\symb{0}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr7},\symb{0}),\var{p3},\symb{sem}(\var{s},\var{d2},\var{t}),\var{x},\symb{1})
+ & \Constraint{\neg \var{t} = \var{d} + \symb{2} \land \var{d2} = \var{d} + \symb{2}}\\
+
+\mathrm{14} : 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr11}(\var{y}),\symb{0}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr7},\symb{0}),\var{p3},\symb{sem}(\var{s1},\var{d2},\var{t}),\var{x},\symb{0})
+ & \Constraint{\var{t} = \var{d} + \symb{2} \land \var{s1} = \var{s} + \symb{1}}\\
+
+\mathrm{15} : 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr18},\symb{0}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr19},\symb{0}),\symb{sem}(\var{s1},\var{d},\var{t}),\var{x},\symb{0})
+ & \Constraint{\neg \var{s} = \symb{0} \land \var{s1} = \var{s} - \symb{1}}\\
+
+\mathrm{16} : 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr18},\symb{0}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr18},\var{t}),\symb{sem}(\var{s},\var{d},\var{t2}),\var{x},\symb{0})
+ & \Constraint{\var{s} = \symb{0} \land \var{t2} = \var{t} + \symb{2}}\\
+
+\mathrm{17} : 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr18},\var{n}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{1})
+ & \to 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr19},\symb{0}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \Constraint{\var{n} = \var{d} \land \neg \var{n} = \symb{0}}\\
+
+\mathrm{18} : 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr19},\symb{0}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr20},\symb{0}),\symb{sem}(\var{s},\var{d},\var{t}),\symb{1},\symb{0})\\
+
+\mathrm{19} : 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr20},\symb{0}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr18},\symb{0}),\symb{sem}(\var{s},\var{d2},\var{t}),\var{x},\symb{1})
+ & \Constraint{\neg \var{t} = \var{d} + \symb{2} \land \var{d2} = \var{d} + \symb{2}}\\
+
+\mathrm{20} : 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr20},\symb{0}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr18},\symb{0}),\symb{sem}(\var{s1},\var{d},\var{t}),\var{x},\symb{0})
+ & \Constraint{\var{t} = \var{d} + \symb{2} \land \var{s1} = \var{s} + \symb{1}}\\
+
+\mathrm{21} : 
+ & \symb{cnfg}(\var{p1},\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{success}\\
+
+\mathrm{22} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr10}(\var{y}),\var{n1}),\symb{p}(\symb{rdr10}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr19},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{23} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr11}(\var{y}),\var{n1}),\symb{p}(\symb{rdr10}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr19},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{24} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr10}(\var{y}),\var{n1}),\symb{p}(\symb{rdr11}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr19},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{25} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr11}(\var{y}),\var{n1}),\symb{p}(\symb{rdr11}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr19},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{26} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr10}(\var{y}),\var{n1}),\symb{p}(\symb{rdr10}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr20},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{27} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr11}(\var{y}),\var{n1}),\symb{p}(\symb{rdr10}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr20},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{28} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr10}(\var{y}),\var{n1}),\symb{p}(\symb{rdr11}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr20},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{29} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr11}(\var{y}),\var{n1}),\symb{p}(\symb{rdr11}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr20},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\end{array}
+\right\}
+\]
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{30} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr7},\symb{0}),\symb{p}(\symb{rdr7},\symb{0}),\symb{p}(\symb{wrtr18},\symb{0}),\symb{sem}(\symb{2},\var{d},\var{t}),\symb{0},\symb{0})
+ & \Rightarrow 
+ & \symb{success}
+ & \Constraint{(\var{d} > \symb{0}) \land \var{t} = \var{d} + \symb{2}} \\
+
+\end{array}
+\right\}
+\]
+
+\newpage
+\section*{BV-LCTRS Version}
+
+\footnotesize
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{cnfg} & : & \Sort{Process} \times \Sort{Process} \times \Sort{Process} \times \Sort{Semaphore} \times \Sort{bitvec}_{32} \times \Sort{bitvec}_{1} \Rightarrow \Sort{Cnfg}\\
+\symb{p} & : & \Sort{Fcall} \times \Sort{bitvec}_{3} \Rightarrow \Sort{Process}\\
+\symb{sem} & : & \Sort{bitvec}_{2} \times \Sort{bitvec}_{3} \times \Sort{bitvec}_{3} \Rightarrow \Sort{Semaphore}\\
+\symb{rdr7} & : & \Sort{Fcall}\\
+\symb{rdr9} & : & \Sort{bitvec}_{32} \Rightarrow \Sort{Fcall}\\
+\symb{rdr10} & : & \Sort{bitvec}_{32} \Rightarrow \Sort{Fcall}\\
+\symb{rdr11} & : & \Sort{bitvec}_{32} \Rightarrow \Sort{Fcall}\\
+\symb{wrtr18} & : & \Sort{Fcall}\\
+\symb{wrtr19} & : & \Sort{Fcall}\\
+\symb{wrtr20} & : & \Sort{Fcall}\\
+\symb{success} & : & \Sort{Cnfg}\\
+\symb{error} & : & \Sort{Cnfg}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr7},\bv{000}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{rdr9}(\bv[x]{00000000}),\bv{000}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})\\
+
+\mathrm{2} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr9}(\var{y}),\bv{000}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{rdr10}(\var{y}),\bv{000}),\var{p2},\var{p3},\symb{sem}(\var{s1},\var{d},\var{t}),\var{x},\bv{0})
+ & \Constraint{\neg \var{s} = \bv{00} \land \var{s1} = \var{s} \symb{bvsub} \bv{01}}\\
+
+\mathrm{3} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr9}(\var{y}),\bv{000}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{rdr9}(\var{y}),\var{t}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t2}),\var{x},\bv{0})
+ & \Constraint{\var{s} = \bv{00} \land \var{t2} = \var{t} \symb{bvadd} \bv{010}}\\
+
+\mathrm{4} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr9}(\var{y}),\var{n}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{1})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{rdr10}(\var{y}),\bv{000}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \Constraint{\var{n} = \var{d} \land \neg \var{n} = \bv{000}}\\
+
+\mathrm{5} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr10}(\var{y}),\bv{000}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{rdr11}(\var{x}),\bv{000}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})\\
+
+\mathrm{6} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr11}(\var{y}),\bv{000}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{rdr7},\bv{000}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d2},\var{t}),\var{x},\bv{1})
+ & \Constraint{\neg \var{t} = \var{d} \symb{bvadd} \bv{010} \land \var{d2} = \var{d} \symb{bvadd} \bv{010}}\\
+
+\mathrm{7} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr11}(\var{y}),\bv{000}),\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{rdr7},\bv{000}),\var{p2},\var{p3},\symb{sem}(\var{s1},\var{d2},\var{t}),\var{x},\bv{0})
+ & \Constraint{\var{t} = \var{d} \symb{bvadd} \bv{010} \land \var{s1} = \var{s} \symb{bvadd} \bv{01}}\\
+
+\mathrm{8} : 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr7},\bv{000}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr9}(\bv[x]{00000000}),\bv{000}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})\\
+
+\mathrm{9} : 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr9}(\var{y}),\bv{000}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr10}(\var{y}),\bv{000}),\var{p3},\symb{sem}(\var{s1},\var{d},\var{t}),\var{x},\bv{0})
+ & \Constraint{\neg \var{s} = \bv{00} \land \var{s1} = \var{s} \symb{bvsub} \bv{01}}\\
+
+\mathrm{10} : 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr9}(\var{y}),\bv{000}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr9}(\var{y}),\var{t}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t2}),\var{x},\bv{0})
+ & \Constraint{\var{s} = \bv{00} \land \var{t2} = \var{t} \symb{bvadd} \bv{010}}\\
+
+\mathrm{11} : 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr9}(\var{y}),\var{n}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{1})
+ & \to 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr10}(\var{y}),\bv{000}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \Constraint{\var{n} = \var{d} \land \neg \var{n} = \bv{000}}\\
+
+\mathrm{12} : 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr10}(\var{y}),\bv{000}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr11}(\var{x}),\bv{000}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})\\
+
+\mathrm{13} : 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr11}(\var{y}),\bv{000}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr7},\bv{000}),\var{p3},\symb{sem}(\var{s},\var{d2},\var{t}),\var{x},\bv{1})
+ & \Constraint{\neg \var{t} = \var{d} \symb{bvadd} \bv{010} \land \var{d2} = \var{d} \symb{bvadd} \bv{010}}\\
+
+\mathrm{14} : 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr11}(\var{y}),\bv{000}),\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\symb{p}(\symb{rdr7},\bv{000}),\var{p3},\symb{sem}(\var{s1},\var{d2},\var{t}),\var{x},\bv{0})
+ & \Constraint{\var{t} = \var{d} \symb{bvadd} \bv{010} \land \var{s1} = \var{s} \symb{bvadd} \bv{01}}\\
+
+\mathrm{15} : 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr18},\bv{000}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr19},\bv{000}),\symb{sem}(\var{s1},\var{d},\var{t}),\var{x},\bv{0})
+ & \Constraint{\neg \var{s} = \bv{00} \land \var{s1} = \var{s} \symb{bvsub} \bv{01}}\\
+
+\mathrm{16} : 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr18},\bv{000}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr18},\var{t}),\symb{sem}(\var{s},\var{d},\var{t2}),\var{x},\bv{0})
+ & \Constraint{\var{s} = \bv{00} \land \var{t2} = \var{t} \symb{bvadd} \bv{010}}\\
+
+\mathrm{17} : 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr18},\var{n}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{1})
+ & \to 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr19},\bv{000}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \Constraint{\var{n} = \var{d} \land \neg \var{n} = \bv{000}}\\
+
+\mathrm{18} : 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr19},\bv{000}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr20},\bv{000}),\symb{sem}(\var{s},\var{d},\var{t}),\bv[x]{00000001},\bv{0})\\
+
+\mathrm{19} : 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr20},\bv{000}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr18},\bv{000}),\symb{sem}(\var{s},\var{d2},\var{t}),\var{x},\bv{1})
+ & \Constraint{\neg \var{t} = \var{d} \symb{bvadd} \bv{010} \land \var{d2} = \var{d} \symb{bvadd} \bv{010}}\\
+
+\mathrm{20} : 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr20},\bv{000}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{p1},\var{p2},\symb{p}(\symb{wrtr18},\bv{000}),\symb{sem}(\var{s1},\var{d},\var{t}),\var{x},\bv{0})
+ & \Constraint{\var{t} = \var{d} \symb{bvadd} \bv{010} \land \var{s1} = \var{s} \symb{bvadd} \bv{01}}\\
+
+\mathrm{21} : 
+ & \symb{cnfg}(\var{p1},\var{p2},\var{p3},\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{success}\\
+
+\mathrm{22} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr10}(\var{y}),\var{n1}),\symb{p}(\symb{rdr10}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr19},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{23} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr11}(\var{y}),\var{n1}),\symb{p}(\symb{rdr10}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr19},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{24} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr10}(\var{y}),\var{n1}),\symb{p}(\symb{rdr11}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr19},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{25} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr11}(\var{y}),\var{n1}),\symb{p}(\symb{rdr11}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr19},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{26} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr10}(\var{y}),\var{n1}),\symb{p}(\symb{rdr10}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr20},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{27} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr11}(\var{y}),\var{n1}),\symb{p}(\symb{rdr10}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr20},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{28} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr10}(\var{y}),\var{n1}),\symb{p}(\symb{rdr11}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr20},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{29} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr11}(\var{y}),\var{n1}),\symb{p}(\symb{rdr11}(\var{y}),\var{n2}),\symb{p}(\symb{wrtr20},\var{n3}),\symb{sem}(\var{s},\var{d},\var{t}),\var{x},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\end{array}
+\right\}
+\]
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{30} : 
+ & \symb{cnfg}(\symb{p}(\symb{rdr7},\bv{000}),\symb{p}(\symb{rdr7},\bv{000}),\symb{p}(\symb{wrtr18},\bv{000}),\symb{sem}(\bv{10},\var{d},\var{t}),\bv[x]{00000000},\bv{0})
+ & \Rightarrow 
+ & \symb{success}
+ & \Constraint{(\var{d} \symb{bvugt} \bv{000}) \land \var{t} = \var{d} \symb{bvadd} \bv{010}} \\
+
+\end{array}
+\right\}
+\]
+
+\end{landscape}
+
+\end{document}
+
+

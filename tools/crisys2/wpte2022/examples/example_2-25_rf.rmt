@@ -1,0 +1,35 @@
+sorts Loc, State;
+
+signature
+  state    : Loc Loc Bool Bool Int -> State,
+  noncrit0 : -> Loc,
+  wait0    : -> Loc,
+  crit0    : -> Loc,
+  noncrit1 : -> Loc,
+  wait1    : -> Loc,
+  crit1    : -> Loc,
+  success  : -> State,
+  error    : -> State;
+
+variables
+  X : Int, X1 : Int,
+  P0 : Loc, P1 : Loc,
+  B0 : Bool, B1 : Bool, B01 : Bool, B11 : Bool;
+
+rewrite-system main
+  (state noncrit0 P1 B0 B1 X) /\ (band B01 (mequals X1 1))     => (state wait0    P1 B01 B1 X1),
+  (state wait0    P1 B0 B1 X) /\ (bor (mequals X 0) (bnot B1)) => (state crit0    P1 B0  B1 X ),
+  (state crit0    P1 B0 B1 X) /\ (bnot B01)                    => (state noncrit0 P1 B01 B1 X ),
+
+  (state P0 noncrit1 B0 B1 X) /\ (band B11 (mequals X1 0))     => (state P0 wait1    B0 B11 X1),
+  (state P0 wait1    B0 B1 X) /\ (bor (mequals X 1) (bnot B0)) => (state P0 crit1    B0 B1  X ),
+  (state P0 crit1    B0 B1 X) /\ (bnot B11)                    => (state P0 noncrit1 B0 B11 X ),
+
+  (state P0 P1 B0 B1 X) => success,
+
+  (state crit0 crit1 B0 B1 X) => error;
+
+rewrite-system apr
+  (state noncrit0 noncrit1 false false 0) => success;
+
+prove [10,10] in main : apr;

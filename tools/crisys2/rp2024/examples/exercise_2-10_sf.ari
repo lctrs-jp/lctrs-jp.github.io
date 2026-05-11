@@ -1,0 +1,36 @@
+(format LCTRS :smtlib 2.6)
+(theory Ints)
+
+(sort Loc)
+(sort State)
+
+(fun state (-> Loc Loc Bool Bool Int Int State))
+(fun c00 Loc)
+(fun c10 Loc)
+(fun c20 Loc)
+(fun crit0 Loc)
+(fun c01 Loc)
+(fun c11 Loc)
+(fun c21 Loc)
+(fun crit1 Loc)
+(fun success State)
+(fun error State)
+
+(rule (state c00 p1 b0 b1 k c) (state c10 p1 b01 b1 k c1) :guard (and (not b01) (= c1 1) (<= c 10)) :var ((c1 Int)))
+(rule (state c10 p1 b0 b1 k c) (state c20 p1 b0 b1 k c)   :guard (and (distinct k 0) (<= c 10)) :var ((k Int)))
+(rule (state c10 p1 b0 b1 k c) (state crit0 p1 b0 b1 k c1) :guard (and (= k 0) (= c1 0) (<= c 10)) :var ((k Int) (c1 Int)))
+(rule (state c20 p1 b0 b1 k c) (state c10 p1 b0 b1 k1 c)   :guard (and b1 (= k1 0) (<= c 10)) :var ((k1 Int)))
+(rule (state crit0 p1 b0 b1 k c) (state c00 p1 b01 b1 k c) :guard (and b01 (<= c 10)) )
+(rule (state p0 c01 b0 b1 k c) (state p0 c11 b0 b11 k c1)  :guard (and (not b11) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10)) :var ((c1 Int)))
+(rule (state p0 c11 b0 b1 k c) (state p0 c21 b0 b1 k c1)   :guard (and (distinct k 1) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10)) :var ((k Int) (c1 Int)))
+(rule (state p0 c11 b0 b1 k c) (state p0 crit1 b0 b1 k c1) :guard (and (= k 1) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10)) :var ((k Int) (c1 Int)))
+(rule (state p0 c21 b0 b1 k c) (state p0 c11 b0 b1 k1 c1)  :guard (and b0 (= k1 1) (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10)) :var ((k1 Int) (c1 Int)))
+(rule (state p0 crit1 b0 b1 k c) (state p0 c01 b0 b11 k c1) :guard (and b11 (= c1 (ite (> c 0) (+ c 1) c)) (<= c 10)) :var ((k Int) (c1 Int)))
+
+(rule (state p0 p1 b0 b1 k c) success )
+
+(rule (state c10 p1  b0 b1 k c) error :guard (> c 10) )
+(rule (state c20 p1  b0 b1 k c) error :guard (> c 10) )
+(rule (state c20 c21 b0 b1 k c) error :guard (and (not b1) (not b0) (> c 0)) )
+
+(starvation-freedom (state c00 c01 b0 b1 k c) success :guard (and b0 b1 (or (= k 0) (= k 1)) (= c 0)) :var ((k Int) (c Int)))

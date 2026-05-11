@@ -1,0 +1,257 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021 (Released January 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>LCTRS</TITLE>
+<META NAME="description" CONTENT="LCTRS">
+<META NAME="keywords" CONTENT="b12">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021">
+
+<LINK REL="STYLESHEET" HREF="b12.css">
+
+<LINK REL="next" HREF="node3.html">
+<LINK REL="previous" HREF="node1.html">
+<LINK REL="next" HREF="node3.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="node3.html">APR Problem</A>
+<B> Up:</B> <A
+ HREF="node1.html">Original LCTRSs</A>
+<B> Previous:</B> <A
+ HREF="node1.html">Original LCTRSs</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H4><A ID="SECTION00010010000000000000">
+LCTRS</A>
+</H4>
+
+<P>
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\Sigma =
+\Sigma^{\mathit{int}}_{\mathit{theory}}\cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\mathsf{config} & : & \mathit{Thread} \times \mathit{Thread} \times \mathit{Thread} \times \mathit{Thread} \times \mathit{Thread} \times \mathit{int} \times \mathit{int} \Rightarrow \mathit{Config}\\
+\mathsf{thread} & : & \mathit{State} \Rightarrow \mathit{Thread}\\
+\mathsf{none} & : & \mathit{Thread}\\
+\mathsf{main} & : & \mathit{State}\\
+\mathsf{main0} & : & \mathit{State}\\
+\mathsf{main1} & : & \mathit{State}\\
+\mathsf{main2} & : & \mathit{State}\\
+\mathsf{main3} & : & \mathit{State}\\
+\mathsf{main4} & : & \mathit{State}\\
+\mathsf{main5} & : & \mathit{State}\\
+\mathsf{main6} & : & \mathit{State}\\
+\mathsf{main7} & : & \mathit{State}\\
+\mathsf{return0} & : & \mathit{State}\\
+\mathsf{setThread} & : & \mathit{State}\\
+\mathsf{setThread1} & : & \mathit{State}\\
+\mathsf{setThread2} & : & \mathit{State}\\
+\mathsf{checkThread} & : & \mathit{State}\\
+\mathsf{success} & : & \mathit{Config}\\
+\mathsf{error} & : & \mathit{Config}\\
+\mathsf{assert0} & : & \mathit{Config}\\
+\end{array}
+\right\}
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE=""
+ SRC="img1.svg"
+ ALT="$\displaystyle \Sigma =
+\Sigma^{\mathit{int}}_{\mathit{theory}}\cup\left\{
+\beg...
+...athit{Config}\\
+\mathsf{assert0} &amp; : &amp; \mathit{Config}\\
+\end{array}\right\}
+$">
+</DIV>
+
+<P>
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} :
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main}),\mathsf{none},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main0}),\mathsf{thread}(\mathsf{setThread}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{2} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main}),\mathsf{thread}(\mathit{s}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{3} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main0}),\mathit{thrd0},\mathsf{none},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main1}),\mathit{thrd0},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{4} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main0}),\mathit{thrd0},\mathsf{thread}(\mathit{s}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{5} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main1}),\mathit{thrd0},\mathit{thrd1},\mathsf{none},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main2}),\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{6} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main1}),\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathit{s}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{7} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main2}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{none},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main3}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{checkThread}),\mathit{a},\mathit{b})\\
+\par
+\mathrm{8} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main2}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathit{s}),\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{9} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main3}),\mathsf{thread}(\mathsf{return0}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main4}),\mathsf{none},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{10} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main4}),\mathit{thrd0},\mathsf{thread}(\mathsf{return0}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main5}),\mathit{thrd0},\mathsf{none},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{11} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main5}),\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{return0}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main6}),\mathit{thrd0},\mathit{thrd1},\mathsf{none},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{12} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main6}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{return0}),\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main7}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{none},\mathit{a},\mathit{b})\\
+\par
+\mathrm{13} : 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{main7}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathsf{thread}(\mathsf{return0}),\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{14} : 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a1},\mathit{b})
+ & [\, \mathit{a1} = \mathsf{1} \,]\\
+\par
+\mathrm{15} : 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b1})
+ & [\, \mathit{b1} = \mathsf{-1} \,]\\
+\par
+\mathrm{16} : 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathsf{thread}(\mathsf{return0}),\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{17} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd2},\mathit{thrd3},\mathit{a1},\mathit{b})
+ & [\, \mathit{a1} = \mathsf{1} \,]\\
+\par
+\mathrm{18} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b1})
+ & [\, \mathit{b1} = \mathsf{-1} \,]\\
+\par
+\mathrm{19} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathsf{thread}(\mathsf{return0}),\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{20} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd3},\mathit{a1},\mathit{b})
+ & [\, \mathit{a1} = \mathsf{1} \,]\\
+\par
+\mathrm{21} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread1}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd3},\mathit{a},\mathit{b1})
+ & [\, \mathit{b1} = \mathsf{-1} \,]\\
+\par
+\mathrm{22} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{setThread2}),\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathsf{thread}(\mathsf{return0}),\mathit{thrd3},\mathit{a},\mathit{b})\\
+\par
+\mathrm{23} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{checkThread}),\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{assert0}
+ & [\, \neg(((\mathit{a} = \mathsf{0} \land \mathit{b} = \mathsf{0}) \lor (\mathit{a} = \mathsf{1} \land \mathit{b} = \mathsf{-1}))) \,]\\
+\par
+\mathrm{24} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{checkThread}),\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathsf{thread}(\mathsf{return0}),\mathit{a},\mathit{b})
+ & [\, (\mathit{a} = \mathsf{0} \land \mathit{b} = \mathsf{0}) \lor (\mathit{a} = \mathsf{1} \land \mathit{b} = \mathsf{-1}) \,]\\
+\par
+\mathrm{25} : 
+ & \mathsf{config}(\mathit{thrd},\mathit{thrd0},\mathit{thrd1},\mathit{thrd2},\mathit{thrd3},\mathit{a},\mathit{b})
+ & \to 
+ & \mathsf{success}\\
+\par
+\end{array}
+\right\}
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE=""
+ SRC="img2.svg"
+ ALT="$\displaystyle \left\{
+\begin{array}{rr@{\&gt;}c@{\&gt;}ll}
+\mathrm{1} :
+&amp; \mathsf{c...
+...\mathit{a},\mathit{b})
+&amp; \to
+&amp; \mathsf{success}\\
+\par
+\end{array}\right\}
+$">
+</DIV>
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

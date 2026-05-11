@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021 (Released January 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>LCTRS</TITLE>
+<META NAME="description" CONTENT="LCTRS">
+<META NAME="keywords" CONTENT="b7">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021">
+
+<LINK REL="STYLESHEET" HREF="b7.css">
+
+<LINK REL="next" HREF="node3.html">
+<LINK REL="previous" HREF="node1.html">
+<LINK REL="next" HREF="node3.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="node3.html">APR Problem</A>
+<B> Up:</B> <A
+ HREF="node1.html">Original LCTRSs (3 Processes)</A>
+<B> Previous:</B> <A
+ HREF="node1.html">Original LCTRSs (3 Processes)</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H4><A ID="SECTION00010010000000000000">
+LCTRS</A>
+</H4>
+
+<P>
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\Sigma =
+\Sigma^{\mathit{int}}_{\mathit{theory}}\cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\mathsf{state} & : & \mathit{Loc} \times \mathit{Loc} \times \mathit{Loc} \times \mathit{int} \times \mathit{int} \times \mathit{int} \times \mathit{int} \times \mathit{int} \Rightarrow \mathit{State}\\
+\mathsf{noncrit} & : & \mathit{Loc}\\
+\mathsf{level1} & : & \mathit{Loc}\\
+\mathsf{level2} & : & \mathit{Loc}\\
+\mathsf{crit} & : & \mathit{Loc}\\
+\mathsf{success} & : & \mathit{State}\\
+\mathsf{error} & : & \mathit{State}\\
+\end{array}
+\right\}
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE=""
+ SRC="img1.svg"
+ ALT="$\displaystyle \Sigma =
+\Sigma^{\mathit{int}}_{\mathit{theory}}\cup\left\{
+\beg...
+...&amp; \mathit{State}\\
+\mathsf{error} &amp; : &amp; \mathit{State}\\
+\end{array}\right\}
+$">
+</DIV>
+
+<P>
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} :
+ & \mathsf{state}(\mathsf{noncrit},\mathit{proc1},\mathit{proc2},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{state}(\mathsf{level1},\mathit{proc1},\mathit{proc2},\mathit{p01},\mathit{p1},\mathit{p2},\mathit{y11},\mathit{y2})
+ & [\, \mathit{p01} = \mathsf{1} \land \mathit{y11} = \mathsf{0} \,]\\
+\par
+\mathrm{2} : 
+ & \mathsf{state}(\mathsf{level1},\mathit{proc1},\mathit{proc2},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{state}(\mathsf{level2},\mathit{proc1},\mathit{proc2},\mathit{p01},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y21})
+ & [\, (\mathit{y1} \ne \mathsf{0} \lor ((\mathit{p1} < \mathsf{1}) \land (\mathit{p2} < \mathsf{1}))) \land \mathit{p01} = \mathsf{2} \land \mathit{y21} = \mathsf{0} \,]\\
+\par
+\mathrm{3} : 
+ & \mathsf{state}(\mathsf{level2},\mathit{proc1},\mathit{proc2},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{state}(\mathsf{crit},\mathit{proc1},\mathit{proc2},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & [\, \mathit{y2} \ne \mathsf{0} \lor ((\mathit{p1} < \mathsf{2}) \land (\mathit{p2} < \mathsf{2})) \,]\\
+\par
+\mathrm{4} : 
+ & \mathsf{state}(\mathsf{crit},\mathit{proc1},\mathit{proc2},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{state}(\mathsf{noncrit},\mathit{proc1},\mathit{proc2},\mathit{p01},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & [\, \mathit{p01} = \mathsf{0} \,]\\
+\par
+\mathrm{5} : 
+ & \mathsf{state}(\mathit{proc0},\mathsf{noncrit},\mathit{proc2},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{state}(\mathit{proc0},\mathsf{level1},\mathit{proc2},\mathit{p0},\mathit{p11},\mathit{p2},\mathit{y11},\mathit{y2})
+ & [\, \mathit{p11} = \mathsf{1} \land \mathit{y11} = \mathsf{1} \,]\\
+\par
+\mathrm{6} : 
+ & \mathsf{state}(\mathit{proc0},\mathsf{level1},\mathit{proc2},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{state}(\mathit{proc0},\mathsf{level2},\mathit{proc2},\mathit{p0},\mathit{p11},\mathit{p2},\mathit{y1},\mathit{y21})
+ & [\, (\mathit{y1} \ne \mathsf{1} \lor ((\mathit{p0} < \mathsf{1}) \land (\mathit{p2} < \mathsf{1}))) \land \mathit{p11} = \mathsf{2} \land \mathit{y21} = \mathsf{1} \,]\\
+\par
+\mathrm{7} : 
+ & \mathsf{state}(\mathit{proc0},\mathsf{level2},\mathit{proc2},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{state}(\mathit{proc0},\mathsf{crit},\mathit{proc2},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & [\, \mathit{y2} \ne \mathsf{1} \lor ((\mathit{p0} < \mathsf{2}) \land (\mathit{p2} < \mathsf{2})) \,]\\
+\par
+\mathrm{8} : 
+ & \mathsf{state}(\mathit{proc0},\mathsf{crit},\mathit{proc2},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{state}(\mathit{proc0},\mathsf{noncrit},\mathit{proc2},\mathit{p0},\mathit{p11},\mathit{p2},\mathit{y1},\mathit{y2})
+ & [\, \mathit{p11} = \mathsf{0} \,]\\
+\par
+\mathrm{9} : 
+ & \mathsf{state}(\mathit{proc0},\mathit{proc1},\mathsf{noncrit},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{state}(\mathit{proc0},\mathit{proc1},\mathsf{level1},\mathit{p0},\mathit{p1},\mathit{p21},\mathit{y11},\mathit{y2})
+ & [\, \mathit{p21} = \mathsf{1} \land \mathit{y11} = \mathsf{2} \,]\\
+\par
+\mathrm{10} : 
+ & \mathsf{state}(\mathit{proc0},\mathit{proc1},\mathsf{level1},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{state}(\mathit{proc0},\mathit{proc1},\mathsf{level2},\mathit{p0},\mathit{p1},\mathit{p21},\mathit{y1},\mathit{y21})
+ & [\, (\mathit{y1} \ne \mathsf{2} \lor ((\mathit{p0} < \mathsf{1}) \land (\mathit{p1} < \mathsf{1}))) \land \mathit{p21} = \mathsf{2} \land \mathit{y21} = \mathsf{2} \,]\\
+\par
+\mathrm{11} : 
+ & \mathsf{state}(\mathit{proc0},\mathit{proc1},\mathsf{level2},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{state}(\mathit{proc0},\mathit{proc1},\mathsf{crit},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & [\, \mathit{y2} \ne \mathsf{2} \lor ((\mathit{p0} < \mathsf{2}) \land (\mathit{p1} < \mathsf{2})) \,]\\
+\par
+\mathrm{12} : 
+ & \mathsf{state}(\mathit{proc0},\mathit{proc1},\mathsf{crit},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{state}(\mathit{proc0},\mathit{proc1},\mathsf{noncrit},\mathit{p0},\mathit{p1},\mathit{p21},\mathit{y1},\mathit{y2})
+ & [\, \mathit{p21} = \mathsf{0} \,]\\
+\par
+\mathrm{13} : 
+ & \mathsf{state}(\mathit{proc0},\mathit{proc1},\mathit{proc2},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{success}\\
+\par
+\mathrm{14} : 
+ & \mathsf{state}(\mathsf{crit},\mathsf{crit},\mathit{proc2},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{15} : 
+ & \mathsf{state}(\mathsf{crit},\mathit{proc1},\mathsf{crit},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{16} : 
+ & \mathsf{state}(\mathit{proc0},\mathsf{crit},\mathsf{crit},\mathit{p0},\mathit{p1},\mathit{p2},\mathit{y1},\mathit{y2})
+ & \to 
+ & \mathsf{error}\\
+\par
+\end{array}
+\right\}
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE=""
+ SRC="img2.svg"
+ ALT="$\displaystyle \left\{
+\begin{array}{rr@{\&gt;}c@{\&gt;}ll}
+\mathrm{1} :
+&amp; \mathsf{s...
+...\mathit{y1},\mathit{y2})
+&amp; \to
+&amp; \mathsf{error}\\
+\par
+\end{array}\right\}
+$">
+</DIV>
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

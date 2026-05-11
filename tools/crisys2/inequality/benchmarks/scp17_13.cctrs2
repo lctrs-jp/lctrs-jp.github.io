@@ -1,0 +1,66 @@
+
+SORTS:
+  int;
+
+FUNCTIONS:
+  0    : int;
+  s, p : int -> int;
+
+  +, - : int * int -> int (infix 5 left);
+  *    : int * int -> int (infix 7 left);
+  fact : int -> int;
+  pow  : int * int -> int;
+
+PREDICATES:
+  =, /=, <, <=, >, >= : int * int (infix);
+
+SMT_SOLVER: 
+  z3 -smt -in;
+
+SMT_SORTS:
+  int : Int;
+
+INTERPRETATIONS:
+  0 : 0;
+  s : (+ $1 1);  
+  p : (- $1 1); 
+  + : (+ $1 $2);
+  - : (- $1 $2);
+  * : (* $1 $2);
+
+  =  : (=  $1 $2);
+  /= : (distinct $1 $2);
+  <  : (<  $1 $2);
+  <= : (<= $1 $2);
+  >  : (>  $1 $2);
+  >= : (>= $1 $2);
+
+RULES:
+   1 : s(p(x)) -> x;
+   2 : p(s(x)) -> x;
+   3 : x + 0   -> x;
+   4 : x + s(y) -> s(x + y);
+   5 : x + p(y) -> p(x + y);
+   6 : x - 0    -> x;
+   7 : x - s(y) -> p(x - y);
+   8 : x - p(y) -> s(x - y);
+   9 : 0 * y    -> 0;
+  10 : s(x) * y -> x * y + y;
+  11 : p(x) * y -> x * y - y;
+
+  fact(n)    -> s(0)            [n <= 0];
+  fact(n) -> n * fact(p(n))  [n > 0];
+
+  pow(x, y)    -> s(0)           [0 >= y];
+  pow(x, y) -> x * pow(x, p(y))  [y > 0];
+
+CONJECTURES:
+  fact(n) <= pow(n, n)    [n >= 0];
+
+  // lemmas
+  pow(x, y) <= pow(s(x), y)  [x >= 0];
+
+PROPERTIES:
+  GCR(1-11);
+
+

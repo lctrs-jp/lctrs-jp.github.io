@@ -1,0 +1,603 @@
+\documentclass[a4paper]{article}
+\usepackage{lscape}
+%\usepackage{latexsym}
+%\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\newcommand{\ttsym}[1]{\mbox{\tt #1}}
+\def\ttsharp{\ttsym{\symbol{35}}}
+\newcommand{\Sort}[1]{\mathit{#1}}
+\newcommand{\symb}[1]{\mathsf{#1}}
+\newcommand{\var}[1]{\mathit{#1}}
+\newcommand{\Constraint}[1]{[\, #1 \,]}
+\newcommand{\bv}[2][b]{{\ttsharp\symb{#1}{#2}}}
+\newcommand{\Sigmainttheory}{\Sigma^{\mathit{int}}_{\mathit{theory}}}
+\newcommand{\Sigmabvtheory}{\Sigma^{\mathit{bv}}_{\mathit{theory}}}
+
+\begin{document}
+\scriptsize
+
+\begin{landscape}
+
+\section*{Original LCTRSs}
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{cnfg} & : & \Sort{Process} \times \Sort{Process} \times \Sort{Semaphore} \times \Sort{Semaphore} \times \Sort{Semaphore} \times \Sort{int} \times \Sort{int} \Rightarrow \Sort{Cnfg}\\
+\symb{p} & : & \Sort{Fcall} \times \Sort{int} \times \Sort{int} \times \Sort{int} \Rightarrow \Sort{Process}\\
+\symb{sem} & : & \Sort{int} \times \Sort{int} \times \Sort{int} \Rightarrow \Sort{Semaphore}\\
+\symb{bbr2} & : & \Sort{Fcall}\\
+\symb{bbr3} & : & \Sort{Fcall}\\
+\symb{bbr4} & : & \Sort{Fcall}\\
+\symb{bbr5} & : & \Sort{Fcall}\\
+\symb{bbr6} & : & \Sort{Fcall}\\
+\symb{cmr2} & : & \Sort{Fcall}\\
+\symb{cmr3} & : & \Sort{Fcall}\\
+\symb{cmr4} & : & \Sort{Fcall}\\
+\symb{cmr5} & : & \Sort{Fcall}\\
+\symb{cmr6} & : & \Sort{Fcall}\\
+\symb{cmr7} & : & \Sort{Fcall}\\
+\symb{cmr11} & : & \Sort{Fcall}\\
+\symb{success} & : & \Sort{Cnfg}\\
+\symb{error} & : & \Sort{Cnfg}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr2},\var{nb},\symb{0},\var{ns}),\var{pc},\var{semb},\symb{sem}(\var{sc},\var{dc},\var{tc}),\var{sems},\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr3},\var{nb},\symb{0},\var{ns}),\var{pc},\var{semb},\symb{sem}(\var{sc1},\var{dc},\var{tc}),\var{sems},\var{fs},\symb{0})
+ & \Constraint{\neg \var{sc} = \symb{0} \land \var{sc1} = \var{sc} - \symb{1}}\\
+
+\mathrm{2} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr2},\var{nb},\symb{0},\var{ns}),\var{pc},\var{semb},\symb{sem}(\var{sc},\var{dc},\var{tc}),\var{sems},\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr2},\var{nb},\var{tc},\var{ns}),\var{pc},\var{semb},\symb{sem}(\var{sc},\var{dc},\var{tc2}),\var{sems},\var{fs},\symb{0})
+ & \Constraint{\var{sc} = \symb{0} \land \var{tc2} = \var{tc} + \symb{2}}\\
+
+\mathrm{3} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr2},\var{nb},\var{nc},\var{ns}),\var{pc},\var{semb},\symb{sem}(\var{sc},\var{dc},\var{tc}),\var{sems},\var{fs},\symb{1})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr3},\var{nb},\symb{0},\var{ns}),\var{pc},\var{semb},\symb{sem}(\var{sc},\var{dc},\var{tc}),\var{sems},\var{fs},\symb{0})
+ & \Constraint{\neg \var{nc} = \symb{0} \land \var{nc} = \var{dc}}\\
+
+\mathrm{4} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr3},\var{nb},\var{nc},\symb{0}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nb},\var{nc},\symb{0}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss1},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \Constraint{\neg \var{ss} = \symb{0} \land \var{ss1} = \var{ss} - \symb{1}}\\
+
+\mathrm{5} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr3},\var{nb},\var{nc},\symb{0}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr3},\var{nb},\var{nc},\var{ts}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts2}),\var{fs},\symb{0})
+ & \Constraint{\var{ss} = \symb{0} \land \var{ts2} = \var{ts} + \symb{2}}\\
+
+\mathrm{6} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr3},\var{nb},\var{nc},\var{ns}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\symb{1})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nb},\var{nc},\symb{0}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \Constraint{\neg \var{ns} = \symb{0} \land \var{ns} = \var{ds}}\\
+
+\mathrm{7} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nb},\var{nc},\var{ns}),\var{pc},\var{semb},\var{semc},\var{sems},\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\var{nb},\var{nc},\var{ns}),\var{pc},\var{semb},\var{semc},\var{sems},\var{fs1},\symb{0})
+ & \Constraint{\var{fs1} = (\var{fs} + \symb{1})}\\
+
+\mathrm{8} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\symb{0},\var{nc},\var{ns}),\var{pc},\symb{sem}(\var{sb},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\symb{0},\var{nc},\var{ns}),\var{pc},\symb{sem}(\var{sb},\var{db2},\var{tb}),\var{semc},\var{sems},\var{fs},\symb{1})
+ & \Constraint{\neg \var{tb} = \var{db} + \symb{2} \land \var{db2} = \var{db} + \symb{2}}\\
+
+\mathrm{9} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\symb{0},\var{nc},\var{ns}),\var{pc},\symb{sem}(\var{sb},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\symb{0},\var{nc},\var{ns}),\var{pc},\symb{sem}(\var{sb1},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\symb{0})
+ & \Constraint{\var{tb} = \var{db} + \symb{2} \land \var{sb1} = \var{sb} + \symb{1}}\\
+
+\mathrm{10} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\var{nb},\var{nc},\symb{0}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr2},\var{nb},\var{nc},\symb{0}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds2},\var{ts}),\var{fs},\symb{1})
+ & \Constraint{\neg \var{ts} = \var{ds} + \symb{2} \land \var{ds2} = \var{ds} + \symb{2}}\\
+
+\mathrm{11} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\var{nb},\var{nc},\symb{0}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr2},\var{nb},\var{nc},\symb{0}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss1},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \Constraint{\var{ts} = \var{ds} + \symb{2} \land \var{ss1} = \var{ss} + \symb{1}}\\
+
+\mathrm{12} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\var{nb},\var{nc},\symb{0}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr3},\var{nb},\var{nc},\symb{0}),\var{semb},\var{semc},\symb{sem}(\var{ss1},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \Constraint{\neg \var{ss} = \symb{0} \land \var{ss1} = \var{ss} - \symb{1}}\\
+
+\mathrm{13} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\var{nb},\var{nc},\symb{0}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\var{nb},\var{nc},\var{ts}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts2}),\var{fs},\symb{0})
+ & \Constraint{\var{ss} = \symb{0} \land \var{ts2} = \var{ts} + \symb{2}}\\
+
+\mathrm{14} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\var{nb},\var{nc},\var{ns}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\symb{1})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr3},\var{nb},\var{nc},\symb{0}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \Constraint{\neg \var{ns} = \symb{0} \land \var{ns} = \var{ds}}\\
+
+\mathrm{15} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr3},\var{nb},\var{nc},\var{ns}),\var{semb},\var{semc},\var{sems},\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr4},\var{nb},\var{nc},\var{ns}),\var{semb},\var{semc},\var{sems},\var{fs},\symb{0})
+ & \Constraint{\var{fs} > \symb{0}}\\
+
+\mathrm{16} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr3},\var{nb},\var{nc},\var{ns}),\var{semb},\var{semc},\var{sems},\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr11},\var{nb},\var{nc},\var{ns}),\var{semb},\var{semc},\var{sems},\var{fs},\symb{0})
+ & \Constraint{\var{fs} \leq \symb{0}}\\
+
+\mathrm{17} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr4},\var{nb},\var{nc},\var{ns}),\var{semb},\var{semc},\var{sems},\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr5},\var{nb},\var{nc},\var{ns}),\var{semb},\var{semc},\var{sems},\var{fs1},\symb{0})
+ & \Constraint{\var{fs1} = (\var{fs} - \symb{1})}\\
+
+\mathrm{18} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr5},\var{nb},\symb{0},\var{ns}),\var{semb},\symb{sem}(\var{sc},\var{dc},\var{tc}),\var{sems},\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr6},\var{nb},\symb{0},\var{ns}),\var{semb},\symb{sem}(\var{sc},\var{dc2},\var{tc}),\var{sems},\var{fs},\symb{1})
+ & \Constraint{\neg \var{tc} = \var{dc} + \symb{2} \land \var{dc2} = \var{dc} + \symb{2}}\\
+
+\mathrm{19} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr5},\var{nb},\symb{0},\var{ns}),\var{semb},\symb{sem}(\var{sc},\var{dc},\var{tc}),\var{sems},\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr6},\var{nb},\symb{0},\var{ns}),\var{semb},\symb{sem}(\var{sc1},\var{dc},\var{tc}),\var{sems},\var{fs},\symb{0})
+ & \Constraint{\var{tc} = \var{dc} + \symb{2} \land \var{sc1} = \var{sc} + \symb{1}}\\
+
+\mathrm{20} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr6},\var{nb},\var{nc},\symb{0}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr7},\var{nb},\var{nc},\symb{0}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds2},\var{ts}),\var{fs},\symb{1})
+ & \Constraint{\neg \var{ts} = \var{ds} + \symb{2} \land \var{ds2} = \var{ds} + \symb{2}}\\
+
+\mathrm{21} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr6},\var{nb},\var{nc},\symb{0}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr7},\var{nb},\var{nc},\symb{0}),\var{semb},\var{semc},\symb{sem}(\var{ss1},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \Constraint{\var{ts} = \var{ds} + \symb{2} \land \var{ss1} = \var{ss} + \symb{1}}\\
+
+\mathrm{22} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr7},\symb{0},\var{nc},\var{ns}),\symb{sem}(\var{sb},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\symb{0},\var{nc},\var{ns}),\symb{sem}(\var{sb1},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\symb{0})
+ & \Constraint{\neg \var{sb} = \symb{0} \land \var{sb1} = \var{sb} - \symb{1}}\\
+
+\mathrm{23} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr7},\symb{0},\var{nc},\var{ns}),\symb{sem}(\var{sb},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr7},\var{tb},\var{nc},\var{ns}),\symb{sem}(\var{sb},\var{db},\var{tb2}),\var{semc},\var{sems},\var{fs},\symb{0})
+ & \Constraint{\var{sb} = \symb{0} \land \var{tb2} = \var{tb} + \symb{2}}\\
+
+\mathrm{24} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr7},\var{nb},\var{nc},\var{ns}),\symb{sem}(\var{sb},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\symb{1})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\symb{0},\var{nc},\var{ns}),\symb{sem}(\var{sb},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\symb{0})
+ & \Constraint{\neg \var{nb} = \symb{0} \land \var{nb} = \var{db}}\\
+
+\mathrm{25} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr11},\var{nb},\var{nc},\symb{0}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\var{nb},\var{nc},\symb{0}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds2},\var{ts}),\var{fs},\symb{1})
+ & \Constraint{\neg \var{ts} = \var{ds} + \symb{2} \land \var{ds2} = \var{ds} + \symb{2}}\\
+
+\mathrm{26} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr11},\var{nb},\var{nc},\symb{0}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\var{nb},\var{nc},\symb{0}),\var{semb},\var{semc},\symb{sem}(\var{ss1},\var{ds},\var{ts}),\var{fs},\symb{0})
+ & \Constraint{\var{ts} = \var{ds} + \symb{2} \land \var{ss1} = \var{ss} + \symb{1}}\\
+
+\mathrm{27} : 
+ & \symb{cnfg}(\var{pb},\var{pc},\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{success}\\
+
+\mathrm{28} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr3},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{29} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr3},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{30} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr3},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{31} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr4},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{32} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr4},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{33} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr4},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{34} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr5},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{35} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr5},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{36} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr5},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{37} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr6},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{38} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr6},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{39} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr6},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{40} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr11},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{41} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr11},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{42} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr11},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\end{array}
+\right\}
+\]
+
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{43} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr2},\symb{0},\symb{0},\symb{0}),\symb{p}(\symb{cmr2},\symb{0},\symb{0},\symb{0}),\symb{sem}(\symb{0},\var{db},\var{tb}),\symb{sem}(\symb{0},\var{dc},\var{tc}),\symb{sem}(\symb{1},\var{ds},\var{ts}),\symb{1},\symb{0})
+ & \Rightarrow 
+ & \symb{success}
+ & \Constraint{\var{tb} = \var{db} + \symb{2} \land (\var{db} > \symb{0}) \land \var{tc} = \var{dc} + \symb{2} \land (\var{dc} > \symb{0}) \land \var{ts} = \var{ds} + \symb{2} \land (\var{ds} > \symb{0})} \\
+
+\end{array}
+\right\}
+\]
+
+
+\newpage
+\section*{BV-LCTRS Version}
+
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{cnfg} & : & \Sort{Process} \times \Sort{Process} \times \Sort{Semaphore} \times \Sort{Semaphore} \times \Sort{Semaphore} \times \Sort{bitvec}_{1} \times \Sort{bitvec}_{1} \Rightarrow \Sort{Cnfg}\\
+\symb{p} & : & \Sort{Fcall} \times \Sort{bitvec}_{3} \times \Sort{bitvec}_{3} \times \Sort{bitvec}_{3} \Rightarrow \Sort{Process}\\
+\symb{sem} & : & \Sort{bitvec}_{1} \times \Sort{bitvec}_{3} \times \Sort{bitvec}_{3} \Rightarrow \Sort{Semaphore}\\
+\symb{bbr2} & : & \Sort{Fcall}\\
+\symb{bbr3} & : & \Sort{Fcall}\\
+\symb{bbr4} & : & \Sort{Fcall}\\
+\symb{bbr5} & : & \Sort{Fcall}\\
+\symb{bbr6} & : & \Sort{Fcall}\\
+\symb{cmr2} & : & \Sort{Fcall}\\
+\symb{cmr3} & : & \Sort{Fcall}\\
+\symb{cmr4} & : & \Sort{Fcall}\\
+\symb{cmr5} & : & \Sort{Fcall}\\
+\symb{cmr6} & : & \Sort{Fcall}\\
+\symb{cmr7} & : & \Sort{Fcall}\\
+\symb{cmr11} & : & \Sort{Fcall}\\
+\symb{success} & : & \Sort{Cnfg}\\
+\symb{error} & : & \Sort{Cnfg}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr2},\var{nb},\bv{000},\var{ns}),\var{pc},\var{semb},\symb{sem}(\var{sc},\var{dc},\var{tc}),\var{sems},\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr3},\var{nb},\bv{000},\var{ns}),\var{pc},\var{semb},\symb{sem}(\var{sc1},\var{dc},\var{tc}),\var{sems},\var{fs},\bv{0})
+ & \Constraint{\neg \var{sc} = \bv{0} \land \var{sc1} = \var{sc} \symb{bvsub} \bv{1}}\\
+
+\mathrm{2} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr2},\var{nb},\bv{000},\var{ns}),\var{pc},\var{semb},\symb{sem}(\var{sc},\var{dc},\var{tc}),\var{sems},\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr2},\var{nb},\var{tc},\var{ns}),\var{pc},\var{semb},\symb{sem}(\var{sc},\var{dc},\var{tc2}),\var{sems},\var{fs},\bv{0})
+ & \Constraint{\var{sc} = \bv{0} \land \var{tc2} = \var{tc} \symb{bvadd} \bv{010}}\\
+
+\mathrm{3} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr2},\var{nb},\var{nc},\var{ns}),\var{pc},\var{semb},\symb{sem}(\var{sc},\var{dc},\var{tc}),\var{sems},\var{fs},\bv{1})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr3},\var{nb},\bv{000},\var{ns}),\var{pc},\var{semb},\symb{sem}(\var{sc},\var{dc},\var{tc}),\var{sems},\var{fs},\bv{0})
+ & \Constraint{\neg \var{nc} = \bv{000} \land \var{nc} = \var{dc}}\\
+
+\mathrm{4} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr3},\var{nb},\var{nc},\bv{000}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nb},\var{nc},\bv{000}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss1},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \Constraint{\neg \var{ss} = \bv{0} \land \var{ss1} = \var{ss} \symb{bvsub} \bv{1}}\\
+
+\mathrm{5} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr3},\var{nb},\var{nc},\bv{000}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr3},\var{nb},\var{nc},\var{ts}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts2}),\var{fs},\bv{0})
+ & \Constraint{\var{ss} = \bv{0} \land \var{ts2} = \var{ts} \symb{bvadd} \bv{010}}\\
+
+\mathrm{6} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr3},\var{nb},\var{nc},\var{ns}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\bv{1})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nb},\var{nc},\bv{000}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \Constraint{\neg \var{ns} = \bv{000} \land \var{ns} = \var{ds}}\\
+
+\mathrm{7} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nb},\var{nc},\var{ns}),\var{pc},\var{semb},\var{semc},\var{sems},\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\var{nb},\var{nc},\var{ns}),\var{pc},\var{semb},\var{semc},\var{sems},\var{fs1},\bv{0})
+ & \Constraint{\var{fs1} = (\var{fs} \symb{bvadd} \bv{1})}\\
+
+\mathrm{8} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\bv{000},\var{nc},\var{ns}),\var{pc},\symb{sem}(\var{sb},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\bv{000},\var{nc},\var{ns}),\var{pc},\symb{sem}(\var{sb},\var{db2},\var{tb}),\var{semc},\var{sems},\var{fs},\bv{1})
+ & \Constraint{\neg \var{tb} = \var{db} \symb{bvadd} \bv{010} \land \var{db2} = \var{db} \symb{bvadd} \bv{010}}\\
+
+\mathrm{9} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\bv{000},\var{nc},\var{ns}),\var{pc},\symb{sem}(\var{sb},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\bv{000},\var{nc},\var{ns}),\var{pc},\symb{sem}(\var{sb1},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\bv{0})
+ & \Constraint{\var{tb} = \var{db} \symb{bvadd} \bv{010} \land \var{sb1} = \var{sb} \symb{bvadd} \bv{1}}\\
+
+\mathrm{10} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\var{nb},\var{nc},\bv{000}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr2},\var{nb},\var{nc},\bv{000}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds2},\var{ts}),\var{fs},\bv{1})
+ & \Constraint{\neg \var{ts} = \var{ds} \symb{bvadd} \bv{010} \land \var{ds2} = \var{ds} \symb{bvadd} \bv{010}}\\
+
+\mathrm{11} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\var{nb},\var{nc},\bv{000}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\symb{p}(\symb{bbr2},\var{nb},\var{nc},\bv{000}),\var{pc},\var{semb},\var{semc},\symb{sem}(\var{ss1},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \Constraint{\var{ts} = \var{ds} \symb{bvadd} \bv{010} \land \var{ss1} = \var{ss} \symb{bvadd} \bv{1}}\\
+
+\mathrm{12} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\var{nb},\var{nc},\bv{000}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr3},\var{nb},\var{nc},\bv{000}),\var{semb},\var{semc},\symb{sem}(\var{ss1},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \Constraint{\neg \var{ss} = \bv{0} \land \var{ss1} = \var{ss} \symb{bvsub} \bv{1}}\\
+
+\mathrm{13} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\var{nb},\var{nc},\bv{000}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\var{nb},\var{nc},\var{ts}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts2}),\var{fs},\bv{0})
+ & \Constraint{\var{ss} = \bv{0} \land \var{ts2} = \var{ts} \symb{bvadd} \bv{010}}\\
+
+\mathrm{14} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\var{nb},\var{nc},\var{ns}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\bv{1})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr3},\var{nb},\var{nc},\bv{000}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \Constraint{\neg \var{ns} = \bv{000} \land \var{ns} = \var{ds}}\\
+
+\mathrm{15} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr3},\var{nb},\var{nc},\var{ns}),\var{semb},\var{semc},\var{sems},\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr4},\var{nb},\var{nc},\var{ns}),\var{semb},\var{semc},\var{sems},\var{fs},\bv{0})
+ & \Constraint{\var{fs} \symb{bvugt} \bv{0}}\\
+
+\mathrm{16} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr3},\var{nb},\var{nc},\var{ns}),\var{semb},\var{semc},\var{sems},\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr11},\var{nb},\var{nc},\var{ns}),\var{semb},\var{semc},\var{sems},\var{fs},\bv{0})
+ & \Constraint{\var{fs} \symb{bvule} \bv{0}}\\
+
+\mathrm{17} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr4},\var{nb},\var{nc},\var{ns}),\var{semb},\var{semc},\var{sems},\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr5},\var{nb},\var{nc},\var{ns}),\var{semb},\var{semc},\var{sems},\var{fs1},\bv{0})
+ & \Constraint{\var{fs1} = (\var{fs} \symb{bvsub} \bv{1})}\\
+
+\mathrm{18} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr5},\var{nb},\bv{000},\var{ns}),\var{semb},\symb{sem}(\var{sc},\var{dc},\var{tc}),\var{sems},\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr6},\var{nb},\bv{000},\var{ns}),\var{semb},\symb{sem}(\var{sc},\var{dc2},\var{tc}),\var{sems},\var{fs},\bv{1})
+ & \Constraint{\neg \var{tc} = \var{dc} \symb{bvadd} \bv{010} \land \var{dc2} = \var{dc} \symb{bvadd} \bv{010}}\\
+
+\mathrm{19} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr5},\var{nb},\bv{000},\var{ns}),\var{semb},\symb{sem}(\var{sc},\var{dc},\var{tc}),\var{sems},\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr6},\var{nb},\bv{000},\var{ns}),\var{semb},\symb{sem}(\var{sc1},\var{dc},\var{tc}),\var{sems},\var{fs},\bv{0})
+ & \Constraint{\var{tc} = \var{dc} \symb{bvadd} \bv{010} \land \var{sc1} = \var{sc} \symb{bvadd} \bv{1}}\\
+
+\mathrm{20} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr6},\var{nb},\var{nc},\bv{000}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr7},\var{nb},\var{nc},\bv{000}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds2},\var{ts}),\var{fs},\bv{1})
+ & \Constraint{\neg \var{ts} = \var{ds} \symb{bvadd} \bv{010} \land \var{ds2} = \var{ds} \symb{bvadd} \bv{010}}\\
+
+\mathrm{21} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr6},\var{nb},\var{nc},\bv{000}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr7},\var{nb},\var{nc},\bv{000}),\var{semb},\var{semc},\symb{sem}(\var{ss1},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \Constraint{\var{ts} = \var{ds} \symb{bvadd} \bv{010} \land \var{ss1} = \var{ss} \symb{bvadd} \bv{1}}\\
+
+\mathrm{22} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr7},\bv{000},\var{nc},\var{ns}),\symb{sem}(\var{sb},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\bv{000},\var{nc},\var{ns}),\symb{sem}(\var{sb1},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\bv{0})
+ & \Constraint{\neg \var{sb} = \bv{0} \land \var{sb1} = \var{sb} \symb{bvsub} \bv{1}}\\
+
+\mathrm{23} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr7},\bv{000},\var{nc},\var{ns}),\symb{sem}(\var{sb},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr7},\var{tb},\var{nc},\var{ns}),\symb{sem}(\var{sb},\var{db},\var{tb2}),\var{semc},\var{sems},\var{fs},\bv{0})
+ & \Constraint{\var{sb} = \bv{0} \land \var{tb2} = \var{tb} \symb{bvadd} \bv{010}}\\
+
+\mathrm{24} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr7},\var{nb},\var{nc},\var{ns}),\symb{sem}(\var{sb},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\bv{1})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\bv{000},\var{nc},\var{ns}),\symb{sem}(\var{sb},\var{db},\var{tb}),\var{semc},\var{sems},\var{fs},\bv{0})
+ & \Constraint{\neg \var{nb} = \bv{000} \land \var{nb} = \var{db}}\\
+
+\mathrm{25} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr11},\var{nb},\var{nc},\bv{000}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\var{nb},\var{nc},\bv{000}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds2},\var{ts}),\var{fs},\bv{1})
+ & \Constraint{\neg \var{ts} = \var{ds} \symb{bvadd} \bv{010} \land \var{ds2} = \var{ds} \symb{bvadd} \bv{010}}\\
+
+\mathrm{26} : 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr11},\var{nb},\var{nc},\bv{000}),\var{semb},\var{semc},\symb{sem}(\var{ss},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \to 
+ & \symb{cnfg}(\var{pb},\symb{p}(\symb{cmr2},\var{nb},\var{nc},\bv{000}),\var{semb},\var{semc},\symb{sem}(\var{ss1},\var{ds},\var{ts}),\var{fs},\bv{0})
+ & \Constraint{\var{ts} = \var{ds} \symb{bvadd} \bv{010} \land \var{ss1} = \var{ss} \symb{bvadd} \bv{1}}\\
+
+\mathrm{27} : 
+ & \symb{cnfg}(\var{pb},\var{pc},\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{success}\\
+
+\mathrm{28} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr3},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{29} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr3},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{30} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr3},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{31} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr4},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{32} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr4},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{33} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr4},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{34} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr5},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{35} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr5},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{36} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr5},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{37} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr6},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{38} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr6},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{39} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr6},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{40} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr4},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr11},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{41} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr5},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr11},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{42} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr6},\var{nbb},\var{nbc},\var{nbs}),\symb{p}(\symb{cmr11},\var{ncb},\var{ncc},\var{ncs}),\var{semb},\var{semc},\var{sems},\var{fs},\var{a})
+ & \to 
+ & \symb{error}\\
+
+\end{array}
+\right\}
+\]
+
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{43} : 
+ & \symb{cnfg}(\symb{p}(\symb{bbr2},\bv{000},\bv{000},\bv{000}),\symb{p}(\symb{cmr2},\bv{000},\bv{000},\bv{000}),\symb{sem}(\bv{0},\var{db},\var{tb}),\symb{sem}(\bv{0},\var{dc},\var{tc}),\symb{sem}(\bv{1},\var{ds},\var{ts}),\bv{1},\bv{0})
+ & \Rightarrow 
+ & \symb{success}
+ & \Constraint{\var{tb} = \var{db} \symb{bvadd} \bv{010} \land (\var{db} \symb{bvugt} \bv{000}) \land \var{tc} = \var{dc} \symb{bvadd} \bv{010} \land (\var{dc} \symb{bvugt} \bv{000}) \land \var{ts} = \var{ds} \symb{bvadd} \bv{010} \land (\var{ds} \symb{bvugt} \bv{000})} \\
+
+\end{array}
+\right\}
+\]
+
+\end{landscape}
+
+\end{document}
+
+

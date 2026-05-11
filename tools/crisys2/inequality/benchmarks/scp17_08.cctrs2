@@ -1,0 +1,51 @@
+
+SORTS:
+  int, list;
+
+FUNCTIONS:
+  0 : int;
+  s : int -> int;
+  p : int -> int;
+
+  nil : list;
+  ::  : int * list -> list  (infix);
+
+  count : int * list -> int;
+  length : list -> int;
+
+PREDICATES:
+  =, /=, <, <=, >, >= : int * int (infix);
+
+SMT_SOLVER: 
+  z3 -smt -in;
+
+SMT_SORTS:
+  int : Int;
+
+INTERPRETATIONS:
+  0 : 0;
+  s : (+ $1 1);  
+  p : (- $1 1);  
+
+  =  : (=  $1 $2);
+  /= : (distinct $1 $2);
+  <  : (<  $1 $2);
+  <= : (<= $1 $2);
+  >  : (>  $1 $2);
+  >= : (>= $1 $2);
+
+RULES:
+   1 : s(p(x)) -> x;
+   2 : p(s(x)) -> x;
+
+  count(x, nil) -> 0;
+  count(x, y :: ys) -> s(count(x, ys)) [x = y];
+  count(x, y :: ys) -> count(x, ys) [x /= y];
+
+  length(nil) -> 0;
+  length(x :: xs) -> s(length(xs));
+
+CONJECTURES:
+  count(x, xs) <= length(xs);
+
+

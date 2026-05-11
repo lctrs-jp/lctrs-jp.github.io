@@ -1,0 +1,42 @@
+sorts Loc, State;
+
+signature
+  state   : Loc Loc Loc Int Int Int Int Int -> State,
+  noncrit : -> Loc,
+  level1  : -> Loc,
+  level2  : -> Loc,
+  crit    : -> Loc,
+  success : -> State,
+  error   : -> State;
+
+variables
+  Proc0 : Loc, Proc1 : Loc, Proc2 : Loc,
+  P0 : Int, P1 : Int, P2 : Int, P01 : Int, P11 : Int, P21 : Int,
+  Y1 : Int, Y2 : Int, Y11 : Int, Y21 : Int;
+
+rewrite-system main
+  (state noncrit Proc1 Proc2 P0 P1 P2 Y1 Y2) /\ (band (mequals P01 1) (mequals Y11 0))                                                                 => (state level1  Proc1 Proc2 P01 P1 P2 Y11 Y2 ),
+  (state level1  Proc1 Proc2 P0 P1 P2 Y1 Y2) /\ (band (bor (bnot (mequals Y1 0)) (band (mgt 1 P1) (mgt 1 P2))) (band (mequals P01 2) (mequals Y21 0))) => (state level2  Proc1 Proc2 P01 P1 P2 Y1  Y21),
+  (state level2  Proc1 Proc2 P0 P1 P2 Y1 Y2) /\ (bor (bnot (mequals Y2 0)) (band (mgt 2 P1) (mgt 2 P2)))                                               => (state crit    Proc1 Proc2 P0  P1 P2 Y1  Y2 ),
+  (state crit    Proc1 Proc2 P0 P1 P2 Y1 Y2) /\ (mequals P01 0)                                                                                        => (state noncrit Proc1 Proc2 P01 P1 P2 Y1  Y2 ),
+
+  (state Proc0 noncrit Proc2 P0 P1 P2 Y1 Y2) /\ (band (mequals P11 1) (mequals Y11 1))                                                                 => (state Proc0 level1  Proc2 P0 P11 P2 Y11 Y2 ),
+  (state Proc0 level1  Proc2 P0 P1 P2 Y1 Y2) /\ (band (bor (bnot (mequals Y1 1)) (band (mgt 1 P0) (mgt 1 P2))) (band (mequals P11 2) (mequals Y21 1))) => (state Proc0 level2  Proc2 P0 P11 P2 Y1  Y21),
+  (state Proc0 level2  Proc2 P0 P1 P2 Y1 Y2) /\ (bor (bnot (mequals Y2 1)) (band (mgt 2 P0) (mgt 2 P2)))                                               => (state Proc0 crit    Proc2 P0 P1  P2 Y1  Y2 ),
+  (state Proc0 crit    Proc2 P0 P1 P2 Y1 Y2) /\ (mequals P11 0)                                                                                        => (state Proc0 noncrit Proc2 P0 P11 P2 Y1  Y2 ),
+
+  (state Proc0 Proc1 noncrit P0 P1 P2 Y1 Y2) /\ (band (mequals P21 1) (mequals Y11 2))                                                                 => (state Proc0 Proc1 level1  P0 P1 P21 Y11 Y2 ),
+  (state Proc0 Proc1 level1  P0 P1 P2 Y1 Y2) /\ (band (bor (bnot (mequals Y1 2)) (band (mgt 1 P0) (mgt 1 P1))) (band (mequals P21 2) (mequals Y21 2))) => (state Proc0 Proc1 level2  P0 P1 P21 Y1  Y21),
+  (state Proc0 Proc1 level2  P0 P1 P2 Y1 Y2) /\ (bor (bnot (mequals Y2 2)) (band (mgt 2 P0) (mgt 2 P1)))                                               => (state Proc0 Proc1 crit    P0 P1 P2  Y1  Y2 ),
+  (state Proc0 Proc1 crit    P0 P1 P2 Y1 Y2) /\ (mequals P21 0)                                                                                        => (state Proc0 Proc1 noncrit P0 P1 P21 Y1  Y2 ),
+
+  (state Proc0 Proc1 Proc2 P0 P1 P2 Y1 Y2) => success,
+
+  (state crit  crit  Proc2 P0 P1 P2 Y1 Y2) => error,
+  (state crit  Proc1 crit  P0 P1 P2 Y1 Y2) => error,
+  (state Proc0 crit  crit  P0 P1 P2 Y1 Y2) => error;
+
+rewrite-system apr
+  (state noncrit noncrit noncrit 0 0 0 Y1 Y2) => success;
+
+prove [10,10] in main : apr;

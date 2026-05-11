@@ -1,0 +1,278 @@
+<HTML>
+
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"><TITLE>RI Framework for Inequalities</TITLE>
+<META NAME="author" CONTENT="N.Nishida">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+<META HTTP-EQUIV="Content-Script-Type" CONTENT="text/javascript">
+</HEAD>
+
+<BODY BGCOLOR="white">
+
+<?php
+  date_default_timezone_set('Asia/Tokyo');
+
+ function modtime($file) {
+   $filemod = filemtime($file);
+   $filemodtime = date("Y/m/d", $filemod);
+   return $filemodtime;
+ }
+
+ function modtime_en($file) {
+   $filemod = filemtime($file);
+   $filemodtime = date("M d, Y", $filemod);
+   return $filemodtime;
+ }
+
+  $filename = basename($_SERVER['SCRIPT_NAME']);
+  $filemodtime = modtime_en($filename);
+  Print("<i>Update: $filemodtime </i>\n");
+  ?>
+
+<HR SIZE="5">
+<H1>RI Framework for Inequalities</H1>
+<HR SIZE="5">
+
+<H2>Paper</H2>
+
+<H3>Rewriting Induction for Constrained Inequalities</H3>
+
+<DL>
+<DT>Authors</DT>
+<DD>
+<A HREF="http://www.trs.cm.is.nagoya-u.ac.jp/~tnagao/">Takahiro Nagao</A> and
+<A HREF="http://www.apal.i.is.nagoya-u.ac.jp/~nishida/">Naoki Nishida</A>
+</DD>
+<!--
+<DT>Booktitle</DT>
+<DD>
+</DD>
+-->
+<DT>Abstract</DT>
+<DD>
+Rewriting induction (RI) frameworks consist of inference rules to
+prove equations to be inductive theorems of a given term rewriting
+system, i.e., to be inductively valid w.r.t. reduction of the given
+system. To prove inductive validity of inequalities within such
+frameworks, one may reduce inequalities  to equations. However, it is
+often hard to prove inductive validity of such reduced equations
+within the existing RI frameworks due to their indirect handling of
+inequalities. In this paper, we adapt the notion of inductive theorems
+to inequalities and propose an RI framework for directly proving
+inductive validity of inequalities of constrained term rewriting
+systems. Direct handling of inequalities enables us to utilize
+transitivity of binary predicates via application of induction
+hypotheses. Our framework succeeds in proving inductive validity of
+some inequalities that are hard to verify within the existing RI
+frameworks for equations. For the sake of automated reasoning, we
+provide a strategy for applying inference rules and evaluate its
+performance by means of an implementation. 
+</DD>
+<DT>Link</DT>
+<DD>
+<!--
+[DOI: <A HREF="http://dx.doi.org/10.1145/2967973.2968598">10.1145/2967973.2968598</A>]
+-->
+<!--
+[<A HREF="http://dx.doi.org/10.1145/2967973.2968598" TARGET="_top">ACM</A>]
+-->
+[<A HREF="NagaoNishida17draft.pdf" TARGET="_top">draft version</A> (submitted to a journal)]
+<!--
+[<A HREF="ppdp16/NagaoNishidaPPDP2016proofs.pdf" TARGET="_top">proofs</A>] 
+-->
+</DD>
+</DL>
+
+<HR>
+<H2>Implementation</H2>
+
+<p>The tool <b>crein</b>,
+  <b>c</b>onstrained <b>r</b>ewriting <b>i</b>nduction system for <b>in</b>equalities, is
+  a tool based on constrained rewriting induction for inequalities.</p>
+
+<H3>How to Use</H3>
+
+<ul>
+  <li>
+    <code>./crein-1.0 <i>filename</i></code>
+    &nbsp;&nbsp;
+    or
+    &nbsp;&nbsp;
+    <code>ocamlrun ./crein-1.0 <i>filename</i></code>
+    </li>
+  <li>
+    <code>./crein-1.0 --help</code>
+    &nbsp;&nbsp;
+    or
+    &nbsp;&nbsp;
+    <code>ocamlrun ./crein-1.0 --help</code>
+    &nbsp;&nbsp;
+    for help
+    </li>
+</ul>
+
+<H3>Downloads</H3>
+
+<ul>
+  <li><a href="downloads/crein-1.0"><code>crein-1.0</code></a>
+    (ocaml byte code)
+    </li>
+</ul>
+
+<HR>
+<H2>Benchmarks</H2>
+
+<blockquote>
+  <table border="1">
+  <tr>
+    <th>label</th>
+    <th>file</th>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_01
+    </td>
+    <td>
+      <a href="benchmarks/scp17_01.cctrs2"><code>scp17_01.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_02
+    </td>
+    <td>
+      <a href="benchmarks/scp17_02.cctrs2"><code>scp17_02.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_03
+    </td>
+    <td>
+      <a href="benchmarks/scp17_03.cctrs2"><code>scp17_03.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_04
+    </td>
+    <td>
+      <a href="benchmarks/scp17_04.cctrs2"><code>scp17_04.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_05
+    </td>
+    <td>
+      <a href="benchmarks/scp17_05.cctrs2"><code>scp17_05.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_06
+    </td>
+    <td>
+      <a href="benchmarks/scp17_06.cctrs2"><code>scp17_06.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_07
+    </td>
+    <td>
+      <a href="benchmarks/scp17_07.cctrs2"><code>scp17_07.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_08
+    </td>
+    <td>
+      <a href="benchmarks/scp17_08.cctrs2"><code>scp17_08.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_09
+    </td>
+    <td>
+      <a href="benchmarks/scp17_09.cctrs2"><code>scp17_09.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_10
+    </td>
+    <td>
+      <a href="benchmarks/scp17_10.cctrs2"><code>scp17_10.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_11
+    </td>
+    <td>
+      <a href="benchmarks/scp17_11.cctrs2"><code>scp17_11.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_12
+    </td>
+    <td>
+      <a href="benchmarks/scp17_12.cctrs2"><code>scp17_12.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_13
+    </td>
+    <td>
+      <a href="benchmarks/scp17_13.cctrs2"><code>scp17_13.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_14
+    </td>
+    <td>
+      <a href="benchmarks/scp17_14.cctrs2"><code>scp17_14.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_15
+    </td>
+    <td>
+      <a href="benchmarks/scp17_15.cctrs2"><code>scp17_15.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_16
+    </td>
+    <td>
+      <a href="benchmarks/scp17_16.cctrs2"><code>scp17_16.cctrs2</code></a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      scp17_17
+    </td>
+    <td>
+      <a href="benchmarks/scp17_17.cctrs2"><code>scp17_17.cctrs2</code></a>
+    </td>
+  </tr>
+</table>
+</blockquote>
+
+<HR SIZE="5">
+
+</BODY>
+
+<ADDRESS>
+Produced by <A HREF="http://www.apal.i.is.nagoya-u.ac.jp/~nishida/">N.Nishida</A> (nishida @ is.nagoya-u.ac.jp)<BR>
+</ADDRESS></HTML>
+</HTML>

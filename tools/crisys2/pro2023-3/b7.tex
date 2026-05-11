@@ -1,0 +1,295 @@
+\documentclass[a4paper]{article}
+\usepackage{lscape}
+%\usepackage{latexsym}
+%\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\newcommand{\ttsym}[1]{\mbox{\tt #1}}
+\def\ttsharp{\ttsym{\symbol{35}}}
+\newcommand{\Sort}[1]{\mathit{#1}}
+\newcommand{\symb}[1]{\mathsf{#1}}
+\newcommand{\var}[1]{\mathit{#1}}
+\newcommand{\Constraint}[1]{[\, #1 \,]}
+\newcommand{\bv}[2][b]{{\ttsharp\symb{#1}{#2}}}
+\newcommand{\Sigmainttheory}{\Sigma^{\mathit{int}}_{\mathit{theory}}}
+\newcommand{\Sigmabvtheory}{\Sigma^{\mathit{bv}}_{\mathit{theory}}}
+
+\begin{document}
+\small
+
+\begin{landscape}
+
+\section*{Original LCTRSs (3 Processes)}
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{state} & : & \Sort{Loc} \times \Sort{Loc} \times \Sort{Loc} \times \Sort{int} \times \Sort{int} \times \Sort{int} \times \Sort{int} \times \Sort{int} \Rightarrow \Sort{State}\\
+\symb{noncrit} & : & \Sort{Loc}\\
+\symb{level1} & : & \Sort{Loc}\\
+\symb{level2} & : & \Sort{Loc}\\
+\symb{crit} & : & \Sort{Loc}\\
+\symb{success} & : & \Sort{State}\\
+\symb{error} & : & \Sort{State}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{state}(\symb{noncrit},\var{proc1},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\symb{level1},\var{proc1},\var{proc2},\var{p01},\var{p1},\var{p2},\var{y11},\var{y2})
+ & \Constraint{\var{p01} = \symb{1} \land \var{y11} = \symb{0}}\\
+
+\mathrm{2} : 
+ & \symb{state}(\symb{level1},\var{proc1},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\symb{level2},\var{proc1},\var{proc2},\var{p01},\var{p1},\var{p2},\var{y1},\var{y21})
+ & \Constraint{(\var{y1} \ne \symb{0} \lor ((\var{p1} < \symb{1}) \land (\var{p2} < \symb{1}))) \land \var{p01} = \symb{2} \land \var{y21} = \symb{0}}\\
+
+\mathrm{3} : 
+ & \symb{state}(\symb{level2},\var{proc1},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\symb{crit},\var{proc1},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \Constraint{\var{y2} \ne \symb{0} \lor ((\var{p1} < \symb{2}) \land (\var{p2} < \symb{2}))}\\
+
+\mathrm{4} : 
+ & \symb{state}(\symb{crit},\var{proc1},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\symb{noncrit},\var{proc1},\var{proc2},\var{p01},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \Constraint{\var{p01} = \symb{0}}\\
+
+\mathrm{5} : 
+ & \symb{state}(\var{proc0},\symb{noncrit},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\symb{level1},\var{proc2},\var{p0},\var{p11},\var{p2},\var{y11},\var{y2})
+ & \Constraint{\var{p11} = \symb{1} \land \var{y11} = \symb{1}}\\
+
+\mathrm{6} : 
+ & \symb{state}(\var{proc0},\symb{level1},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\symb{level2},\var{proc2},\var{p0},\var{p11},\var{p2},\var{y1},\var{y21})
+ & \Constraint{(\var{y1} \ne \symb{1} \lor ((\var{p0} < \symb{1}) \land (\var{p2} < \symb{1}))) \land \var{p11} = \symb{2} \land \var{y21} = \symb{1}}\\
+
+\mathrm{7} : 
+ & \symb{state}(\var{proc0},\symb{level2},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\symb{crit},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \Constraint{\var{y2} \ne \symb{1} \lor ((\var{p0} < \symb{2}) \land (\var{p2} < \symb{2}))}\\
+
+\mathrm{8} : 
+ & \symb{state}(\var{proc0},\symb{crit},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\symb{noncrit},\var{proc2},\var{p0},\var{p11},\var{p2},\var{y1},\var{y2})
+ & \Constraint{\var{p11} = \symb{0}}\\
+
+\mathrm{9} : 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{noncrit},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{level1},\var{p0},\var{p1},\var{p21},\var{y11},\var{y2})
+ & \Constraint{\var{p21} = \symb{1} \land \var{y11} = \symb{2}}\\
+
+\mathrm{10} : 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{level1},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{level2},\var{p0},\var{p1},\var{p21},\var{y1},\var{y21})
+ & \Constraint{(\var{y1} \ne \symb{2} \lor ((\var{p0} < \symb{1}) \land (\var{p1} < \symb{1}))) \land \var{p21} = \symb{2} \land \var{y21} = \symb{2}}\\
+
+\mathrm{11} : 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{level2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{crit},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \Constraint{\var{y2} \ne \symb{2} \lor ((\var{p0} < \symb{2}) \land (\var{p1} < \symb{2}))}\\
+
+\mathrm{12} : 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{crit},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{noncrit},\var{p0},\var{p1},\var{p21},\var{y1},\var{y2})
+ & \Constraint{\var{p21} = \symb{0}}\\
+
+\mathrm{13} : 
+ & \symb{state}(\var{proc0},\var{proc1},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{success}\\
+
+\mathrm{14} : 
+ & \symb{state}(\symb{crit},\symb{crit},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{15} : 
+ & \symb{state}(\symb{crit},\var{proc1},\symb{crit},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{16} : 
+ & \symb{state}(\var{proc0},\symb{crit},\symb{crit},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{error}\\
+
+\end{array}
+\right\}
+\]
+
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{17} : 
+ & \symb{state}(\symb{noncrit},\symb{noncrit},\symb{noncrit},\symb{0},\symb{0},\symb{0},\var{y1},\var{y2})
+ & \Rightarrow 
+ & \symb{success}\\
+
+\end{array}
+\right\}
+\]
+
+
+\newpage
+\footnotesize
+
+\section*{BV-LCTRS Version (3 Processes)}
+
+
+\paragraph{LCTRS}
+
+\[
+\Sigma = 
+\Sigmainttheory \cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\symb{state} & : & \Sort{Loc} \times \Sort{Loc} \times \Sort{Loc} \times \Sort{bitvec}_{2} \times \Sort{bitvec}_{2} \times \Sort{bitvec}_{2} \times \Sort{bitvec}_{2} \times \Sort{bitvec}_{2} \Rightarrow \Sort{State}\\
+\symb{noncrit} & : & \Sort{Loc}\\
+\symb{level1} & : & \Sort{Loc}\\
+\symb{level2} & : & \Sort{Loc}\\
+\symb{crit} & : & \Sort{Loc}\\
+\symb{success} & : & \Sort{State}\\
+\symb{error} & : & \Sort{State}\\
+\end{array}
+\right\}
+\]
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} : 
+ & \symb{state}(\symb{noncrit},\var{proc1},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\symb{level1},\var{proc1},\var{proc2},\var{p01},\var{p1},\var{p2},\var{y11},\var{y2})
+ & \Constraint{\var{p01} = \bv{01} \land \var{y11} = \bv{00}}\\
+
+\mathrm{2} : 
+ & \symb{state}(\symb{level1},\var{proc1},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\symb{level2},\var{proc1},\var{proc2},\var{p01},\var{p1},\var{p2},\var{y1},\var{y21})
+ & \Constraint{(\var{y1} \ne \bv{00} \lor ((\var{p1} \symb{bvult} \bv{01}) \land (\var{p2} \symb{bvult} \bv{01}))) \land \var{p01} = \bv{10} \land \var{y21} = \bv{00}}\\
+
+\mathrm{3} : 
+ & \symb{state}(\symb{level2},\var{proc1},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\symb{crit},\var{proc1},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \Constraint{\var{y2} \ne \bv{00} \lor ((\var{p1} \symb{bvult} \bv{10}) \land (\var{p2} \symb{bvult} \bv{10}))}\\
+
+\mathrm{4} : 
+ & \symb{state}(\symb{crit},\var{proc1},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\symb{noncrit},\var{proc1},\var{proc2},\var{p01},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \Constraint{\var{p01} = \bv{00}}\\
+
+\mathrm{5} : 
+ & \symb{state}(\var{proc0},\symb{noncrit},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\symb{level1},\var{proc2},\var{p0},\var{p11},\var{p2},\var{y11},\var{y2})
+ & \Constraint{\var{p11} = \bv{01} \land \var{y11} = \bv{01}}\\
+
+\mathrm{6} : 
+ & \symb{state}(\var{proc0},\symb{level1},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\symb{level2},\var{proc2},\var{p0},\var{p11},\var{p2},\var{y1},\var{y21})
+ & \Constraint{(\var{y1} \ne \bv{01} \lor ((\var{p0} \symb{bvult} \bv{01}) \land (\var{p2} \symb{bvult} \bv{01}))) \land \var{p11} = \bv{10} \land \var{y21} = \bv{01}}\\
+
+\mathrm{7} : 
+ & \symb{state}(\var{proc0},\symb{level2},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\symb{crit},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \Constraint{\var{y2} \ne \bv{01} \lor ((\var{p0} \symb{bvult} \bv{10}) \land (\var{p2} \symb{bvult} \bv{10}))}\\
+
+\mathrm{8} : 
+ & \symb{state}(\var{proc0},\symb{crit},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\symb{noncrit},\var{proc2},\var{p0},\var{p11},\var{p2},\var{y1},\var{y2})
+ & \Constraint{\var{p11} = \bv{00}}\\
+
+\mathrm{9} : 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{noncrit},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{level1},\var{p0},\var{p1},\var{p21},\var{y11},\var{y2})
+ & \Constraint{\var{p21} = \bv{01} \land \var{y11} = \bv{10}}\\
+
+\mathrm{10} : 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{level1},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{level2},\var{p0},\var{p1},\var{p21},\var{y1},\var{y21})
+ & \Constraint{(\var{y1} \ne \bv{10} \lor ((\var{p0} \symb{bvult} \bv{01}) \land (\var{p1} \symb{bvult} \bv{01}))) \land \var{p21} = \bv{10} \land \var{y21} = \bv{10}}\\
+
+\mathrm{11} : 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{level2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{crit},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \Constraint{\var{y2} \ne \bv{10} \lor ((\var{p0} \symb{bvult} \bv{10}) \land (\var{p1} \symb{bvult} \bv{10}))}\\
+
+\mathrm{12} : 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{crit},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{state}(\var{proc0},\var{proc1},\symb{noncrit},\var{p0},\var{p1},\var{p21},\var{y1},\var{y2})
+ & \Constraint{\var{p21} = \bv{00}}\\
+
+\mathrm{13} : 
+ & \symb{state}(\var{proc0},\var{proc1},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{success}\\
+
+\mathrm{14} : 
+ & \symb{state}(\symb{crit},\symb{crit},\var{proc2},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{15} : 
+ & \symb{state}(\symb{crit},\var{proc1},\symb{crit},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{error}\\
+
+\mathrm{16} : 
+ & \symb{state}(\var{proc0},\symb{crit},\symb{crit},\var{p0},\var{p1},\var{p2},\var{y1},\var{y2})
+ & \to 
+ & \symb{error}\\
+
+\end{array}
+\right\}
+\]
+
+
+\paragraph{APR Problem}
+
+\[
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{17} : 
+ & \symb{state}(\symb{noncrit},\symb{noncrit},\symb{noncrit},\bv{00},\bv{00},\bv{00},\var{y1},\var{y2})
+ & \Rightarrow 
+ & \symb{success}\\
+
+\end{array}
+\right\}
+\]
+
+\end{landscape}
+
+\end{document}
+
+

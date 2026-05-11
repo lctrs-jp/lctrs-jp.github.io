@@ -1,0 +1,650 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<title>Format of .cctrs Files</title>
+<style type="text/css">
+I          {color:green;}
+TT         {color:blue;}
+.new       {color:red;}
+.key       {color:blue;}
+.nontermin {color:green;}
+.nouse     {color:grey;}
+</style>
+</head>
+<body>
+<h1>Format of <code>.cctrs</code> Files</h1>
+<h3>Naoki Nishida</h3>
+<h3>December 10, 2012</h3>
+
+<p>
+The format of <code>.cctrs</code> files is an extended one of the format 
+of <a href="http://www.lri.fr/%7Emarche/tpdb/format.html"><code>.trs</code></a>
+files.
+</p>
+
+<hr>
+
+<h2>Grammar</h2>
+
+<p>
+<font class="new">Red strings</font> are new ones, 
+that are not in <code>.trs</code> 
+but newly introduced into <code>.cctrs</code>.
+<font class="nouse">Grey strings</font> are not supposed in
+<code>.cctrs</code> and ignored when reading files.
+</p>
+
+<table cellpadding="0" cellspacing="2" align="center">
+ <tbody><tr>
+  <td align="right" nowrap="nowrap"><i>spec</i></td>
+  <td align="center" nowrap="nowrap">::=</td>
+  <td align="left" nowrap="nowrap">
+   <tt>(</tt> &nbsp; <i>decl</i> <tt>)</tt> <i>spec</i> 
+   | <font face="symbol">e</font>
+  </td>
+ </tr>
+ <tr>
+  <td align="right" nowrap="nowrap"><i>decl</i></td>
+  <td align="center" nowrap="nowrap">::=</td>
+  <td align="left" nowrap="nowrap">
+   <tt>VAR</tt> &nbsp; <i>idlist</i> 
+   | <tt class="nouse">THEORY</tt> &nbsp; <i class="nouse">listofthdecl</i>
+   | <tt>RULES</tt> &nbsp; <i>listofrules</i></td>
+ </tr>
+ <tr>
+  <td align="right" nowrap="nowrap">&nbsp;</td>
+  <td align="center" nowrap="nowrap">&nbsp;</td>
+  <td align="left" nowrap="nowrap">
+   | <tt class="nouse">STRATEGY</tt> &nbsp; <i class="nouse">strategydecl</i> 
+   | <i>id</i> &nbsp; <i>anylist</i>
+  </td>
+ </tr>
+ <tr>
+  <td align="right" nowrap="nowrap">&nbsp;</td>
+  <td align="center" nowrap="nowrap">&nbsp;</td>
+  <td align="left" nowrap="nowrap">
+   | <tt class="new">INTERPRETATION</tt> &nbsp;
+   <i class="new">interpretdecl</i>
+   | <tt class="new">INCLUDE</tt> &nbsp; 
+   <i class="new">id</i>
+  </td>
+ </tr>
+ <tr>
+  <td align="right" nowrap="nowrap"><i>anylist</i></td>
+  <td align="center" nowrap="nowrap">::=</td>
+  <td align="left" nowrap="nowrap">
+   <font face="symbol">e</font>
+   | <i>id</i> &nbsp; <i>anylist</i> 
+   | <i>string</i> &nbsp; <i>anylist</i>
+  </td>
+ </tr>
+ <tr>
+  <td align="right" nowrap="nowrap">&nbsp;</td>
+  <td align="center" nowrap="nowrap">&nbsp;</td>
+  <td align="left" nowrap="nowrap">
+   | <tt>(</tt> &nbsp; <i>anylist</i> <tt>)</tt> &nbsp; <i>anylist</i> 
+   | <tt>,</tt> &nbsp; <i>anylist</i>
+  </td>
+ </tr>
+ <tr>
+  <td align="right" nowrap="nowrap"><i>idlist</i></td>
+  <td align="center" nowrap="nowrap">::=</td>
+  <td align="left" nowrap="nowrap">
+   <font face="symbol">e</font> 
+   | <i>id</i> &nbsp; <i>idlist</i>
+  </td>
+ </tr>
+ <tr class="nouse">
+  <td align="right" nowrap="nowrap"><i class="nouse">listofthdecl</i></td>
+  <td align="center" nowrap="nowrap">::=</td>
+  <td align="left" nowrap="nowrap">
+   <font face="symbol">e</font> 
+   | <tt class="nouse">(</tt> &nbsp; <i class="nouse">thdecl</i> &nbsp; <tt class="nouse">)</tt> &nbsp; <i class="nouse">listofthdecl</i>
+  </td>
+ </tr>
+ <tr class="nouse">
+  <td align="right" nowrap="nowrap"><i class="nouse">thdecl</i></td>
+  <td align="center" nowrap="nowrap">::=</td>
+  <td align="left" nowrap="nowrap">
+   <i class="nouse">id</i> &nbsp; <i class="nouse">idlist</i> 
+   | <tt class="nouse">EQUATIONS</tt> &nbsp; <i class="nouse">eqlist</i>
+  </td>
+ </tr>
+ <tr class="nouse">
+  <td align="right" nowrap="nowrap"><i class="nouse">eqlist</i></td>
+  <td align="center" nowrap="nowrap">::=</td>
+  <td align="left" nowrap="nowrap">
+   <font face="symbol">e</font> 
+   | <i class="nouse">equation</i> &nbsp; <i class="nouse">eqlist</i>
+  </td></tr>
+  <tr class="nouse">
+   <td align="right" nowrap="nowrap"><i class="nouse">equation</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <i class="nouse">term</i> &nbsp; <tt class="nouse">==</tt> &nbsp; <i class="nouse">term</i>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i>listofrules</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <font face="symbol">e</font> 
+    | <i>rule</i> &nbsp; <i>listofrules</i>
+    | <i class="new">nat</i><tt class="new">:</tt>&nbsp;<i>rule</i> &nbsp;
+    <i>listofrules</i>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i>rule</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <i>term</i> &nbsp; <tt>-&gt;</tt> &nbsp; <i>term</i>
+    | <i class="nouse">term</i> &nbsp; <tt class="nouse">-&gt;</tt> &nbsp; <i class="nouse">term</i> &nbsp; <tt class="nouse">|</tt> &nbsp; <i class="nouse">condlist</i>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <i class="nouse">term</i> &nbsp; <tt class="nouse">-&gt;=</tt> &nbsp; <i class="nouse">term</i> 
+    | <i class="nouse">term</i> &nbsp; <tt class="nouse">-&gt;=</tt> &nbsp; <i class="nouse">term</i> &nbsp; <tt class="nouse">|</tt> &nbsp;
+    <i class="nouse">condlist</i>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <i class="new">term</i> &nbsp; <tt class="new">-&gt;</tt>
+    &nbsp; <i class="new">term</i>
+    &nbsp; <tt class="new">[</tt> &nbsp; <i class="new">formula</i>
+    &nbsp;<tt class="new">]</tt>
+   </td>
+  </tr>
+  <tr class="nouse">
+   <td align="right" nowrap="nowrap"><i class="nouse">condlist</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <i class="nouse">cond</i> 
+    | <i class="nouse">cond</i> &nbsp; <tt class="nouse">,</tt> &nbsp; <i class="nouse">condlist</i>
+   </td>
+  </tr>
+  <tr class="nouse">
+   <td align="right" nowrap="nowrap"><i class="nouse">cond</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <i class="nouse">term</i> &nbsp; <tt class="nouse">-&gt;</tt> &nbsp; <i class="nouse">term</i>
+    | <i class="nouse">term</i> &nbsp; <tt class="nouse">-&gt;&lt;-</tt> &nbsp; <i class="nouse">term</i>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i>term</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <i>id</i> 
+    | <i>id</i> &nbsp; <tt>(</tt> &nbsp; <tt>)</tt> 
+    | <i>id</i> &nbsp; <tt>(</tt> &nbsp; <i>termlist</i> &nbsp;
+    <tt>)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i>termlist</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <i>term</i> 
+    | <i>term</i> &nbsp; <tt>,</tt> &nbsp; <i>termlist</i>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i class="new">formula</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <tt class="new">true</tt>
+    | <tt class="new">false</tt>
+    | <i class="new">id</i>
+    | <i class="new">id</i><tt class="new">(</tt><i class="new">termlist</i> <tt class="new">)</tt>
+    | <tt class="new">(</tt> &nbsp; <i class="new">formula</i> 
+    &nbsp; <tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <tt class="new">(!</tt> &nbsp; 
+    <i class="new">formula</i><tt class="new">)</tt>
+    | <tt class="new">(</tt><i class="new">formula</i> &nbsp; <tt class="new">&amp;&amp;</tt>
+    &nbsp; <i class="new">formula</i><tt class="new">)</tt>
+    | <tt class="new">(</tt><i class="new">formula</i> &nbsp; <tt class="new">||</tt>
+    &nbsp; <i class="new">formula</i><tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr class="nouse">
+   <td align="right" nowrap="nowrap"><i class="nouse">strategydecl</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <tt class="nouse">INNERMOST</tt> 
+    | <tt class="nouse">OUTERMOST</tt> 
+    | <tt class="nouse">CONTEXTSENSITIVE</tt> &nbsp; <i class="nouse">csstratlist</i>
+   </td>
+  </tr>
+  <tr class="nouse">
+   <td align="right" nowrap="nowrap"><i class="nouse">csstratlist</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <font face="symbol">e</font> 
+    | <tt class="nouse">(</tt> <i class="nouse">id</i> &nbsp; <i class="nouse">natlist</i> <tt class="nouse">)</tt> &nbsp;
+    <i class="nouse">csstratlist</i>
+   </td>
+  </tr>
+  <tr class="nouse">
+   <td align="right" nowrap="nowrap"><i class="nouse">natlist</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <font face="symbol">e</font> 
+    | <i class="nouse">nat</i> &nbsp; <i class="nouse">natlist</i>
+   </td>
+  </tr>
+  <tr class="nouse">
+   <td align="right" nowrap="nowrap"><i class="nouse">intlist</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <font face="symbol">e</font> 
+    | <i class="nouse">int</i> &nbsp; <i class="nouse">intlist</i>
+   </td>
+  </tr>
+  <tr class="nouse">
+   <td align="right" nowrap="nowrap"><i class="nouse">int</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <i class="nouse">int</i>
+    | <tt class="nouse">-</tt><i class="nouse">nat</i>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i class="new">interpretdecl</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <i class="new">solverdecl</i>&nbsp;
+    <i class="new">prewrapper</i> &nbsp;
+    <i class="new">postwrapper</i> &nbsp;
+    <i class="new">funsemdecl</i> &nbsp;
+    <i class="new">predsemdecl</i>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i class="new">solverdecl</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <tt class="new">(SMTSOLVER</tt> &nbsp; 
+    <i class="new">id</i>&nbsp;<i class="new">idlist</i><tt class="new">)</tt>
+    <tt class="new">(LOGIC</tt> &nbsp; 
+    <i class="new">id</i><tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i class="new">prewrapperdecl</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <font face="symbol">e</font> 
+    | <tt class="new">(PREWRAPPER</tt> &nbsp; 
+    <i class="new">id</i>&nbsp;<i class="new">idlist</i><tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i class="new">postwrapperdecl</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <font face="symbol">e</font> 
+    | <tt class="new">(POSTWRAPPER</tt> &nbsp; 
+    <i class="new">id</i>&nbsp;<i class="new">idlist</i><tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i class="new">funsemdecl</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <font face="symbol">e</font> 
+    | <tt class="new">(FUNCTIONS</tt> &nbsp;
+    <i class="new">funsemlist</i><tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i class="new">predsemdecl</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <font face="symbol">e</font> 
+    | <tt class="new">(PREDICATES</tt> &nbsp;
+    <i class="new">predsemlist</i><tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i class="new">funsemlist</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <font face="symbol">e</font> 
+    | <tt class="new">(</tt> <i class="new">id</i> &nbsp; 
+    <i class="new">smtlibexpr</i> <tt class="new">)</tt> &nbsp;
+    <i class="new">funsemlist</i>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i class="new">predsemlist</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <font face="symbol">e</font> 
+    | <tt class="new">(</tt> <i class="new">id</i> &nbsp; 
+    <i class="new">smtlibformula</i> <tt class="new">)</tt> &nbsp;
+    <i class="new">predsemlist</i>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i class="new">smtlibformula</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <tt class="new">true</tt>
+    | <tt class="new">false</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <tt class="new">(=</tt> &nbsp;
+    <i class="new">smtlibexpr</i>
+    <i class="new">smtlibexprlist</i> <tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <tt class="new">(distinct</tt> &nbsp;
+    <i class="new">smtlibexpr</i>
+    <i class="new">smtlibexprlist</i> <tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <tt class="new">(</tt> <i class="new">predicates</i>&nbsp;
+    <i class="new">smtlibexpr</i>
+    <i class="new">smtlibexpr</i> <tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <tt class="new">(not</tt> &nbsp;
+    <i class="new">smtlibformula</i> <tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <tt class="new">(or</tt> &nbsp;
+    <i class="new">smtlibformula</i> &nbsp; 
+    <i class="new">smtlibformulalist</i> 
+    <tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <tt class="new">(and</tt> &nbsp;
+    <i class="new">smtlibformula</i> &nbsp; 
+    <i class="new">smtlibformulalist</i> 
+    <tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <tt class="new">(implies</tt> &nbsp;
+    <i class="new">smtlibformula</i> &nbsp; 
+    <i class="new">smtlibformula</i> 
+    <tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <tt class="new">(xor</tt> &nbsp;
+    <i class="new">smtlibformula</i> &nbsp; 
+    <i class="new">smtlibformulalist</i> 
+    <tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <tt class="new">(iff</tt> &nbsp; 
+    <i class="new">smtlibformula</i> &nbsp; 
+    <i class="new">smtlibformulalist</i> 
+    <tt class="new">)</tt>
+  </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i class="new">smtlibformulalist</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <font face="symbol">e</font> 
+    | <i class="new">smtlibformula</i> &nbsp;
+    <i class="new">smtlibformulalist</i>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i class="new">smtlibexpr</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <i class="new">nat</i>
+    | <i class="new">args</i>
+   </td>
+  </tr>
+  
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <tt class="new">(~</tt> &nbsp; 
+    <i class="new">smtlibexpr</i> <tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <tt class="new">(+</tt> &nbsp; 
+    <i class="new">smtlibexpr</i> &nbsp;
+    <i class="new">smtlibexpr</i> <tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap">&nbsp;</td>
+   <td align="center" nowrap="nowrap">&nbsp;</td>
+   <td align="left" nowrap="nowrap">
+    | <tt class="new">(-</tt> &nbsp; 
+    <i class="new">smtlibexpr</i> &nbsp;
+    <i class="new">smtlibexpr</i> <tt class="new">)</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i class="new">smtlibexprlist</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <font face="symbol">e</font> 
+    | <i class="new">smtlibexpr</i> &nbsp;
+    <i class="new">smtlibexprlist</i>
+   </td>
+  </tr>
+ <tr>
+   <td align="right" nowrap="nowrap"><i class="new">predicates</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <tt class="new">&lt;</tt>
+    | <tt class="new">&lt;=</tt>
+    | <tt class="new">&gt;</tt>
+    | <tt class="new">&gt;=</tt>
+   </td>
+  </tr>
+  <tr>
+   <td align="right" nowrap="nowrap"><i class="new">args</i></td>
+   <td align="center" nowrap="nowrap">::=</td>
+   <td align="left" nowrap="nowrap">
+    <tt class="new">$</tt><i class="new">nat</i>
+   </td>
+  </tr>
+ </tbody></table>
+ 
+<p>
+<i>id</i> are non-empty sequences of characters except space, 
+<tt>(</tt>, <tt>)</tt>, <tt>"</tt> and <tt>,</tt> ; and
+excluding special sequences <tt>-&gt;</tt>, <tt>==</tt>, <tt>-&gt;=</tt>,
+<tt>-&gt;&lt;-</tt>, <tt>|</tt>,
+<tt class="new">true</tt>,
+<tt class="new">false</tt>,
+<tt class="new">!</tt>,
+<tt class="new">&amp;&amp;</tt>,
+<tt class="new">||</tt>,
+<tt class="new">not</tt>,
+<tt class="new">and</tt>,
+<tt class="new">or</tt>,
+<tt class="new">implies</tt>,
+<tt class="new">xor</tt>,
+<tt class="new">iff</tt>,
+<tt class="new">=</tt>,
+<tt class="new">distinct</tt>,
+<tt class="new">&lt;</tt>,
+<tt class="new">&lt;=</tt>,
+<tt class="new">&gt;</tt>,
+<tt class="new">&gt;=</tt>,
+<tt class="new">~</tt>,
+<tt class="new">+</tt>,
+<tt class="new">-</tt>,
+<tt class="new">$</tt><i class="new">nat</i>,
+ and keywords <tt>CONTEXTSENSITIVE</tt>,
+<tt>EQUATIONS</tt>, <tt>INNERMOST</tt>, <tt>OUTERMOST</tt>, <tt>RULES</tt>, <tt>STRATEGY</tt>, <tt>THEORY</tt>, <tt>VAR</tt>
+<tt class="new">INTERPRETATION</tt>,
+<tt class="new">SMTSOLVER</tt>,
+<tt class="new">LOGIC</tt>,
+<tt class="new">PREWRAPPER</tt>,
+<tt class="new">POSTWRAPPER</tt>,
+<tt class="new">FUNCTIONS</tt>,
+<tt class="new">PREDICATES</tt>,
+and <tt class="new">INCLUDE</tt>. 
+</p>
+
+<p>
+<i>string</i> are sequences of any characters between double quotes.
+</p>
+
+<p>
+<i>nat</i> are non-empty sequences of digits.
+</p>
+
+<p>
+At least one <tt>VAR</tt> and one <tt>RULES</tt> sections are
+ mandatory. If they are several, the union is taken and :
+</p><ul><li>
+a symbol declared in a <tt>VAR</tt> section must not have been used
+ in previous declarations, and is assumed to denote a variable in
+ remaining declarations (in particular must not be applied to
+ arguments)
+
+</li><li>a symbol occuring in a <tt>RULES</tt> section which has not been
+ used before is assumed to denote a function symbol, and must be used
+ afterwards always with the same arity.
+</li></ul>
+<p></p>
+
+<h2>Example</h2>
+
+<table border="1">
+ <tbody><tr>
+  <td>
+<pre>(VAR x y i z)
+(INTERPRETATION
+  (SMTSOLVER yices)
+  (LOGIC LIA)
+  (PREWRAPPER smt2y)
+  (POSTWRAPPER y2smt)
+  (FUNCTIONS
+    (0 0)
+    (s (+ $1 1))
+    (p (- $1 1))
+    (add (+ $1 $2))
+  )
+  (PREDICATES
+    (leq (&lt;= $1 $2))
+  )
+)
+(RULES
+  sum1(x) -&gt; u(x,0,0)
+  u(x,i,z) -&gt; u(x,s(i),add(z,s(i))) [ leq(i,x) ]
+  u(x,i,z) -&gt; z [ ! leq(i,x) ]
+  sum0(0) -&gt; 0
+  sum0(s(x)) -&gt; add(sum0(x),s(x)) [ leq(0,x) ]
+  sum0(p(x)) -&gt; 0 [ leq(x,0) ]
+  add(0,y) -&gt; y
+  add(s(x),y) -&gt; s(add(x,y))
+  add(p(x),y) -&gt; p(add(x,y))
+  s(p(x)) -&gt; x
+  p(s(x)) -&gt; x
+)
+</pre>
+  </td>
+  </tr><tr>
+</tr></tbody></table>
+
+<br>
+
+<table border="1">
+ <tbody><tr>
+  <td>
+<pre>(VAR x y i z)
+(INCLUDE intstructure.cctrs)
+(RULES
+  sum1(x) -&gt; u(x,0,0)
+  u(x,i,z) -&gt; u(x,s(i),add(z,s(i))) [ leq(i,x) ]
+  u(x,i,z) -&gt; z [ ! leq(i,x) ]
+  sum0(0) -&gt; 0
+  sum0(s(x)) -&gt; add(sum0(x),s(x)) [ leq(0,x) ]
+  sum0(p(x)) -&gt; 0 [ leq(x,0) ]
+  add(0,y) -&gt; y
+  add(s(x),y) -&gt; s(add(x,y))
+  add(p(x),y) -&gt; p(add(x,y))
+  s(p(x)) -&gt; x
+  p(s(x)) -&gt; x
+)
+</pre>
+  </td>
+  <td>
+<pre>(INTERPRETATION
+  (SMTSOLVER yices)
+  (LOGIC LIA)
+  (PREWRAPPER smt2y)
+  (POSTWRAPPER y2smt)
+  (FUNCTIONS
+    (0 0)
+    (s (+ $1 1))
+    (p (- $1 1))
+    (add (+ $1 $2))
+  )
+  (PREDICATES
+    (leq (&lt;= $1 $2))
+  )
+)
+</pre>
+  </td>
+  </tr><tr>
+</tr></tbody></table>
+
+
+
+</body></html>

@@ -1,0 +1,357 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021 (Released January 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>LCTRS</TITLE>
+<META NAME="description" CONTENT="LCTRS">
+<META NAME="keywords" CONTENT="b11">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021">
+
+<LINK REL="STYLESHEET" HREF="b11.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="node4.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="node6.html">APR Problem</A>
+<B> Up:</B> <A
+ HREF="node4.html">BV-LCTRS Version</A>
+<B> Previous:</B> <A
+ HREF="node4.html">BV-LCTRS Version</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H4><A ID="SECTION00020010000000000000">
+LCTRS</A>
+</H4>
+
+<P>
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\Sigma =
+\Sigma^{\mathit{int}}_{\mathit{theory}}\cup\left\{
+\begin{array}{r@{\>}c@{\>}l}
+\mathsf{cnfg} & : & \mathit{Process} \times \mathit{Process} \times \mathit{Semaphore} \times \mathit{Semaphore} \times \mathit{Semaphore} \times \mathit{bitvec}_{1} \times \mathit{bitvec}_{1} \Rightarrow \mathit{Cnfg}\\
+\mathsf{p} & : & \mathit{Fcall} \times \mathit{bitvec}_{3} \times \mathit{bitvec}_{3} \times \mathit{bitvec}_{3} \Rightarrow \mathit{Process}\\
+\mathsf{sem} & : & \mathit{bitvec}_{1} \times \mathit{bitvec}_{3} \times \mathit{bitvec}_{3} \Rightarrow \mathit{Semaphore}\\
+\mathsf{bbr2} & : & \mathit{Fcall}\\
+\mathsf{bbr3} & : & \mathit{Fcall}\\
+\mathsf{bbr4} & : & \mathit{Fcall}\\
+\mathsf{bbr5} & : & \mathit{Fcall}\\
+\mathsf{bbr6} & : & \mathit{Fcall}\\
+\mathsf{cmr2} & : & \mathit{Fcall}\\
+\mathsf{cmr3} & : & \mathit{Fcall}\\
+\mathsf{cmr4} & : & \mathit{Fcall}\\
+\mathsf{cmr5} & : & \mathit{Fcall}\\
+\mathsf{cmr6} & : & \mathit{Fcall}\\
+\mathsf{cmr7} & : & \mathit{Fcall}\\
+\mathsf{cmr11} & : & \mathit{Fcall}\\
+\mathsf{success} & : & \mathit{Cnfg}\\
+\mathsf{error} & : & \mathit{Cnfg}\\
+\end{array}
+\right\}
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE=""
+ SRC="img4.svg"
+ ALT="$\displaystyle \Sigma =
+\Sigma^{\mathit{int}}_{\mathit{theory}}\cup\left\{
+\beg...
+...: &amp; \mathit{Cnfg}\\
+\mathsf{error} &amp; : &amp; \mathit{Cnfg}\\
+\end{array}\right\}
+$">
+</DIV>
+
+<P>
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{displaymath}
+\left\{
+\begin{array}{rr@{\>}c@{\>}ll}
+\mathrm{1} :
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr2},\mathit{nb},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{ns}),\mathit{pc},\mathit{semb},\mathsf{sem}(\mathit{sc},\mathit{dc},\mathit{tc}),\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr3},\mathit{nb},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{ns}),\mathit{pc},\mathit{semb},\mathsf{sem}(\mathit{sc1},\mathit{dc},\mathit{tc}),\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \neg \mathit{sc} = {\mbox{\tt\symbol{35}}\mathsf{b}{0}} \land \mathit{sc1} = \mathit{sc} \mathsf{bvsub} {\mbox{\tt\symbol{35}}\mathsf{b}{1}} \,]\\
+\par
+\mathrm{2} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr2},\mathit{nb},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{ns}),\mathit{pc},\mathit{semb},\mathsf{sem}(\mathit{sc},\mathit{dc},\mathit{tc}),\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr2},\mathit{nb},\mathit{tc},\mathit{ns}),\mathit{pc},\mathit{semb},\mathsf{sem}(\mathit{sc},\mathit{dc},\mathit{tc2}),\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \mathit{sc} = {\mbox{\tt\symbol{35}}\mathsf{b}{0}} \land \mathit{tc2} = \mathit{tc} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \,]\\
+\par
+\mathrm{3} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr2},\mathit{nb},\mathit{nc},\mathit{ns}),\mathit{pc},\mathit{semb},\mathsf{sem}(\mathit{sc},\mathit{dc},\mathit{tc}),\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{1}})
+ & \to 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr3},\mathit{nb},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{ns}),\mathit{pc},\mathit{semb},\mathsf{sem}(\mathit{sc},\mathit{dc},\mathit{tc}),\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \neg \mathit{nc} = {\mbox{\tt\symbol{35}}\mathsf{b}{000}} \land \mathit{nc} = \mathit{dc} \,]\\
+\par
+\mathrm{4} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr3},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{pc},\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr4},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{pc},\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss1},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \neg \mathit{ss} = {\mbox{\tt\symbol{35}}\mathsf{b}{0}} \land \mathit{ss1} = \mathit{ss} \mathsf{bvsub} {\mbox{\tt\symbol{35}}\mathsf{b}{1}} \,]\\
+\par
+\mathrm{5} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr3},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{pc},\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr3},\mathit{nb},\mathit{nc},\mathit{ts}),\mathit{pc},\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts2}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \mathit{ss} = {\mbox{\tt\symbol{35}}\mathsf{b}{0}} \land \mathit{ts2} = \mathit{ts} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \,]\\
+\par
+\mathrm{6} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr3},\mathit{nb},\mathit{nc},\mathit{ns}),\mathit{pc},\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{1}})
+ & \to 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr4},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{pc},\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \neg \mathit{ns} = {\mbox{\tt\symbol{35}}\mathsf{b}{000}} \land \mathit{ns} = \mathit{ds} \,]\\
+\par
+\mathrm{7} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr4},\mathit{nb},\mathit{nc},\mathit{ns}),\mathit{pc},\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr5},\mathit{nb},\mathit{nc},\mathit{ns}),\mathit{pc},\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs1},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \mathit{fs1} = (\mathit{fs} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{1}}) \,]\\
+\par
+\mathrm{8} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr5},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{nc},\mathit{ns}),\mathit{pc},\mathsf{sem}(\mathit{sb},\mathit{db},\mathit{tb}),\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr6},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{nc},\mathit{ns}),\mathit{pc},\mathsf{sem}(\mathit{sb},\mathit{db2},\mathit{tb}),\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{1}})
+ & [\, \neg \mathit{tb} = \mathit{db} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \land \mathit{db2} = \mathit{db} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \,]\\
+\par
+\mathrm{9} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr5},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{nc},\mathit{ns}),\mathit{pc},\mathsf{sem}(\mathit{sb},\mathit{db},\mathit{tb}),\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr6},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{nc},\mathit{ns}),\mathit{pc},\mathsf{sem}(\mathit{sb1},\mathit{db},\mathit{tb}),\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \mathit{tb} = \mathit{db} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \land \mathit{sb1} = \mathit{sb} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{1}} \,]\\
+\par
+\mathrm{10} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr6},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{pc},\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr2},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{pc},\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds2},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{1}})
+ & [\, \neg \mathit{ts} = \mathit{ds} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \land \mathit{ds2} = \mathit{ds} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \,]\\
+\par
+\mathrm{11} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr6},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{pc},\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr2},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{pc},\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss1},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \mathit{ts} = \mathit{ds} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \land \mathit{ss1} = \mathit{ss} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{1}} \,]\\
+\par
+\mathrm{12} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr2},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr3},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss1},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \neg \mathit{ss} = {\mbox{\tt\symbol{35}}\mathsf{b}{0}} \land \mathit{ss1} = \mathit{ss} \mathsf{bvsub} {\mbox{\tt\symbol{35}}\mathsf{b}{1}} \,]\\
+\par
+\mathrm{13} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr2},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr2},\mathit{nb},\mathit{nc},\mathit{ts}),\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts2}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \mathit{ss} = {\mbox{\tt\symbol{35}}\mathsf{b}{0}} \land \mathit{ts2} = \mathit{ts} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \,]\\
+\par
+\mathrm{14} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr2},\mathit{nb},\mathit{nc},\mathit{ns}),\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{1}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr3},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \neg \mathit{ns} = {\mbox{\tt\symbol{35}}\mathsf{b}{000}} \land \mathit{ns} = \mathit{ds} \,]\\
+\par
+\mathrm{15} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr3},\mathit{nb},\mathit{nc},\mathit{ns}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr4},\mathit{nb},\mathit{nc},\mathit{ns}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \mathit{fs} \mathsf{bvugt} {\mbox{\tt\symbol{35}}\mathsf{b}{0}} \,]\\
+\par
+\mathrm{16} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr3},\mathit{nb},\mathit{nc},\mathit{ns}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr11},\mathit{nb},\mathit{nc},\mathit{ns}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \mathit{fs} \mathsf{bvule} {\mbox{\tt\symbol{35}}\mathsf{b}{0}} \,]\\
+\par
+\mathrm{17} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr4},\mathit{nb},\mathit{nc},\mathit{ns}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr5},\mathit{nb},\mathit{nc},\mathit{ns}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs1},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \mathit{fs1} = (\mathit{fs} \mathsf{bvsub} {\mbox{\tt\symbol{35}}\mathsf{b}{1}}) \,]\\
+\par
+\mathrm{18} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr5},\mathit{nb},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{ns}),\mathit{semb},\mathsf{sem}(\mathit{sc},\mathit{dc},\mathit{tc}),\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr6},\mathit{nb},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{ns}),\mathit{semb},\mathsf{sem}(\mathit{sc},\mathit{dc2},\mathit{tc}),\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{1}})
+ & [\, \neg \mathit{tc} = \mathit{dc} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \land \mathit{dc2} = \mathit{dc} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \,]\\
+\par
+\mathrm{19} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr5},\mathit{nb},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{ns}),\mathit{semb},\mathsf{sem}(\mathit{sc},\mathit{dc},\mathit{tc}),\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr6},\mathit{nb},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{ns}),\mathit{semb},\mathsf{sem}(\mathit{sc1},\mathit{dc},\mathit{tc}),\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \mathit{tc} = \mathit{dc} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \land \mathit{sc1} = \mathit{sc} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{1}} \,]\\
+\par
+\mathrm{20} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr6},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr7},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds2},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{1}})
+ & [\, \neg \mathit{ts} = \mathit{ds} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \land \mathit{ds2} = \mathit{ds} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \,]\\
+\par
+\mathrm{21} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr6},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr7},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss1},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \mathit{ts} = \mathit{ds} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \land \mathit{ss1} = \mathit{ss} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{1}} \,]\\
+\par
+\mathrm{22} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr7},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{nc},\mathit{ns}),\mathsf{sem}(\mathit{sb},\mathit{db},\mathit{tb}),\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr2},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{nc},\mathit{ns}),\mathsf{sem}(\mathit{sb1},\mathit{db},\mathit{tb}),\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \neg \mathit{sb} = {\mbox{\tt\symbol{35}}\mathsf{b}{0}} \land \mathit{sb1} = \mathit{sb} \mathsf{bvsub} {\mbox{\tt\symbol{35}}\mathsf{b}{1}} \,]\\
+\par
+\mathrm{23} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr7},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{nc},\mathit{ns}),\mathsf{sem}(\mathit{sb},\mathit{db},\mathit{tb}),\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr7},\mathit{tb},\mathit{nc},\mathit{ns}),\mathsf{sem}(\mathit{sb},\mathit{db},\mathit{tb2}),\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \mathit{sb} = {\mbox{\tt\symbol{35}}\mathsf{b}{0}} \land \mathit{tb2} = \mathit{tb} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \,]\\
+\par
+\mathrm{24} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr7},\mathit{nb},\mathit{nc},\mathit{ns}),\mathsf{sem}(\mathit{sb},\mathit{db},\mathit{tb}),\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{1}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr2},{\mbox{\tt\symbol{35}}\mathsf{b}{000}},\mathit{nc},\mathit{ns}),\mathsf{sem}(\mathit{sb},\mathit{db},\mathit{tb}),\mathit{semc},\mathit{sems},\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \neg \mathit{nb} = {\mbox{\tt\symbol{35}}\mathsf{b}{000}} \land \mathit{nb} = \mathit{db} \,]\\
+\par
+\mathrm{25} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr11},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr2},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds2},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{1}})
+ & [\, \neg \mathit{ts} = \mathit{ds} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \land \mathit{ds2} = \mathit{ds} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \,]\\
+\par
+\mathrm{26} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr11},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & \to 
+ & \mathsf{cnfg}(\mathit{pb},\mathsf{p}(\mathsf{cmr2},\mathit{nb},\mathit{nc},{\mbox{\tt\symbol{35}}\mathsf{b}{000}}),\mathit{semb},\mathit{semc},\mathsf{sem}(\mathit{ss1},\mathit{ds},\mathit{ts}),\mathit{fs},{\mbox{\tt\symbol{35}}\mathsf{b}{0}})
+ & [\, \mathit{ts} = \mathit{ds} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{010}} \land \mathit{ss1} = \mathit{ss} \mathsf{bvadd} {\mbox{\tt\symbol{35}}\mathsf{b}{1}} \,]\\
+\par
+\mathrm{27} : 
+ & \mathsf{cnfg}(\mathit{pb},\mathit{pc},\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{success}\\
+\par
+\mathrm{28} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr4},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr3},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{29} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr5},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr3},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{30} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr6},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr3},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{31} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr4},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr4},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{32} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr5},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr4},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{33} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr6},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr4},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{34} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr4},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr5},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{35} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr5},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr5},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{36} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr6},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr5},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{37} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr4},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr6},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{38} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr5},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr6},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{39} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr6},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr6},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{40} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr4},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr11},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{41} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr5},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr11},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\mathrm{42} : 
+ & \mathsf{cnfg}(\mathsf{p}(\mathsf{bbr6},\mathit{nbb},\mathit{nbc},\mathit{nbs}),\mathsf{p}(\mathsf{cmr11},\mathit{ncb},\mathit{ncc},\mathit{ncs}),\mathit{semb},\mathit{semc},\mathit{sems},\mathit{fs},\mathit{a})
+ & \to 
+ & \mathsf{error}\\
+\par
+\end{array}
+\right\}
+\end{displaymath}
+ -->
+
+<IMG
+ STYLE=""
+ SRC="img5.svg"
+ ALT="$\displaystyle \left\{
+\begin{array}{rr@{\&gt;}c@{\&gt;}ll}
+\mathrm{1} :
+&amp; \mathsf{c...
+...,\mathit{fs},\mathit{a})
+&amp; \to
+&amp; \mathsf{error}\\
+\par
+\end{array}\right\}
+$">
+</DIV>
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>
