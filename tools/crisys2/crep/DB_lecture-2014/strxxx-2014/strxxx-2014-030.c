@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <string.h>
+
+void mystrcpy(char trg[], char src[]);
+void mystrcat(char trg[], char src[]);
+int mystrlen(char trg[]);
+
+int main(void)
+{
+  char str1[80], str2[80];
+  int i;
+
+  printf("第1文の文字列を入力してください: ");
+  gets(str1);
+  printf("第2文の文字列を入力してください: ");
+  gets(str2);
+
+  printf("%s は %d 文字の長さです\n", str1, mystrlen(str1));
+  printf("%s は %d 文字の長さです\n", str2, mystrlen(str2));
+
+  i = strcmp(str1, str2);
+  if(!i)
+    printf("文字列は等しい\n");
+  else if(i < 0)
+    printf("%s は %s より小さい\n", str1, str2);
+  else 
+    printf("%s は %s より大きい\n", str1, str2);
+
+  if((mystrlen(str1) + mystrlen(str2)) < 80){
+    mystrcat(str1, str2);
+    printf("%s\n", str1);
+  }
+
+  mystrcpy(str1, str2);
+  printf("%s %s\n", str1, str2);
+
+  return 0;
+}
+
+void mystrcat(char trg[], char src[])
+{
+  int i=0, l=0, m=0;
+  while(src[m]){
+    m++;
+  }
+  while(trg[l]){
+    l++;
+  }
+  for(i=0; i <= m; i++)
+    trg[i+l] = src[i];
+
+  return ;
+}
+
+void mystrcpy(char trg[], char src[])
+{
+  int i=0, l=0;
+  
+  while(src[l]){
+    l++;
+  }
+  
+  for(i=0; i<=l; i++){
+      trg[i] = src[i];
+    }
+  return ;
+}
+
+
+int mystrlen(char trg[])
+{
+  int i=0;
+  while(trg[i]){
+    i++;
+    }
+  return i;
+}

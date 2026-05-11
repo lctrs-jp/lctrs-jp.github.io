@@ -1,0 +1,14 @@
+DirectoryIndex index.html
+AuthType Basic
+AuthName programming
+AuthUserFile /home/fs6/nishida/hp_control/project/.htpasswd
+
+<limit GET POST>
+satisfy any
+require user nishida lctrs
+order deny,allow
+#allow from all
+deny from all
+allow from 133.6.205.128/255.255.255.128
+allow from 172.20.192.0/255.255.224.0
+</limit>

@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>必須課題5</title>
+<meta http-equiv="Content-Type" content="text/html;charset=EUC-JP">
+</head>
+<body>
+<h2>必須課題5</h2>
+
+<p>
+自然数 num (≧ 0)が与えられたとき，0 から num までの和を求める関数 sum1,
+sum2 を以下の2通りで作成せよ．<br>
+ただし，負の数が(関数の引数として)入力された場合の例外処理も記述すること．
+</p>
+
+<blockquote>
+<table border="1">
+<tr>
+ <th>関数名</th>
+ <td>sum1</td>
+ <td>sum2</td>
+</tr>
+<tr>
+ <th>形  式</th>
+ <td><code>int sum1( int n )</code></td>
+ <td><code>int sum2( int n )</code></td>
+</tr>
+<tr>
+ <th>引  数</th>
+ <td>整数値 n</td>
+ <td>整数値 n</td>
+</tr>
+<tr>
+ <th>返り値</th>
+ <td>整数値</td>
+ <td>整数値</td>
+</tr>
+<tr>
+ <th>機  能</th>
+ <td colspan="2">0 から n までの総和を返す．</td>
+</tr>
+<tr>
+ <th>仕  様</th>
+ <td><ul>
+      <li>再帰呼び出しは使用しない．
+      <li>n が負のときは 0 を返す．
+     </ul></td>
+ <td><ul>
+      <li>再帰呼び出しを使用する．
+      <li>n が負のときは 0 を返す．
+     </ul></td>
+</tr>
+</table>
+</blockquote>
+
+<h4>作成プログラムの仕様</h4>
+
+<p><font color="green">
+本課題のプログラムとして作成する ex005.c は以下を満たすようにすること．
+<ul>
+ <li>関数 sum1 の定義はメイン関数の前に記述．
+ <li>関数 sum2 の定義はメイン関数の後に記述．
+ <li>メイン関数は標準入力から整数１つを受け取り，その整数を sum1, sum2
+に与えたときの結果を表示する．
+</ul>
+</font></p>
+
+<table border="1">
+<tr><th>ファイル名</th><td>ex005.c</td></tr>
+<tr><th>標準入力</th><td>整数</td></tr>
+<tr><th>機能</th>
+  <td>入力された整数に対する sum1, sum2 の結果をそれぞれ表示する</td></tr>
+</table>
+
+<!--
+<h4>メイン関数の例</h4>
+
+<pre>
+</pre>
+-->
+
+<h4>動作例</h4>
+<pre>
+% gcc -o ex005 ex005.c
+% ex005
+自然数を入力してください: 10
+sum1 による総和: 55
+sum2 による総和: 55
+% ex005
+自然数を入力してください: -3
+sum1 による総和: 0
+sum2 による総和: 0
+% 
+</pre>
+
+<h4>総和関数の再帰定義</h4>
+
+<p>自然数上の総和関数 Sum は以下のように再帰的に定義される．
+<blockquote>
+<pre>
+Sum( 0 ) = 0
+Sum( n ) = n + Sum( n-1 )    [ n > 0 のとき]
+</pre>
+</blockquote>
+</p>
+
+<p>
+本課題では整数上の総和関数であるので，
+sum2 を定義する際には負の数の場合を補うこと!!
+</p>
+
+</body>
+
+</html>

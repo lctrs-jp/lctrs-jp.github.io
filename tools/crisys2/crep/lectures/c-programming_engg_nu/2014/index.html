@@ -1,0 +1,439 @@
+<html>
+<body>
+<h1>Lecture of C Programming (2014)</h1>
+<h2>Department of Electrical and Electronic Engineering and
+  Information Engineering, School of Engineering, Nagoya
+  University)</h2>
+<h2>Naoki Nishida</h2>
+
+<hr>
+
+<h3>Exercise 1 (October 2, 2014)</h3>
+
+<p>Revise the following program so as to
+  print your name:
+<pre>
+#include &lang;stdio.h&rang;
+
+int main()
+{
+  printf("Hello, World!\n");
+  return 0;
+}
+</pre>
+Then, submit the result of the execution to NUCT (Nagoya University
+Collaboration and course Tools).
+</p>
+
+<h4>Example of Solutions</h4>
+
+<pre>
+#include &lang;stdio.h&rang;
+
+int main()
+{
+  printf("Naoki Nishida\n");
+  return 0;
+}
+</pre>
+
+<hr>
+
+<h3>Exercise 2 (October 9, 2014)</h3>
+
+<p>
+Make a program <code>bmi.c</code> which takes a weight and a height
+from keyboards, and then prints the value of BMI, which is 
+<var>weight</var> (kg) / <var>height</var><sup>2</sup> (m).
+For example, the value of BMI for weight <code>65</code> (kg)
+and height <code>1.70</code> (m) is <code>22.49</code>.
+</p>
+
+<p>
+Submit the source and the result of the execution to NUCT.
+Note that you don't have to use your personal data in executing. 
+</p>
+
+<h4>Example of Solutions</h4>
+
+<pre>
+#include &lang;stdio.h&rang;
+
+int main()
+{
+  int w;
+  double h;
+
+  printf("Input your weight: ");
+  scanf("%d", &w );
+  printf("Input your height: ");
+  scanf("%lf", &h );
+
+  printf("BMI = %lf\n", w / (h*h) );
+
+  return 0;
+}
+</pre>
+
+<hr>
+
+<h3>Exercise 3 (October 16, 2014)</h3>
+
+<p>
+Revise <code>bmi.c</code> as the new source <code>bmi2.c</code> so as
+to print a comment by following the table below:
+<blockquote>
+  <table border="1">
+    <tr align="center">
+      <th>BMI <var>v</var></th>
+      <td><var>v</var> &lt; <code>18.5</code></td>
+      <td><code>18.5</code> &le; <var>v</var> &lt; <code>25</code></td>
+      <td><code>25</code> &le; <var>v</var> &lt; <code>30</code></td>
+      <td><code>30</code> &le; <var>v</var></td>
+    </tr>
+    <tr align="center">
+      <th>comment</th>
+      <td>thin</td>
+      <td>standard</td>
+      <td>obese</td>
+      <td>very obese</td>
+    </tr>
+  </table>
+</blockquote>
+Moreover, use at least one user-defined function in the source.
+</p>
+
+<p>
+Submit the source and the result of the execution to NUCT.
+Note that you don't have to use your personal data in executing. 
+</p>
+
+
+<h4>Example of Solutions</h4>
+
+<pre>
+#include &lang;stdio.h&rang;
+
+double bmi(int w, double h);
+
+int main()
+{
+  int w;
+  double h;
+  double b;
+
+  printf("Input your weight: ");
+  scanf("%d", &w );
+  printf("Input your height: ");
+  scanf("%lf", &h );
+
+  b = bmi(w,h);
+  printf("BMI = %lf\n", b );
+
+  if( b < 18.5 )
+    printf("thin\n");
+  else if( b < 25 )
+    printf("standard\n");
+  else if( b < 30 )
+    printf("obese\n");
+  else
+    printf("very obese\n");
+
+  return 0;
+}
+
+double bmi(int w, double h)
+{
+  return w / (h*h);
+}
+</pre>
+
+<hr>
+
+<h3>Exercise 4 (October 23, 2014)</h3>
+
+<p>
+Consider the following program:
+<pre>
+#include &lang;stdio.h&rang;
+
+int main(void)
+{
+  int temp[31], i, min, max, avg;
+  int days;
+
+  printf("How many days in the month? ");
+  scanf("%d", &days);
+
+  for (i = 0; i < days; i++) {
+    printf("Input the temperature of the %d-th day at noon: ", i + 1);
+    scanf("%d", &temp[i]);
+  }
+
+  /* Compute the average */
+  avg = 0;
+  for (i = 0; i < days; i++)
+    avg = avg + temp[i];
+  printf("Ave.: %d C\n", avg / days);
+
+  /* Compute the maximum and minimum temperatures */
+  min = 200;  /* initialize min and max */
+  max = 0;
+  for (i = 0; i < days; i++) {
+    if (min > temp[i])
+      min = temp[i];
+    if (max < temp[i])
+      max = temp[i];
+  }
+
+  printf("Max.: %d C\n", min);
+  printf("Min.: %d C\n", max);
+
+  return 0;
+}
+</pre>
+Revise this program, adapting to the following requirement:
+<ul>
+  <li>the program receives the maximum temperature of the day as real
+  with type <code>double</code>,</li>
+  <li>the progrram deals with the data of a week (i.e., fixes the
+  number of days to seven), and</li>
+  <li>in addition to the max., min., and ave. temperatures, the
+  program shows the standard deviation, the variance, and the median.</li>
+</ul>
+Then, execute the program with the maximum temperatures in Nagoya from
+Oct. 1 - 7, 2014 (see <a href="http://bit.ly/1a7KZQ3"
+			 target="_blank">http://bit.ly/1a7KZQ3</a>). 
+</p>
+
+<p>
+Submit the source and the result of the execution to NUCT.
+Note that you don't have to use your personal data in executing. 
+</p>
+
+<h4>Example of Solutions</h4>
+
+<pre>
+#include &lang;stdio.h&rang;
+#include &lang;math.h&rang;
+
+int main(void)
+{
+  int i, j, days = 7;
+  double temp[7], min, max, avg, ss, t;
+
+  for (i = 0; i < days; i++) {
+    printf("Input the temperature of the %d-th day at noon: ", i + 1);
+    scanf("%lf", &temp[i]);
+  }
+
+  /* Compute the average */
+  avg = 0;
+  min = 200;  /* initialize min and max */
+  max = 0;
+  for (i = 0; i < days; i++){
+    avg = avg + temp[i];
+    if (min > temp[i])
+      min = temp[i];
+    if (max < temp[i])
+      max = temp[i];
+  }
+  avg = avg / days; /* store the average */
+  printf("  Ave.: %lf\n", avg);
+  printf("  Min.: %lf\n", min);
+  printf("  Max.: %lf\n", max);
+
+  /* Compute the variance */
+  ss = 0;
+  for(i = 0; i < days; i++)
+    ss = ss + pow(temp[i] - avg, 2);
+  ss = ss / days;
+  printf("Std. Deviation: %lf\n", sqrt(ss) );
+  printf("      Variance: %lf\n", ss );
+
+  /* to compute the median, sort the array */
+  for (i = 1; i < days; ++i)
+    for (j = days - 1; j >= i; --j) {
+      if (temp[j - 1] > temp[j]) {
+        t = temp[j - 1];
+        temp[j - 1] = temp[j];
+        temp[j] = t;
+      }
+    }
+  /* show the 4th element which is the median */
+  printf("  Median: %lf\n", temp[3] );
+
+  return 0;
+}
+</pre>
+
+<hr>
+
+<h3>Exercise 5 (October 23, 2014)</h3>
+
+<p>
+Implement <code>strcpy</code>, <code>strcat</code>,
+and <code>strlen</code> yourself
+as <code>mystrcpy</code>, <code>mystrcat</code>,
+and <code>mystrlen</code>, resp., with the following specification:
+<ul>
+  <li><code>void mystrcpy(char trg[], char src[]);</code></li>
+  <li><code>void mystrcat(char trg[], char src[]);</code></li>
+  <li><code>int mystrlen(char trg[]);</code></li>
+</ul>
+Then, test them by using the following program:
+<pre>
+#include &lang;string.h&rang;
+#include &lang;stdio.h&rang;
+
+void mystrcpy(char trg[], char src[]);
+void mystrcat(char trg[], char src[]);
+int mystrlen(char trg[]);
+int mystrcmp(char trg[], char src[]);
+
+int main(void)
+{
+  char str1[80], str2[80];
+  int i;
+
+  printf("Input the first string: ");
+  gets(str1);
+  printf("Input the second string: ");
+  gets(str2);
+
+  /* check the length of the strings */
+  printf("The length of %s is %d.\n", str1, mystrlen(str1));
+  printf("The length of %s is %d.\n", str2, mystrlen(str2));
+
+  /* compare the strings */
+  i = mystrcmp(str1, str2);
+  if (!i)
+    printf("These strings are equivalent.\n");
+  else if (i < 0)
+    printf("%s is less than %s.\n", str1, str2);
+  else
+    printf("%s is greater than %s.\n", str1, str2);
+
+  /* concatenate the strings if the empty space is enough */
+  if ((mystrlen(str1) + mystrlen(str2)) < 80) {
+    mystrcat(str1, str2);
+    printf("%s\n", str1);
+  }
+
+  /* copy str2 to str1 */
+  mystrcpy(str1, str2);
+  printf("%s %s\n", str1, str2);
+
+  return 0;
+}
+</pre>
+Implement <code>strcmp</code> yourself as <code>mystrcmp</code> if you
+have energy enough to spare for trying more exercises.
+</p>
+
+<p>
+Submit the source and the result of the execution to NUCT.
+Note that you don't have to use your personal data in executing. 
+</p>
+
+
+<h4>Example of Solutions</h4>
+
+<pre>
+#include &lang;string.h&rang;
+#include &lang;stdio.h&rang;
+
+void mystrcpy(char trg[], char src[]);
+void mystrcat(char trg[], char src[]);
+int mystrlen(char trg[]);
+int mystrcmp(char trg[], char src[]);
+
+int main(void)
+{
+  char str1[80], str2[80];
+  int i;
+
+  printf("Input the first string: ");
+  gets(str1);
+  printf("Input the second string: ");
+  gets(str2);
+
+  /* check the length of the strings */
+  printf("The length of %s is %d.\n", str1, mystrlen(str1));
+  printf("The length of %s is %d.\n", str2, mystrlen(str2));
+
+  /* compare the strings */
+  i = mystrcmp(str1, str2);
+  if (!i)
+    printf("These strings are equivalent.\n");
+  else if (i < 0)
+    printf("%s is less than %s.\n", str1, str2);
+  else
+    printf("%s is greater than %s.\n", str1, str2);
+
+  /* concatenate the strings if the empty space is enough */
+  if ((mystrlen(str1) + mystrlen(str2)) < 80) {
+    mystrcat(str1, str2);
+    printf("%s\n", str1);
+  }
+
+  /* copy str2 to str1 */
+  mystrcpy(str1, str2);
+  printf("%s %s\n", str1, str2);
+
+  return 0;
+}
+
+void mystrcpy(char trg[], char src[])
+{
+  int i;
+
+  for( i = 0 ; src[i] != '\0' ; i++ )
+    trg[i] = src[i];
+  trg[i] = '\0';
+
+  return;
+}
+
+void mystrcat(char trg[], char src[])
+{
+  int i, j;
+
+  for( i = 0; trg[i] != '\0' ; i++ );
+      /* or i = mystrlen(trg); */
+
+  for( j = 0 ; src[j] != '\0' ; j++ ){
+    trg[i] = src[j];
+    i++;
+  }
+  trg[i] = '\0';
+
+  return;
+}
+
+int mystrlen(char trg[])
+{
+  int len = 0;
+  while( trg[len] != '\0' ){
+    len ++;
+  }
+  return len;
+}
+
+int mystrcmp(char trg[], char src[])
+{
+  int i;
+
+  for( i = 0 ; trg[i] == src[i] ; i++ ){
+    if( trg[i] == '\0' ) break;
+  }
+
+  return trg[i] - src[i];
+}
+</pre>
+
+<hr>
+
+
+</body>
+</html>

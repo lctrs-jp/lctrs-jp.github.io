@@ -1,0 +1,162 @@
+#include <stdlib.h>
+#include <string.h>
+#define LEN 256
+#define MAX 30
+
+struct attendance {
+  int date;     // 日にち
+  char alice;   // Aliceの都合
+  char bob;     // Bobの都合
+  char carol;   // Carolの都合
+  int ok;       // 参加可能な人数
+  int unfixed;  // 参加未定（?）の人数
+  int day;
+  int month;
+  int year;
+  int total;
+};
+
+typedef struct attendance ATTEND;
+
+void print(ATTEND d[MAX], int size);
+int load(ATTEND d[MAX], char *filename);
+void count(ATTEND d[MAX], int size);
+void sort(ATTEND item[MAX], int size);
+
+int main(int argc, char *argv[])
+{
+  ATTEND name[MAX];
+  int i, size;
+
+  if ( argc != 4 ){
+    printf("Usage: %s filename1 ... filename2\n", argv[0] );
+  }
+
+  for (i = 1 ; i < argc ; i++ ){
+    size = load(name, argv[i]);
+  }
+  count(name, size);
+  sort(name,size);
+  print(name, size);
+
+  return 0;
+}
+
+
+int load(ATTEND d[MAX], char *filename)
+{
+  FILE *fp;
+  char buf[LEN], name[LEN], w;
+  int len, size, i;
+
+
+  if( (fp = fopen (filename, "r")) == NULL ){
+    printf ("ファイル %s のオープンに失敗しました\n", filename);
+    exit(1);
+  }
+
+  fgets(buf, LEN, fp);
+  len = strlen(buf);
+  if( len >0 && buf[len-1] == '\n' )
+    buf[len-1] = '\0';
+  strcpy(name, &buf[1]);
+
+  size = 0;
+  while( fgets(buf, LEN, fp) != NULL ){
+    len = strlen(buf);
+    if( len >0 && buf[len-1] == '\n' )
+      buf[len-1] = '\0';
+    sscanf(buf,"%d %c", &d[size].date, &w);
+
+
+    if(strcmp(name,"Alice") == 0)/* 文字列が同じかどうか */
+      d[size].alice = w;
+    else if(strcmp(name,"Bob") == 0)
+      d[size].bob = w;
+    else if(strcmp(name,"Carol") == 0)
+      d[size].carol = w;
+    else
+      printf("Wrong subject error: %s\n", name );
+
+    size++;
+  }
+
+  return size; // データの個数を返す
+}
+
+
+void print(ATTEND d[MAX], int size)
+{
+  int i;
+
+  printf("date\tAlice\tBob\tCarol\n");
+  printf("-------------------------------------\n");
+
+  for( i = 0 ; i < size ; i++ ){
+    d[i].day = d[i].date % 100;
+    d[i].month = (d[i].date / 100) % 100;
+    d[i].year = d[i].date / 10000;
+
+
+    printf("%4d/ %d/%2d\t%c\t%c\t%c\n",
+           d[i].year, d[i].month, d[i].day,
+           d[i].alice, d[i].bob, d[i].carol );
+  }
+  printf("--------------------------------------\n");
+
+  if( i = 0; i < size ; i++ ){
+    printf("%4d/ %d/%2d [ok:%d, ?:%d]\n",
+           d[i].year, d[i].month, d[i].day,
+           d[i].ok, d[i].unfixed );
+
+
+}
+
+void count(ATTEND d[MAX], int size)
+{
+  int i;
+
+  for (i = 0; i < size ; i++ ){
+    if(d[i].alice == 'o'){
+      if(d[i].bob == 'o'){
+        if(d[i].carol == 'o')
+          d[i].ok = 3;
+        else d[i].ok = 2;
+      }
+      else d[i].ok = 1;
+    }
+    else d[i].ok = 0;
+
+
+    if(d[i].alice == '?'){
+      if(d[i].bob == '?'){
+        if(d[i].carol == '?')
+          d[i].unfixed = 3;
+        else d[i].unfixed = 2;
+      }
+      else d[i].unfixed = 1;
+    }
+    else d[i].unfixed = 0;
+  }
+
+}
+
+
+void sort(SCORE item[MAX], int size )
+ {
+   int a,b, i;
+   ATTEND t;
+
+   for( i = 0; i < size; i++ )
+     item[i].total = item[i].ok + item[i].unfixed;
+
+
+   for( a = 1 ; a < size ; a++)
+     for ( b = count-1 ; b >= a ; b-- ){
+       if( item[b-1].total < item[b].total ){
+         t = item[b-1];
+         item[b-1] = item[b];
+         item[b] = t;
+       }
+     }
+ }

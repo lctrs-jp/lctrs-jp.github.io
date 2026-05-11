@@ -1,0 +1,329 @@
+<html>
+<head>
+<title>crep</title>
+</head>
+<body>
+Updated: 
+<?php 
+  date_default_timezone_set('Asia/Tokyo');
+  $filename = basename($_SERVER['SCRIPT_NAME']);
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+<hr>
+<h1>CREP Database:
+<small>
+<font color="blue">C</font>-programming exercise <font color="blue">REP</font>ort
+<font color="blue">database</font> from students
+</small>
+</h1>
+
+<p>/kr&eacute;ip/</p>
+
+<hr>
+<h4>News</h4>
+
+<dl>
+<dt>December 17, 2013</dt>
+<dd>A new example <b>strxxx</b> was added.</dd>
+<dt>November 12, 2013</dt>
+<dd>Open!</dd>
+<dt>October 31, 2013</dt>
+<dd>
+Pre-open.
+</dd>
+
+<hr>
+<h4>List of Exercises</h4>
+<ul>
+ <li><a href="#sum">sum</a></li>
+ <li><a href="#fastfib">fastfib</a></li>
+ <li><a href="#sum2">sum2</a></li>
+ <li><a href="#strxxx">strxxx</a> <b><font color="red">New!!</font></b></li>
+</ul>
+
+<hr>
+<h4>Notes</h4>
+
+<ul>
+ <li>The programs shown in this site were provided from students in
+      actual classes for C programming exercises, who agreed to provide
+      the reports for this database.
+      </li>
+ <li>The programs are divided to some groups where the members are
+      structurally very similar.</li> 
+ <li>The file name consists of the example name <code>x</code>, year
+      <code>yyyy</code>, a serial number <code>n</code>, and the group
+      name <code>&alpha;</code>: <code>x-yyyy-n-&alpha;.c</code>.</li>
+ <li>Serial numbers used in this database are not complete, i.e., there
+      are some missing numbers due to some reason, e.g., the
+      corresponding program could not be compiled. </li>
+ <li>Comments written in Japanese were automatically removed from the
+ programs.</li>
+ <li>Strings printed by <code>printf</code> were translated into
+   English by hand if containing Japanese characters. </li>
+</ul>
+
+
+<hr>
+<a name="sum"><h2>Summation from 0 to given <var>n</var></h2></a>
+
+<h3>Specification</h3>
+
+<dl>
+<dt>Todo:</dt>
+<dd>Implement <code>sum1</code> without recursive calls, while writing
+     <code>sum2</code> as a recursive function.</dd>
+<dt>Prototype:</dt>
+<dd><code>int sum1(int n);</code> (<code>int sum2(int n);</code>)</dd>
+<dt>Definition:</dt>
+<dd><ul>
+     <li><code>sum1</code>(<var>n</var>) = 0 for <var>n</var> &le; 0</li>
+     <li><code>sum1</code>(<var>n</var>) = <var>n</var> +
+	  <code>sum1</code>(<var>n</var> - 1) for <var>n</var> &gt; 0</li>
+</ul></dd>
+</dl>
+
+<h3><a href="reports/sum">Reports</a>
+<small>(<?php 
+  $filename = "reports/sum";
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+)</small>
+</h3>
+
+<ul>
+ <li>20 groups 
+<small>(<?php 
+  $filename = "reports/sum";
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+)</small>
+ <li><a href="reports/sum.c">sum.c</a>, a sample shown by a lecturer</li>
+</li>
+</ul>
+
+<dl>
+ <dt>Download:</dt>
+ <dd><a href="reports/sum.zip"><code>sum.zip</code></a>
+<small>(<?php 
+  $filename = "reports/sum.zip";
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+)</small>
+</dd>
+</dl>
+
+<hr>
+<a name="fastfib"><h2>Fibonacci numbers</h2></a>
+
+<h3>Specification</h3>
+
+<dl>
+<dt>Todo:</dt>
+<dd>Implement <code>fastfib</code> without recursive calls.</dd>
+<dt>Prototype:</dt>
+<dd><code>int fastfib(int n);</code></dd>
+<dt>Definition:</dt>
+<dd><ul>
+     <li><code>fastfib</code>(<var>n</var>) = 0 for <var>n</var> &le; 0</li>
+     <li><code>fastfib</code>(1) = 1</li>
+     <li><code>fastfib</code>(<var>n</var>) = 
+	  <code>fastfib</code>(<var>n</var> - 1)
+	  + <code>fastfib</code>(<var>n</var> - 2) for <var>n</var> &gt; 1</li>
+</ul></dd>
+</dl>
+
+<h3><a href="reports/fastfib">Reports</a>
+<small>(<?php 
+  $filename = "reports/fastfib";
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+)</small>
+</h3>
+
+<ul>
+ <li>20 groups 
+<small>(<?php 
+  $filename = "reports/fastfib";
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+)</small>
+ <li><a href="reports/fastfib.c">fastfib.c</a>, a sample shown by a lecturer</li>
+</li>
+</ul>
+
+<dl>
+ <dt>Download:</dt>
+ <dd><a href="reports/fastfib.zip"><code>fastfib.zip</code></a>
+<small>(<?php 
+  $filename = "reports/fastfib.zip";
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+)</small>
+</dd>
+</dl>
+
+<hr>
+
+<a name="sum2"><h2>Summation from given <var>m</var> to given <var>n</var></h2></a>
+
+<h3>Specification</h3>
+
+<dl>
+<dt>Todo:</dt>
+<dd>Implement <code>sum2</code> with a simple loop.</dd>
+<dt>Prototype:</dt>
+<dd><code>int sum2(int m, int n);</code></dd>
+<dt>Definition:</dt>
+<dd><ul>
+     <li><code>sum2</code>(<var>m</var>, <var>n</var>) 
+	  = 0 for <var>m</var> &gt; <var>n</var></li>
+     <li><code>sum2</code>(<var>m</var>, <var>n</var>) 
+	  = <var>m</var> +
+	  <code>sum2</code>(<var>m</var> + 1, <var>n</var>) for
+	  <var>m</var> &le; <var>n</var></li> 
+</ul></dd>
+</dl>
+
+<h3><a href="reports/sum2">Reports</a>
+<small>(<?php 
+  $filename = "reports/sum2";
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+)</small>
+</h3>
+
+<ul>
+ <li>6 groups 
+<small>(<?php 
+  $filename = "reports/sum2";
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+)</small>
+</li>
+ <li>We have not applied the automated classification to this case, and
+      we grouped them by eye. </li>
+ <li><a href="reports/sum2.c">sum2.c</a>, a sample shown by a lecturer</li>
+</ul>
+
+<dl>
+ <dt>Download:</dt>
+ <dd><a href="reports/sum2.zip"><code>sum2.zip</code></a>
+<small>(<?php 
+  $filename = "reports/sum2.zip";
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+)</small>
+</dd>
+</dl>
+
+<hr>
+
+<a name="strxxx"><h2>Own functions for strings</h2></a>
+
+<h3>Specification</h3>
+
+<dl>
+<dt>Todo:</dt>
+<dd>Implement <code>strcpy</code>, <code>strcat</code>,
+     <code>strlen</code> (and <code>strcmp</code>) yourself.</dd>
+<dt>Prototype:</dt>
+<dd>
+<ul>
+ <li><code>void mystrcpy(char trg[], char src[]);</code></li>
+ <li><code>void mystrcat(char trg[], char src[]);</code></li>
+ <li><code>int mystrlen(char trg[]);</code></li>
+ <li><code>int mystrcmp(char trg[], char src[]);</code></li>
+</ul>
+</dd>
+<dt>Definition:</dt>
+<dd>
+     <ul>
+      <li><code>mystrlen</code>is the same as <code>strlen</code>.</li>
+      <li><code>mystrcpy</code> and <code>mystrcat</code> are almost the
+	   same as <code>strcpy</code> and <code>strcat</code>, resp.,
+	   but they don't return any value.</li>
+      <li>The requirement to the returned value of <code>mystrcmp</code>
+	   is not shown explicitly at the exercise, and thus, it may
+	   return <code>-1</code>, <code>0</code>, or <code>1</code>.</li>
+     </ul>
+</dd>
+<dt>Note:</dt>
+<dd><ul>
+     <li>This exercise was shown before learning pointers.</li>
+
+</ul></dd>
+</dl>
+
+<h3><a href="reports/strxxx">Reports</a>
+<small>(<?php 
+  $filename = "reports/strxxx";
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+)</small>
+</h3>
+
+<ul>
+ <li>5 groups
+<small>(<?php 
+  $filename = "reports/strxxx";
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+)</small>
+</li>
+ <li>We have not applied the automated classification to this case, and
+      we grouped them by eye. </li>
+ <li><a href="reports/strxxx.c">strxxx.c</a>, a sample shown by a lecturer</li>
+ <li>The main function is presented in a textbook.</li>
+</ul>
+
+<dl>
+ <dt>Download:</dt>
+ <dd><a href="reports/strxxx.zip"><code>strxxx.zip</code></a>
+<small>(<?php 
+  $filename = "reports/strxxx.zip";
+  $filemod = filemtime($filename);
+  $filetime = date("M d, Y", $filemod);
+  Print("$filetime");
+?>
+)</small>
+</dd>
+</dl>
+
+<hr>
+
+<a name="contact"><h2>Contact</h2></a>
+
+<dl>
+ <dt>Naoki Nishida (Nagoya University)</dt>
+      <dd><code>nishida @ is.nagoya-u.ac.jp</code></dd>
+</dl>
+
+<hr>
+
+</body>
+</html>
