@@ -1,6 +1,657 @@
 <html>
+<head>
+<title>CO3</title>
+<style type="text/css">
+  EM { color:blue; font-style:normal; }
+</style>
+
+</head>
 <body>
-<h1>CO3</h1>
-<p>under construction</p>
+  <p>
+  Last Update:
+  <SCRIPT>
+    var modified = new Date(document.lastModified);
+    var year = modified.getFullYear();
+    var month= modified.getMonth() + 1;
+    var date = modified.getDate();
+    document.write(year + "/" + month + "/" + date);
+  </SCRIPT>
+  </p>
+
+<hr>
+<h1>CO3:
+<small>
+a <font color="dodgerblue">CO</font>nverter for
+proving <font color="dodgerblue">CO</font>nfluence
+of <font color="dodgerblue">CO</font>nditional
+term rewriting systems
+</small>
+</h1>
+<h2>Ver. 2.0 (March 11th, 2019)</h2>
+
+<p>Currently developed by 
+<i><a href="http://www.lctrs.jp/nishida/">Naoki Nishida</a></i> (Nagoya University),
+and 
+<i>Misaki Kojima</i> (Nagoya University)
+</p>
+
+<hr>
+<h4>News</h4>
+
+<dl>
+
+<!--
+<dt>July 27th, 2015</dt>
+ <dd>
+    Added <a href="#systemdescription">System Description</a>.
+     </dd>
+
+<dt>August 4th, 2014</dt>
+<dd>
+  Updated the list of developers, <a href="#overview">Overview</a>,
+  <a href="#experiments">Experiments</a> for Ver. 1.1,
+  <a href="#wui">Web Interface</a>, and
+  <a href="#procedure">Implemented Procedure</a>, 
+  and added <a href="#coco">Participation in Competition</a> to this page.
+</dd>
+
+<dt>August 1st, 2014</dt>
+<dd>
+  <ul>
+    <li>Ver. 1.1 was released via the web interface below.</li>
+    <li>Updated <a href="#references">References</a>.</li>
+  </ul>
+</dd>
+-->
+
+<!--
+
+<dt>July 2nd, 2014</dt>
+<dd>
+  Added <a href="#experiments">Experiments</a> for Ver. 1.0,
+  and <a href="#acknowledgement">Acknowledgement</a>.
+</dd>
+
+<dt>June 30th, 2014</dt>
+<dd>
+  Modified <a href="overview">Overview</a> and added <a href="procedure">Implemented Procedure</a>.
+</dd>
+
+<dt>June 27th, 2014</dt>
+<dd>
+  Ver. 1.0 was released via a web interface below.
+</dd>
+<dt>June 26th, 2014</dt>
+<dd>
+     open this page.
+</dd>
+
+-->
+
+<hr>
+<h4>Contents</h4>
+<ul>
+ <li><a href="#overview">Overview</a></li>
+ <li><a href="#history">History</a></li>
+ <li><a href="#input">Supported Classes</a></li>
+<!-- <li><a href="#feature">Features</a></li> -->
+ <li><a href="#ariweb">Web interface</a></li>
+ <li><a href="#examples">Examples</a></li>
+ <li><a href="#procedure">Implemented Procedure</a></li>
+<!-- <li><a href="#experiments">Experiments</a></li> -->
+ <li><a href="#coco">Participation in Competition</a></li>
+ <li><a href="#references">References</a></li>
+ <li><a href="#systemdescription">System Description</a></li>
+<!--
+ <li><a href="#todo">TODO for Improvement</a></li>
+-->
+ <li><a href="#contributors">Past Contributors</a></li>
+ <li><a href="#acknowledgement">Acknowledgement</a></li>
+ <li><a href="#contact">Contact</a></li>
+</ul>
+<hr>
+<a name="overview"><h2>Overview</h2></a>
+
+<p>
+<b>CO3</b> is a tool for proving confluence of conditional term 
+rewriting systems (CTRS) by using a transformational approach. 
+The tool is based on the results in <a href="#GNG13iwc">[GNG13iwc]</a>
+and <a href="#NYG14iwc">[NYG14iwc]</a>:
+the tool first transforms a given normal 1-CTRS into an unconditional
+term rewriting system (TRS) by using
+the <i>simultaneous unraveling</i> <a href="#GNG13iwc">[GNG13iwc]</a>
+or the <i>SR transformation</i> <a href="http://dx.doi.org/10.1007/11805618_3">[Serbanuta & Rosu, RTA 2006]</a>, 
+and then verify confluence of the transformed TRS.
+</p>
+
+<p><b>CO3</b> is using <i>syntactic</i> analyses only:
+a syntactic transformation, syntactic criteria for checking properties, etc., 
+except for the normalization for checking joinability of critical pairs. 
+For this reason, <b>CO3</b> is very <i>efficient</i>.
+</p>
+
+<p>To make the confluence checking more powerful, we should implement more powerful
+ methods for proving confluence of TRSs, e.g., the critical pair theorem with using
+powerful termination proving methods. However, this tool is focusing on converting 
+a CTRS to a TRS which help us to analyse the CTRS, and thus, we won't strengthen 
+an internal termination prover, or any confluence proving technique. 
+We want to use <b>CO3</b> with other confluence provers. 
+</p>
+
+<hr>
+<a name="history"><h2>History</h2></a>
+
+<dl>
+  <dt>Ver. 2.0 (March 11th, 2019)</dt>
+  <dd>
+  An infeasibility analysis based on narrowing trees has been implemented.
+  </dd>
+  <dt>Ver. 1.1 (August 1st, 2014)</dt>
+  <dd>
+    the improved version for participating in CoCo 2014.
+  </dd>
+  <dt>Ver. 1.0 (June 27th, 2014)</dt>
+  <dd>
+    the first version for participating in CoCo 2014.
+  </dd>
+ <dt>Ver. 0 (June 26th, 2014)</dt>
+ <dd>
+   a prototype version.
+ </dd>
+</dl>
+
+<hr>
+
+<a name="input"><h2>Supported Classes</h2></a>
+
+<p>Oriented CTRSs</p>
+
+<!--
+<p>The tool supports <b>normal 1-CTRSs</b> without any strategy and theory 
+(specified by <code>STRATEGY</code> and <code>THEORY</code>, resp.), the class
+of which includes <b>TRSs</b>. 
+The implemented techniques for TRSs are very poor since the tool is
+focusing on CTRSs. 
+Due to a technical reason as shown later, indeed the tool is working for
+<b>weakly left-linear</b> CTRSs which has at least one condition. 
+</p>
+-->
+
+<!--
+<p>NOTE: the current version (Ver. 1.0) accepts oriented 1-CTRSs,
+and returns <font color="red"><code>NO</code></font>
+if the disproving criterion below 
+is satisfied, and otherwise, returns
+<font color="gold"><code>MAYBE</code></font>
+whenever the input is not normal CTRSs.
+</p>
+-->
+
+<!--
+<hr>
+<a name="wui"><h2><a href="http://www.trs.cm.is.nagoya-u.ac.jp/co3/wui.php?bgcolor=powderblue" target="_blank">Web Interface</a></h2></a>
+
+<iframe name="wui" src="http://www.trs.cm.is.nagoya-u.ac.jp/co3/wui.php?bgcolor=powderblue"
+width="100%" height="700" frameborder="0">
+Please click 
+<a href="http://www.trs.cm.is.nagoya-u.ac.jp/co3/wui.php?bgcolor=powderblue" target="_blank">here</a>!
+</iframe>
+-->
+
+<hr>
+<a name="ariweb"><h2>ARIWeb</h2></a>
+
+<p>CRaris performs on <a href="https://ari-web.uibk.ac.at">ARIWeb</a>.</p>
+
+
+<hr>
+
+<a name="examples"><h2>Examples</h2></a>
+
+<dl>
+<dt><a href="#NYG14iwc">[NYG14iwc, Example 2]</a></dt>
+<dd>
+<pre>
+(CONDITIONTYPE ORIENTED)
+(VAR x)
+(RULES
+  e(0) -> true
+  e(s(x)) -> true  | e(x) == false
+  e(s(x)) -> false | e(x) == true
+)
+</pre>
+</dd>
+
+<dt><a href="#NYG14iwc">[NYG14iwc, Example 8]</a></dt>
+<dd>
+<pre>
+(CONDITIONTYPE ORIENTED)
+(VAR x)
+(RULES
+  e(0) -> true
+  e(s(x)) -> true  | o(x) == true
+  e(s(x)) -> false | e(x) == true
+  o(0) -> true
+  o(s(x)) -> true  | e(x) == true
+  o(s(x)) -> false | o(x) == true
+)
+</pre>
+</dd>
+
+<dt><a href="#NYG14iwc">[NYG14iwc, Example 9]</a></dt>
+<dd>
+<pre>
+(CONDITIONTYPE ORIENTED)
+(VAR x y l)
+(RULES
+  dot(x,dot(y,l)) -> dot(y,dot(x,l)) | les(x,y) == true
+  les(0,0) -> false
+  les(0,s(0)) -> true
+  les(0,s(s(x))) -> les(0,s(x))
+  les(s(0),0) -> false
+  les(s(s(x)),0) -> les(s(x),0)
+  les(s(x),s(y)) -> les(x,y)
+)
+</pre>
+</dd>
+
+<dt><code>co3-test-1.trs</code> for testing the critical pair theorem</dt>
+<dd>
+<pre>
+(RULES
+  f(a) -> b
+  f(a) -> c
+  b -> d
+  c -> d
+)
+</pre>
+</dd>
+
+<dt><code>co3-test-2.trs</code> for testing the critical pair theorem</dt>
+<dd>
+<pre>
+(RULES
+  f(a) -> b
+  f(a) -> c
+  b -> d(e)
+  c -> d(e)
+)
+</pre>
+</dd>
+
+<dt>Other normal 1-CTRSs</dt>
+<dd>See <a href="http://termcomp-devel.uibk.ac.at/hzankl/cops/?q=ctrs+1_ctrs+normal+oriented" target="_blank">Cops</a>.</dd>
+
+<dt>Other TRSs</dt>
+<dd>See <a href="http://termcomp-devel.uibk.ac.at/hzankl/cops/?q=trs" target="_blank">Cops</a>.</dd>
+
+</dl>
+
+<hr>
+
+<a name="procedure"><h2>Implemented Procedure (Ver. 1.1)</h2></a>
+
+<p>The tool takes a CTRS <var>R</var> as input, and then starts the following process:
+<ol>
+  <li>If <var>R</var> is a normal 1-CTRS, then go to the next step;
+    otherwise, return <font color="grey"><code>UNSUPPORTED</code></font>.
+  </li>
+  <li>If <var>R</var> satisfies <em>one of</em> the following, then return <font color="red"><code>NO</code></font>, and
+    otherwise, go to the next step:
+    <ul>
+      <li><em>
+	  there exists an unconditional critical pair (<var>s</var>, <var>t</var>) of <var>R</var> such that
+	  <var>cap</var>(<var>s</var>) and <var>cap</var>(<var>s</var>) are not unifiable, where <var>cap</var> replaces any term rooted by a defined symbol by a fresh variable, 
+      </em>,
+      or</li>
+      <li>there exists an unconditional critical pair (<var>s</var>, <var>t</var>) of <var>R</var> such that
+	<var>s</var> and <var>t</var> are different strongly irreducible ground terms of <var>R</var>.
+	</li>
+    </ul>
+  </li>
+  <li>If <var>R</var> is a TRS, then let <var>R</var><sub>1</sub> be <var>R</var>;
+    if <em><var>SR</var> is sound for <var>R</var></em> (i.e., <var>R</var> is weak left-linear), 
+    then <em>let <var>R</var><sub>1</sub> be a TRS obtained by 
+    applying the optimized <i>simultaneous unraveling</i> <a href="GNG13iwc">[GNG13iwc]</a> to 
+    <var>R</var>, </em>
+    and let <var>R</var><sub>2</sub> be a TRS obtained by 
+    applying the optimized <i>SR transformation</i> <a href="http://dx.doi.org/10.1007/11805618_3">[Serbanuta & Rosu, RTA 2006]</a> to 
+    <var>R</var>, while the special bracket symbol and its rewrite 
+    rules are not introduced whenever <var>R</var> is a constructor system;
+    otherwise, return <font color="gold"><code>MAYBE</code></font>.
+  </li>
+  <li>If <em><var>R</var><sub>1</sub> or</em> <var>R</var><sub>2</sub> satisfies one of the following (i.e., <em><var>R</var><sub>1</sub> or</em> <var>R</var><sub>2</sub> is confluent), then
+    return <font color="green"><code>YES</code></font>,
+    and otherwise, return <font color="gold"><code>MAYBE</code></font>:
+    <ul>
+      <li><var>R<sub>i</sub></var> is orthogonal,
+	or
+      </li>
+      <li><var>R<sub>i</sub></var> satisfies one of the following (i.e., <var>R<sub>i</sub></var> is terminating),
+	<ul>
+	  <li><var>R<sub>i</sub></var> has no dependency pair <em>in the union of the SCCs in the simple estimated dependency graph</em>,
+	    or
+	  </li>
+	  <li><var>R<sub>i</sub></var> &sube; &ge; and <var>DP</var>(<var>R<sub>i</sub></var>) &sube; &gt; where
+	    <ul>
+	      <li><var>s</var> &ge; <var>t</var> iff |<var>s</var>| &ge; |<var>t</var>|
+		and &forall;<var>x</var>&in;<var>V</var>.&nbsp;|<var>s</var>|<sub><var>x</var></sub> &ge; |<var>t</var>|<sub><var>x</var></sub>
+		and
+	      </li>
+	      <li><var>s</var> &gt; <var>t</var> iff |<var>s</var>| &gt; |<var>t</var>|
+		and &forall;<var>x</var>&in;<var>V</var>.&nbsp;|<var>s</var>|<sub><var>x</var></sub> &ge; |<var>t</var>|<sub><var>x</var></sub>
+	      </li>
+	    </ul>
+	    (see <a href=" http://dx.doi.org/10.1017/CBO9781139172752">[Baader & Nipkow, 92, Example 5.2.2]</a>),
+	  </li>
+	</ul>
+	and
+	all the critical pairs of <var>R<sub>i</sub></var> are joinable.
+      </li>
+    </ul>
+  </li>
+</ol>
+</p>
+
+<p>
+Procedures in the old versions can be seen <a href="procedures.html">here</a>.
+</p>
+
+<!--
+<hr>
+<a name="experiments"><h2>Experiments</h2></a>
+
+<h3>July 3rd, 2014 (for Ver. 1.1)</h3>
+
+<dl>
+  <dt>Benchmarks</dt>
+  <dd>
+    <code>1.trs</code>-<code>402.trs</code>
+    in
+    <a href="http://termcomp-devel.uibk.ac.at/hzankl/cops/" target="_blank">Cops</a>
+  </dd>
+  <dt>Environment</dt>
+  <dd><a href="https://www.starexec.org/starexec/secure/index.jsp" target="_blank">StarExec</a>
+  </dd>
+  <dt>Results</dt>
+  <dd>
+    <table border="1">
+      <tr>
+	<th align="center">Categories</th>
+	<th align="center"><font color="green">Yes</font></th>
+	<th align="center"><font color="red">No</font></th>
+	<th align="center"><font color="gold">Maybe</font></th>
+	<th align="center">Others</th>
+      </tr>
+      <tr>
+	<td align="center">
+	  <a href="experiments/experiments_20140703_oriented-1CTRS.txt">oriented 1-CTRSs (48)</a>
+	</td>
+	<td align="right">
+	  15
+	</td>
+	<td align="right">
+	  13
+	</td>
+	<td align="right">
+	  20
+	</td>
+	<td align="right">
+	  0
+	</td>
+      </tr>
+      <tr>
+	<td align="center">
+	  <a href="experiments/experiments_20140703_TRS.txt">TRSs (262)</a>
+	</td>
+	<td align="right">
+	  23
+	</td>
+	<td align="right">
+	  5
+	</td>
+	<td align="right">
+	  234
+	</td>
+	<td align="right">
+	  0
+	</td>
+      </tr>
+    </table>
+  </dd>
+</dl>
+
+<h3>July 2nd, 2014 (for Ver. 1.0)</h3>
+
+<dl>
+  <dt>Benchmarks</dt>
+  <dd>
+    <code>1.trs</code>-<code>402.trs</code>
+    in
+    <a href="http://termcomp-devel.uibk.ac.at/hzankl/cops/" target="_blank">Cops</a>
+  </dd>
+  <dt>Environment</dt>
+  <dd><a href="https://www.starexec.org/starexec/secure/index.jsp" target="_blank">StarExec</a>
+  </dd>
+  <dt>Results</dt>
+  <dd>
+    <table border="1">
+      <tr>
+	<th align="center">Categories</th>
+	<th align="center"><font color="green">Yes</font></th>
+	<th align="center"><font color="red">No</font></th>
+	<th align="center"><font color="gold">Maybe</font></th>
+	<th align="center">Others</th>
+      </tr>
+      <tr>
+	<td align="center">
+	  <a href="experiments/experiments_20140702_oriented-1CTRS.txt">oriented 1-CTRSs (48)</a>
+	</td>
+	<td align="right">
+	  13
+	</td>
+	<td align="right">
+	  13
+	</td>
+	<td align="right">
+	  22
+	</td>
+	<td align="right">
+	  0
+	</td>
+      </tr>
+      <tr>
+	<td align="center">
+	  <a href="experiments/experiments_20140702_TRS.txt">TRSs (262)</a>
+	</td>
+	<td align="right">
+	  15
+	</td>
+	<td align="right">
+	  3
+	</td>
+	<td align="right">
+	  244
+	</td>
+	<td align="right">
+	  0
+	</td>
+      </tr>
+    </table>
+  </dd>
+</dl>
+
+-->
+
+
+<hr>
+<a name="coco"><h2>Participation in Competition since 2014</h2></a>
+
+<p>
+See <a href="http://project-coco.uibk.ac.at">CoCo webpage</a>, and
+<a href="http://cops.uibk.ac.at/results/">results</a>.
+</p>
+
+
+<!--
+<h3><a href="http://coco.nue.riec.tohoku.ac.jp/2014/" target="_blank">CoCo 2014</a></h3>
+<ul>
+  <li>Entry to the CTRS category (oriented 1-CTRS) (Ver. 1.1)</li>
+  <li>The 2nd place of the two participating tools</li>
+  <li>The following table shows the result on CO3:
+    <blockquote>
+      <table border="1">
+	<tr align="center">
+	  <th>type</th>
+	  <th>benchmarks</th>
+	  <th>score ((<code>YES</code>+<code>NO</code>)/<code>SUPPORTED</code>)</th>
+	  <th><font color="green"><code>YES</code></font></th>
+	  <th><font color="red"><code>NO</code></font></th>
+	  <th><font color="gold"><code>MAYBE</code></font></th>
+	  <th><font color="grey"><code>UNSUPPORTED</code></font></th>
+	  <th>exec. time (total)</th>
+	  <th>exec. time (fastest)</th>
+	  <th>exec. time (slowest)</th>
+	</tr>
+	<tr align="center">
+	  <td>all (oriented 1-CTRSs)</td>
+	  <td>132</td>
+	  <td>56.86 %</td>
+	  <td>16</td>
+	  <td>13</td>
+	  <td>22</td>
+	  <td>81</td>
+	  <td>1.57 sec</td>
+	  <td>0.01 sec</td>
+	  <td>0.19 sec</td>
+	</tr>
+	<tr align="center">
+	  <td>normal 1-CTRSs</td>
+	  <td>39</td>
+	  <td>64.10 %</td>
+	  <td colspan="2">25</td>
+	  <td>14</td>
+	  <td>0</td>
+	  <td>---</td>
+	  <td>---</td>
+	  <td>---</td>
+	</tr>
+	<tr align="center">
+	  <td>WLL normal 1-CTRSs</td>
+	  <td>29</td>
+	  <td>65.52 %</td>
+	  <td colspan="2">19</td>
+	  <td>10</td>
+	  <td>0</td>
+	  <td>---</td>
+	  <td>---</td>
+	  <td>---</td>
+	</tr>
+      </table>
+    </blockquote>
+  </li>
+</ul>
+-->
+
+<hr>
+
+<a name="references"><h2>References</h2></a>
+
+<dl compact>
+
+ <dt><a name="NYG14iwc">[NYG14iwc]</a></dt>
+ <dd>Naoki Nishida, Makishi Yanagisawa, and Karl Gmeiner,<br>
+      <b>On Proving Confluence of Conditional Term Rewriting Systems via the Computationally Equivalent Transformation</b>,<br>
+      In <i>Proceedings of the 3rd International Workshop on Confluence (IWC 2014)</i>,<br>
+      pp. 24-28, Vienna, July 2014.<br>
+      [<a href="papers/nyg14iwc.pdf">PDF</a>]
+      [<a href="papers/nyg14iwc_pre.pdf">PDF (preprint)</a>]
+      </dd><br>
+
+ <dt><a name="NYG14wpte">[NYG14wpte]</a></dt>
+ <dd>Naoki Nishida, Makishi Yanagisawa, and Karl Gmeiner,<br>
+      <b>On Proving Soundness of the Computationally Equivalent Transformation for Normal Conditional Term Rewriting Systems by Using Unravelings</b>,<br>
+      In <i>Proceedings of the first International Workshop on ewriting Techniques for Program Transformations and Evaluation (WPTE 2014)</i>,<br>
+      <i>OpenAccess Series in Informatics (OASIcs)</i>, Vol. 40, pp. 39-50, Vienna, July 2014.<br>
+      [<a href="http://drops.dagstuhl.de/opus/volltexte/2014/4585/">Link (OASIcs)</a>]
+      [<a href="http://www.trs.cm.is.nagoya-u.ac.jp/~nishida/wpte14/">Link (local with a full version)</a>]
+      </dd><br>
+
+ <dt><a name="GNG13iwc">[GNG13iwc]</a></dt>
+ <dd>Karl Gmeiner, Naoki Nishida, and Bernhard Gramlich,<br>
+      <b>Proving Confluence of Conditional Term Rewriting Systems via Unravelings</b>,<br>
+      In <i>Proceedings of the 2nd International Workshop on Confluence (IWC 2013)</i>,<br>
+      pp. 35-39, Eindhoven, June 2013.<br>
+      [<a href="papers/gng13iwc.pdf">PDF</a>]
+      [<a href="papers/gng13iwc_pre.pdf">PDF (preprint)</a>]
+      </dd><br>
+
+</dl>
+
+<hr>
+<a name="systemdescription"><h2>System Description</h2></a>
+
+<dl compact>
+
+ <dt><a name="NKYG15v1.2">[NKYG15v1.2]</a></dt>
+ <dd>Naoki Nishida, Takayuki Kuroda, Makishi Yanagisawa, and Karl Gmeiner,<br>
+      <b>CO3: a COnverter for proving COfluence of COnditional TRSs (Version 1.2)</b>,<br>
+      In <i>Proceedings of the 4th International Workshop on Confluence (IWC 2015)</i>,<br>
+      to appear, Berlin, August 2015.<br>
+<!--
+      [<a href="papers/nyg14iwc.pdf">PDF</a>]
+-->
+      [<a href="papers/co3_2015_full.pdf">PDF (full version)</a>]
+      </dd><br>
+
+</dl>
+
+<!--
+<hr>
+<a name="todo"><h2>TODO for Improvement</h2></a>
+
+<ul>
+  <li></li>
+</ul>
+-->
+
+<hr>
+
+<a name="contributors"><h2>Past Contributors</h2></a>
+
+<ul>
+  <li>Karl Gmeiner (UAS Technikum Wien)</li>
+  <li>Makishi Yanagisawa (Nagoya University)</li>
+  <li>Yoshiaki Kanazawa</i> (Nagoya University)</li>
+  <li>Takayuki Kuroda</i> (Nagoya University)</li>
+  <li>Yuta Tsuruta</i> (Nagoya University)</li>
+</ul>
+
+<hr>
+
+<a name="acknowledgement"><h2>Acknowledgement</h2></a>
+
+<p>
+The research in this paper was partly supported by the Austrian Science
+Fund (FWF) international project I963 and the Japan Society for the 
+Promotion of Science (JSPS).
+</p>
+
+<hr>
+
+<a name="contact"><h2>Contact</h2></a>
+
+<dl>
+  <!--
+  <dt>ML for CO3 developers</dt>
+  <dd><code>co3 @ trs.css.i.nagoya-u.ac.jp</code></dd>
+  -->
+
+ <dt><a href="https://www.lctrs.jp/nihisda/">Naoki Nishida</a> (Nagoya University)</dt>
+      <dd><code>nishida [at] i.nagoya-u.ac.jp</code></dd>
+</dl>
+
+<hr>
+
 </body>
 </html>
